@@ -101,7 +101,6 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                     leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer1Score()));
                     rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer2Score()));
 
-                    Toast.makeText(AmericanQuestionActivity.this, "Player 1 won!", Toast.LENGTH_SHORT).show();
 
                     // Proceed to the next question
                     progressAnimator.cancel();
@@ -117,8 +116,6 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                     answer4.setEnabled(false);
 
                     isScreenFinished = true;
-
-                    Toast.makeText(AmericanQuestionActivity.this, "Player 2 won!", Toast.LENGTH_SHORT).show();
 
                     GameControlActivity.game.setPlayer2Score(GameControlActivity.game.getPlayer2Score() + 20);
                     if (MainActivity.isPlayer1) {
