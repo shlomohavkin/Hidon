@@ -50,7 +50,7 @@ class ChatGPTResponse {
 public interface OpenAIApi {
     @Headers({
             "Content-Type: application/json",
-            "Authorization: Bearer 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"
+            "Authorization: Bearer "
     })
     @POST("v1/chat/completions")
     Call<ChatGPTResponse> generateQuestion(@Body ChatGPTRequest request);
