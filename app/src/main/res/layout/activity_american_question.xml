@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,45 +8,6 @@
     android:background="@drawable/gradient_background"
     tools:context=".AmericanQuestionActivity">
 
-    <!-- Header Bar -->
-    <LinearLayout
-        android:id="@+id/HeaderBar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="16dp"
-        android:background="@color/purple_700"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:id="@+id/screen_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Trivia Game"
-            android:textSize="20sp"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <!-- Timer Progress Bar -->
-    <ProgressBar
-        android:id="@+id/timeProgressBar"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="300dp"
-        android:layout_height="18dp"
-        android:max="100"
-        android:progress="100"
-        android:progressDrawable="@drawable/progress_bar"
-        app:layout_constraintTop_toBottomOf="@id/HeaderBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
-
-
-
     <!-- Scores Section -->
     <LinearLayout
         android:id="@+id/Scores"
@@ -56,7 +16,8 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/timeProgressBar"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -66,7 +27,8 @@
             android:layout_height="wrap_content"
             android:text="Player 1: "
             android:textSize="18sp"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium"/>
 
         <TextView
             android:id="@+id/Player1_Score"
@@ -74,7 +36,8 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:textSize="18sp"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium"/>
 
         <View
             android:layout_width="16dp"
@@ -86,7 +49,8 @@
             android:layout_height="wrap_content"
             android:text="Player 2: "
             android:textSize="18sp"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium"/>
 
         <TextView
             android:id="@+id/Player2_Score"
@@ -94,7 +58,8 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:textSize="18sp"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium"/>
     </LinearLayout>
 
     <!-- Question Content -->
@@ -103,11 +68,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:elevation="4dp"
+        android:elevation="8dp"
         app:cardCornerRadius="16dp"
         app:layout_constraintTop_toBottomOf="@id/Scores"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/light_gray">
 
         <TextView
             android:id="@+id/QuestionContent"
@@ -115,22 +81,25 @@
             android:layout_height="wrap_content"
             android:text="Question Content"
             android:textSize="20sp"
-            android:padding="16dp"
+            android:textColor="@color/black"
+            android:padding="24dp"
             android:gravity="center"
-            android:textColor="@color/black" />
+            android:fontFamily="sans-serif-medium"
+            android:lineSpacingExtra="4dp"
+            android:textStyle="bold"/>
     </androidx.cardview.widget.CardView>
 
     <!-- Answer Buttons -->
     <Button
         android:id="@+id/Answer1"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
+        android:layout_height="56dp"
+        android:layout_margin="12dp"
         android:text="Answer 1"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:backgroundTint="@color/purple_500"
         android:textColor="@color/white"
-        app:cornerRadius="12dp"
+        app:cornerRadius="20dp"
         app:layout_constraintTop_toBottomOf="@id/QuestionCard"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -139,13 +108,13 @@
     <Button
         android:id="@+id/Answer2"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
+        android:layout_height="56dp"
+        android:layout_margin="12dp"
         android:text="Answer 2"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:backgroundTint="@color/purple_500"
         android:textColor="@color/white"
-        app:cornerRadius="12dp"
+        app:cornerRadius="20dp"
         app:layout_constraintTop_toBottomOf="@id/Answer1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -154,13 +123,13 @@
     <Button
         android:id="@+id/Answer3"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
+        android:layout_height="56dp"
+        android:layout_margin="12dp"
         android:text="Answer 3"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:backgroundTint="@color/purple_500"
         android:textColor="@color/white"
-        app:cornerRadius="12dp"
+        app:cornerRadius="20dp"
         app:layout_constraintTop_toBottomOf="@id/Answer2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -169,16 +138,30 @@
     <Button
         android:id="@+id/Answer4"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
+        android:layout_height="56dp"
+        android:layout_margin="12dp"
         android:text="Answer 4"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:backgroundTint="@color/purple_500"
         android:textColor="@color/white"
-        app:cornerRadius="12dp"
+        app:cornerRadius="20dp"
         app:layout_constraintTop_toBottomOf="@id/Answer3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="onAnswerClick"/>
+
+    <!-- Timer Progress Bar -->
+    <ProgressBar
+        android:id="@+id/timeProgressBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:max="100"
+        android:progress="100"
+        android:progressDrawable="@drawable/progress_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="60dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

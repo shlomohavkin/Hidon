@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     TextView title;
     static @Nullable UUID gameID;
     Button notesGameButton, joinGameNotes, createQuestionsNotes, startGameNotes;
-    boolean isVisible = false;
 
 
     @Override
@@ -132,16 +133,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onNotesGameButtonClick(View view) {
-        if (!isVisible) {
-            isVisible = true;
+        if (startGameNotes.getVisibility() == View.GONE) {
             joinGameNotes.setVisibility(View.VISIBLE);
             createQuestionsNotes.setVisibility(View.VISIBLE);
             startGameNotes.setVisibility(View.VISIBLE);
+
+            // Apply Slide Down animation
+            Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+            Animation slideDown2 = AnimationUtils.loadAnimation(this, R.anim.slide_down2);
+            Animation slideDown3 = AnimationUtils.loadAnimation(this, R.anim.slide_down3);
+
+            startGameNotes.startAnimation(slideDown);
+            joinGameNotes.startAnimation(slideDown2);
+            createQuestionsNotes.startAnimation(slideDown3);
         } else {
-            isVisible = false;
-            joinGameNotes.setVisibility(View.GONE);
-            createQuestionsNotes.setVisibility(View.GONE);
-            startGameNotes.setVisibility(View.VISIBLE);
+            // Apply Slide Down animation
+            Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+            Animation slideUp2 = AnimationUtils.loadAnimation(this, R.anim.slide_up2);
+            Animation slideUp3 = AnimationUtils.loadAnimation(this, R.anim.slide_up3);
+
+            startGameNotes.startAnimation(slideUp);
+            joinGameNotes.startAnimation(slideUp2);
+            createQuestionsNotes.startAnimation(slideUp3);
+
+            // Set the visibility to GONE after animation completes
+            slideUp.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {}
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    joinGameNotes.setVisibility(View.GONE);
+                    createQuestionsNotes.setVisibility(View.GONE);
+                    startGameNotes.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+            });
         }
 
     }
