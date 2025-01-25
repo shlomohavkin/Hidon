@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Question {
 
@@ -29,6 +30,11 @@ public class Question {
             this.answers.add(answersArray.getString(i));
         }
         this.correctAnswer = json.getInt("correctAnswer");
+
+        // Randomize the answers
+        String correctAnswerValue = this.answers.get(this.correctAnswer); // Store the correct answer
+        Collections.shuffle(this.answers); // Shuffle the answers
+        this.correctAnswer = this.answers.indexOf(correctAnswerValue);
     }
 
     public int getCorrectAnswer() {

@@ -39,7 +39,7 @@ public class QuestionGenerator {
                 "    ..." +
                 "  ]\n" +
                 "}\n" +
-                "Ensure that the questions and answers are valid and correct! Also, ensure correct answers vary in index between questions. don't include any text other than the JSON string!");
+                "Ensure that the questions and answers are valid and correct! Don't include any text other than the JSON string!");
 
         // Create Request Object
         ChatGPTRequest request = new ChatGPTRequest(
