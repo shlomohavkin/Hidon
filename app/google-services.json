@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "611565518246",
+    "project_id": "hidon-b927c",
+    "storage_bucket": "hidon-b927c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611565518246:android:b6806b8e852f2748702367",
+        "android_client_info": {
+          "package_name": "com.example.hidon_home"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu9ni5SrzbpyLTswpBBOqszDmCgAFCZXo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
