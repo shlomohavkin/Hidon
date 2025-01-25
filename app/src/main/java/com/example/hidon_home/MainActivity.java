@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(MainActivity.this, "Can't join Game - you were starting the game", Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(this, "Joining Game", Toast.LENGTH_LONG).show();
         }
     }
 

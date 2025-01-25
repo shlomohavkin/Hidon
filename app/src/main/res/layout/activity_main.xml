@@ -7,7 +7,7 @@
 
     <!-- Title TextView -->
     <TextView
-        android:id="@+id/textViewTitle"
+        android:id="@+id/gameTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Quiz Game"
@@ -27,7 +27,7 @@
         android:layout_width="220dp"
         android:layout_height="3dp"
         android:background="@color/divider_color"
-        android:layout_below="@id/textViewTitle"
+        android:layout_below="@id/gameTitle"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp" />
 
@@ -133,6 +133,17 @@
         android:visibility="gone"
         android:background="@drawable/rounded_corners_background"
         android:elevation="6dp"/>
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="25sp"
+        android:textColor="@color/footer_color"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/create_questions_button"
+        android:layout_marginTop="40dp" />
 
     <!-- Footer TextView -->
     <TextView
