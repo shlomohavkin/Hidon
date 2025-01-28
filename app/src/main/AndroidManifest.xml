@@ -15,9 +15,6 @@
         android:theme="@style/Theme.Hidon_home"
         tools:targetApi="31" >
         <activity
-            android:name=".WaitingForPlayerActivity"
-            android:exported="false" />
-        <activity
             android:name=".WaitingRoom"
             android:exported="false" />
         <activity
