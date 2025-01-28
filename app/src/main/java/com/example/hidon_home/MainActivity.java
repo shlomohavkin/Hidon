@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hidon_home.hidon.GameControlActivity;
+import com.example.hidon_home.notes_game.JoinScreen;
 import com.example.hidon_home.notes_game.NotesGameQuestionsGen;
 import com.example.hidon_home.notes_game.WaitingRoom;
 import com.google.firebase.database.DataSnapshot;
@@ -182,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onNotesGameJoin(View view) {
         isMainPlayer = false;
-        startActivity(new Intent(this, WaitingRoom.class));
+        startActivity(new Intent(this, JoinScreen.class));
     }
 
 

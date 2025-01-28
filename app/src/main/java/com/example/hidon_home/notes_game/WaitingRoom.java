@@ -1,7 +1,9 @@
 package com.example.hidon_home.notes_game;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -19,6 +21,9 @@ public class WaitingRoom extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference myRef;
     Button startGameButton;
+    TextView roomCodeNumber;
+    public static int numPlayers;
+    public static int roomNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +39,30 @@ public class WaitingRoom extends AppCompatActivity {
         myRef = database.getReference("kahoot_games");
 
         startGameButton = findViewById(R.id.startGameButton);
+        roomCodeNumber = findViewById(R.id.roomCode);
 
+        if (MainActivity.isMainPlayer) {
+            Random rnd = new Random();
+            int roomNumberGen = 10000000 + rnd.nextInt(90000000);
+            roomCodeNumber.setText(String.valueOf(roomNumberGen));
 
-        Random rnd = new Random();
-        int roomNumber = 10000000 + rnd.nextInt(90000000);
-
-        myRef.child(String.valueOf(roomNumber)).child("numPlayers").setValue(0);
-
-        if (MainActivity.isMainPlayer == true) {
             startGameButton.setVisibility(Button.VISIBLE);
+            myRef.child(String.valueOf(roomNumberGen)).child("numPlayers").setValue(0);
+
+            startGameButton.setOnClickListener(v -> {
+                startActivity(new Intent(this, NotesGame.class));
+            });
+        } else {
+            roomCodeNumber.setText(String.valueOf(roomNumber));
+
+            myRef.child(String.valueOf(roomNumber)).child("numPlayers").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    numPlayers = Integer.parseInt(String.valueOf(task.getResult().getValue()));
+                    myRef.child(String.valueOf(roomNumber)).child("numPlayers").setValue(numPlayers + 1);
+                }
+            });
         }
+
 
     }
 }
