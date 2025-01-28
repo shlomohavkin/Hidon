@@ -29,10 +29,9 @@ public class AmericanQuestionActivity extends AppCompatActivity {
     TextView questionContent, leftPlayerScore, rightPlayerScore, leftPlayerName, rightPlayerName;
     Button answer1, answer2, answer3, answer4;
     FirebaseDatabase database;
-    DatabaseReference  gamesRef;
-    private CountDownTimer countDownTimer;
+    DatabaseReference  gamesRef, playerRef;
     private static final long TIMEOUT_MILLIS = 15000; // 15 seconds
-    private boolean hasAnswered, isScreenFinished, isUpdatedScore = false;
+    private boolean isScreenFinished, isUpdatedScore = false;
     ProgressBar timeProgressBar;
     private ValueAnimator progressAnimator;
 
@@ -43,7 +42,6 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
         isScreenFinished = false;
         isUpdatedScore = false;
-        hasAnswered = false;
 
         leftPlayerName = findViewById(R.id.Player1);
         rightPlayerName = findViewById(R.id.Player2);
@@ -73,20 +71,26 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         rightPlayerScore = findViewById(R.id.Player2_Score);
 
         if (MainActivity.isPlayer1) {
-            rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer2Score())); // set the left score to the your score
-            leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer1Score()));
+            Log.d("players score", "player 1 score: " + GameControlActivity.game.getPlayersScoreAt(0) + " player 2 score: " + GameControlActivity.game.getPlayersScoreAt(1));
+            rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1))); // set the left score to the your score
+            leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
         } else {
-            leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer2Score()));
-            rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer1Score()));
+            Log.d("players score", "player 1 score: " + GameControlActivity.game.getPlayersScoreAt(0) + " player 2 score: " + GameControlActivity.game.getPlayersScoreAt(1));
+            leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
+            rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
         }
 
         gamesRef.child(GameControlActivity.game.getId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                boolean player1Correct = snapshot.child("player1").child("isCorrectAnswerChosen").getValue(boolean.class);
-                boolean player2Correct = snapshot.child("player2").child("isCorrectAnswerChosen").getValue(boolean.class);
-                int lastQuestionPlayer1 = snapshot.child("player1").child("lastQuestionAnswered").getValue(int.class);
-                int lastQuestionPlayer2 = snapshot.child("player2").child("lastQuestionAnswered").getValue(int.class);
+                if (isScreenFinished) {
+                    gamesRef.child(GameControlActivity.game.getId()).removeEventListener(this);
+                    return;
+                }
+                boolean player1Correct = snapshot.child("playersState").child("0").child("isCorrectAnswerChosen").getValue(boolean.class);
+                boolean player2Correct = snapshot.child("playersState").child("1").child("isCorrectAnswerChosen").getValue(boolean.class);
+                int lastQuestionPlayer1 = snapshot.child("playersState").child("0").child("lastQuestionAnswered").getValue(int.class);
+                int lastQuestionPlayer2 = snapshot.child("playersState").child("1").child("lastQuestionAnswered").getValue(int.class);
 
                 if (lastQuestionPlayer1 == GameControlActivity.currentQuestion && player1Correct) {
                     Log.d("move to next screen", "last question answered by player 1: " + lastQuestionPlayer1 + " current question: " + GameControlActivity.currentQuestion);
@@ -97,9 +101,9 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
                     isScreenFinished = true;
 
-                    GameControlActivity.game.setPlayer1Score(GameControlActivity.game.getPlayer1Score() + 20);
-                    leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer1Score()));
-                    rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer2Score()));
+                    GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(0) + 20, 0);
+                    leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
+                    rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
 
 
                     // Proceed to the next question
@@ -117,13 +121,13 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
                     isScreenFinished = true;
 
-                    GameControlActivity.game.setPlayer2Score(GameControlActivity.game.getPlayer2Score() + 20);
+                    GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(1) + 20, 1);
                     if (MainActivity.isPlayer1) {
-                        rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer2Score())); // set the left score to the your score
-                        leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer1Score()));
+                        rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1))); // set the left score to the your score
+                        leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
                     } else {
-                        leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer2Score()));
-                        rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer1Score()));
+                        leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
+                        rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
                     }
 
                     // Proceed to the next question
@@ -191,11 +195,13 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         answer3.setEnabled(false);
         answer4.setEnabled(false);
 
+        int viewID = view.getId() == R.id.Answer1 ? 0 : view.getId() == R.id.Answer2 ? 1 : view.getId() == R.id.Answer3 ? 2 : 3;
+
         // Determine if the selected answer is correct
-        boolean isCorrect = (view.getId() == R.id.Answer1 && answer1.getText().equals(question.getAnswers().get(question.getCorrectAnswer())))
-                || (view.getId() == R.id.Answer2 && answer2.getText().equals(question.getAnswers().get(question.getCorrectAnswer())))
-                || (view.getId() == R.id.Answer3 && answer3.getText().equals(question.getAnswers().get(question.getCorrectAnswer())))
-                || (view.getId() == R.id.Answer4 && answer4.getText().equals(question.getAnswers().get(question.getCorrectAnswer())));
+        boolean isCorrect = (viewID == 0 && answer1.getText().equals(question.getAnswers().get(question.getCorrectAnswer())))
+                || (viewID == 1 && answer2.getText().equals(question.getAnswers().get(question.getCorrectAnswer())))
+                || (viewID == 2 && answer3.getText().equals(question.getAnswers().get(question.getCorrectAnswer())))
+                || (viewID == 3 && answer4.getText().equals(question.getAnswers().get(question.getCorrectAnswer())));
 
         // Provide immediate feedback
         if (isCorrect) {
@@ -210,11 +216,10 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         }
 
         // Record the player's response in Firebase
-        String playerPath = MainActivity.isPlayer1 ? "player1" : "player2";
+        String playerPath = MainActivity.isPlayer1 ? "0" : "1";
         long answerTimestamp = System.currentTimeMillis();
-        DatabaseReference playerRef = gamesRef.child(GameControlActivity.game.getId()).child(playerPath);
         Game.PlayerState player = new Game.PlayerState(GameControlActivity.currentQuestion, isCorrect, answerTimestamp);
-        playerRef.setValue(player);
+        gamesRef.child(GameControlActivity.game.getId()).child("playersState").child(playerPath).setValue(player);
 
         // Check the status of both players
         gamesRef.child(GameControlActivity.game.getId()).addValueEventListener(new ValueEventListener() {
@@ -224,15 +229,15 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                     gamesRef.child(GameControlActivity.game.getId()).removeEventListener(this);
                     return;
                 }
-                int player1HasAnswered = dataSnapshot.child("player1").child("lastQuestionAnswered").getValue(int.class);
-                int player2HasAnswered = dataSnapshot.child("player2").child("lastQuestionAnswered").getValue(int.class);
+                int player1HasAnswered = dataSnapshot.child("playersState").child("0").child("lastQuestionAnswered").getValue(int.class);
+                int player2HasAnswered = dataSnapshot.child("playersState").child("1").child("lastQuestionAnswered").getValue(int.class);
 
                 if (player1HasAnswered == GameControlActivity.currentQuestion && player2HasAnswered == GameControlActivity.currentQuestion) {
                     // Both players have answered; determine the winner
-                    long player1Timestamp = dataSnapshot.child("player1").child("timeStamp").getValue(long.class);
-                    long player2Timestamp = dataSnapshot.child("player2").child("timeStamp").getValue(long.class);
-                    boolean player1Correct = dataSnapshot.child("player1").child("isCorrectAnswerChosen").getValue(boolean.class);
-                    boolean player2Correct = dataSnapshot.child("player2").child("isCorrectAnswerChosen").getValue(boolean.class);
+                    long player1Timestamp = dataSnapshot.child("playersState").child("0").child("timeStamp").getValue(long.class);
+                    long player2Timestamp = dataSnapshot.child("playersState").child("1").child("timeStamp").getValue(long.class);
+                    boolean player1Correct = dataSnapshot.child("playersState").child("0").child("isCorrectAnswerChosen").getValue(boolean.class);
+                    boolean player2Correct = dataSnapshot.child("playersState").child("1").child("isCorrectAnswerChosen").getValue(boolean.class);
                     Log.d("Firebase", "Player 1: " + player1Correct + " at " + player1Timestamp);
                     Log.d("Firebase", "Player 2: " + player2Correct + " at " + player2Timestamp);
 
@@ -249,16 +254,20 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
                     // Update scores and notify players
                     if (winner.equals("Player 1") && !isUpdatedScore) {
-                        GameControlActivity.game.setPlayer1Score(GameControlActivity.game.getPlayer1Score() + 20);
+                        Log.d("players score", "player 1 score: " + GameControlActivity.game.getPlayersScoreAt(0) + " player 2 score: " + GameControlActivity.game.getPlayersScoreAt(1));
+                        GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(0) + 20, 0);
                     } else if (winner.equals("Player 2") && !isUpdatedScore) {
-                        GameControlActivity.game.setPlayer2Score(GameControlActivity.game.getPlayer2Score() + 20);
+                        Log.d("players score", "player 1 score: " + GameControlActivity.game.getPlayersScoreAt(0) + " player 2 score: " + GameControlActivity.game.getPlayersScoreAt(1));
+                        GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(1) + 20, 1);
                     }
                     if (MainActivity.isPlayer1) {
-                        rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer2Score())); // set the left score to the your score
-                        leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer1Score()));
+                        Log.d("players Scores", "player 1 score: " + GameControlActivity.game.getPlayersScoreAt(0) + " player 2 score: " + GameControlActivity.game.getPlayersScoreAt(1));
+                        rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1))); // set the left score to the your score
+                        leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
                     } else {
-                        leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer2Score()));
-                        rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayer1Score()));
+                        Log.d("players Scores", "player 1 score: " + GameControlActivity.game.getPlayersScoreAt(0) + " player 2 score: " + GameControlActivity.game.getPlayersScoreAt(1));
+                        leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
+                        rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
                     }
 
                     // Proceed to the next question

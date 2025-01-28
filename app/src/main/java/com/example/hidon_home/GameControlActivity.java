@@ -1,7 +1,6 @@
 package com.example.hidon_home;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,30 +8,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.UUID;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 public class GameControlActivity extends AppCompatActivity {
     ArrayList<Question> questions = new ArrayList<>();
     static Game game;
     static int currentQuestion = 0;
-    static int player1Score = 0;
-    static int player2Score = 0;
     QuestionGenerator questionGenerator;
     TextView loading_screen_text;
     DatabaseReference gamesRef;
@@ -96,7 +85,17 @@ public class GameControlActivity extends AppCompatActivity {
                         loading_screen_text.setText("Generated " + (i + 1) + " questions of 5...");
                     }
                     Log.d("GameControl", "All questions generated. Starting game...");
-                    game = new Game(MainActivity.gameID.toString(), 0, 0, questions, new Game.PlayerState(0, false, 0), new Game.PlayerState(0, false, 0));
+
+                    ArrayList<Game.PlayerState> playersState = new ArrayList<>();
+                    ArrayList<Integer> playersScore = new ArrayList<>();
+
+                    playersState.add(new Game.PlayerState(0, false, 0));
+                    playersState.add(new Game.PlayerState(0, false, 0));
+
+                    playersScore.add(0);
+                    playersScore.add(0);
+
+                    game = new Game(MainActivity.gameID.toString(), playersScore, questions, playersState);
                     gamesRef.child(MainActivity.gameID.toString()).setValue(game); // Store in Firebase
                     startGame();
                 } else {

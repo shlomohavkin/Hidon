@@ -7,9 +7,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Random;
 
 public class WaitingRoom extends AppCompatActivity {
+    FirebaseDatabase database;
+    DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +26,12 @@ public class WaitingRoom extends AppCompatActivity {
             return insets;
         });
 
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("kahoot_games");
+
+
         Random rnd = new Random();
-        int roomNumber = 100000 + rnd.nextInt(900000);
+        int roomNumber = 10000000 + rnd.nextInt(90000000);
 
     }
 }

@@ -29,7 +29,7 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-    boolean isStarted;
+    static boolean isStarted;
     static boolean isPlayer1;
     static FirebaseDatabase database;
     DatabaseReference myRef;
@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         isPlayer1 = false;
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("game_status");
-        DatabaseReference gamesRef = database.getReference("games");
 
         notesGameButton = findViewById(R.id.notes_button);
         startGameNotes = findViewById(R.id.start_notes_game_button);

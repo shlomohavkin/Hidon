@@ -23,12 +23,10 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 
 public class NotesGameQuestionsGen extends AppCompatActivity {
-
     private EditText etQuestion, etAnswer1, etAnswer2, etAnswer3, etAnswer4;
     private CheckBox cbAnswer1, cbAnswer2, cbAnswer3, cbAnswer4;
     private Button btnAddQuestion;
     private LinearLayout questionNavigationLayout;
-
     private ArrayList<Question> questions = new ArrayList<>();
     private ArrayList<Button> navigationButtons = new ArrayList<>();
     private int currentQuestionIndex = -1;
@@ -108,6 +106,7 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
 
         questionNavigationLayout.addView(navButton);
         navigationButtons.add(navButton);
+        loadQuestion(index - 1);
 
         if (currentQuestionIndex == -1) {
             loadQuestion(0); // Automatically load the first question

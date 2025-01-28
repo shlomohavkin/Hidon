@@ -11,7 +11,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class ResultActivity extends AppCompatActivity {
-
     TextView score, result;
 
     @Override
@@ -23,10 +22,10 @@ public class ResultActivity extends AppCompatActivity {
         result = findViewById(R.id.explanation_text);
 
         score.setText("You scored: " +
-                (MainActivity.isPlayer1 ? GameControlActivity.game.getPlayer1Score() : GameControlActivity.game.getPlayer2Score())
+                (MainActivity.isPlayer1 ? GameControlActivity.game.getPlayersScoreAt(0) : GameControlActivity.game.getPlayersScoreAt(1))
                 + "/100");
 
-        if (GameControlActivity.game.getPlayer1Score() > GameControlActivity.game.getPlayer2Score())
+        if (GameControlActivity.game.getPlayersScoreAt(0) > GameControlActivity.game.getPlayersScoreAt(1))
             isPlayer1Won = true;
 
         if ((MainActivity.isPlayer1 && isPlayer1Won) || (!MainActivity.isPlayer1 && !isPlayer1Won)) {
@@ -43,6 +42,10 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     public void onContinueClick(View view) {
+        MainActivity.isStarted = false;
+        MainActivity.isPlayer1 = false;
+        GameControlActivity.game = null;
+        GameControlActivity.currentQuestion = 0;
         startActivity(new Intent(this, MainActivity.class));
     }
 }

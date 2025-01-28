@@ -4,20 +4,16 @@ import java.util.ArrayList;
 
 public class Game {
     private String id;
-    private int player1Score;
-    private int player2Score;
+    private ArrayList<Integer> playersScore = new ArrayList<>();
     private ArrayList<Question> questions = new ArrayList<>();
-    private PlayerState player1; // Player 1 state
-    private PlayerState player2; // Player 2 state
+    private ArrayList<PlayerState> playersState = new ArrayList<>(); // Players states in the game
 
 
-    public Game(String id, int player1Score, int player2Score, ArrayList<Question> questions, PlayerState player1, PlayerState player2) {
+    public Game(String id, ArrayList<Integer> playersScore1, ArrayList<Question> questions, ArrayList<PlayerState> playersState) {
         this.id = id;
         this.questions = new ArrayList<>(questions); // Deep copy of questions
-        this.player1 = player1;
-        this.player2 = player2;
-        this.player1Score = player1Score;
-        this.player2Score = player2Score;
+        this.playersState = new ArrayList<>(playersState); // Deep copy of players state
+        this.playersScore = new ArrayList<>(playersScore1); // Deep copy of players score
     }
 
     public Game() {
@@ -33,41 +29,52 @@ public class Game {
     }
 
     public ArrayList<Question> getQuestions() {
-        return questions;
+        return new ArrayList<>(this.questions);
     }
 
     public void setQuestions(ArrayList<Question> questions) {
         this.questions = new ArrayList<>(questions); // Deep copy
     }
 
-    public int getPlayer1Score() {
-        return player1Score;
+    public ArrayList<Integer> getPlayersScore() {
+        return new ArrayList<>(this.playersScore);
     }
-    public void setPlayer1Score(int player1Score) {
-        this.player1Score = player1Score;
+    public int getPlayersScoreAt(int i) {
+        if (i < 0 || i >= this.playersScore.size()) {
+            throw new IndexOutOfBoundsException("Invalid player score index: " + i);
+        }
+        return this.playersScore.get(i);
     }
-    public int getPlayer2Score() {
-        return player2Score;
-    }
-    public void setPlayer2Score(int player2Score) {
-        this.player2Score = player2Score;
-    }
-
-    public PlayerState getPlayer1() {
-        return player1;
+    public void setPlayersScore(ArrayList<Integer> playersScore) {
+        this.playersScore = new ArrayList<>(playersScore); // Deep copy
     }
 
-    public void setPlayer1(PlayerState player1) {
-        this.player1 = player1;
+    public void setPlayersScoreAt(int playerScore, int i) {
+        if (i < 0 || i >= this.playersScore.size()) {
+            throw new IndexOutOfBoundsException("Invalid player score index: " + i);
+        }
+        this.playersScore.set(i, playerScore);
     }
 
-    public PlayerState getPlayer2() {
-        return player2;
+
+    public ArrayList<PlayerState> getPlayersState() {
+        return new ArrayList<>(this.playersState);
     }
 
-    public void setPlayer2(PlayerState player2) {
-        this.player2 = player2;
+    public PlayerState getPlayersStateAt(int i) {
+        if (i < 0 || i >= this.playersState.size()) {
+            throw new IndexOutOfBoundsException("Invalid player score index: " + i);
+        }
+        return new PlayerState(this.playersState.get(i));
     }
+
+    public void setPlayersStateAt(PlayerState playerState, int i) {
+        if (i < 0 || i >= this.playersState.size()) {
+            throw new IndexOutOfBoundsException("Invalid player score index: " + i);
+        }
+        this.playersState.set(i, new PlayerState(playerState));
+    }
+
 
     // Nested class for Player State
     public static class PlayerState {
@@ -79,6 +86,12 @@ public class Game {
             this.lastQuestionAnswered = lastQuestionAnswered;
             this.isCorrectAnswerChosen = isCorrectAnswerChosen;
             this.timeStamp = timeStamp;
+        }
+
+        public PlayerState(PlayerState other) {
+            this.lastQuestionAnswered = other.lastQuestionAnswered;
+            this.isCorrectAnswerChosen = other.isCorrectAnswerChosen;
+            this.timeStamp = other.timeStamp;
         }
 
         public PlayerState() {
