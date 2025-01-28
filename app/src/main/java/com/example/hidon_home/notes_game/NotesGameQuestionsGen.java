@@ -1,4 +1,4 @@
-package com.example.hidon_home;
+package com.example.hidon_home.notes_game;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,6 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.hidon_home.MainActivity;
+import com.example.hidon_home.Question;
+import com.example.hidon_home.R;
+import com.example.hidon_home.notes_game.Questioneer;
 
 import java.util.ArrayList;
 

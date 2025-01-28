@@ -12,29 +12,27 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.hidon_home.R;
+import com.example.hidon_home.hidon.GameControlActivity;
+import com.example.hidon_home.notes_game.NotesGameQuestionsGen;
+import com.example.hidon_home.notes_game.WaitingRoom;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-    static boolean isStarted;
-    static boolean isPlayer1;
-    static FirebaseDatabase database;
+    public static boolean isStarted;
+    public static boolean isPlayer1;
+    public static boolean isMainPlayer;
+    FirebaseDatabase database;
     DatabaseReference myRef;
     TextView title;
-    static @Nullable UUID gameID;
+    public static @Nullable UUID gameID;
     Button notesGameButton, joinGameNotes, createQuestionsNotes, startGameNotes;
 
 
@@ -178,11 +176,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onNotesGameStart(View view) {
+        isMainPlayer = true;
         startActivity(new Intent(this, WaitingRoom.class));
     }
 
     public void onNotesGameJoin(View view) {
-
+        isMainPlayer = false;
+        startActivity(new Intent(this, WaitingRoom.class));
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.hidon_home;
+package com.example.hidon_home.hidon;
 
 
 import android.animation.Animator;
@@ -6,7 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +17,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hidon_home.Game;
+import com.example.hidon_home.MainActivity;
+import com.example.hidon_home.Question;
+import com.example.hidon_home.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class AmericanQuestionActivity extends AppCompatActivity {
+    private static final int CORRECT_ANSWER_POINTS = 20;
     Question question;
     TextView questionContent, leftPlayerScore, rightPlayerScore, leftPlayerName, rightPlayerName;
     Button answer1, answer2, answer3, answer4;
@@ -70,12 +74,10 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         leftPlayerScore = findViewById(R.id.Player1_Score);
         rightPlayerScore = findViewById(R.id.Player2_Score);
 
-        if (MainActivity.isPlayer1) {
-            Log.d("players score", "player 1 score: " + GameControlActivity.game.getPlayersScoreAt(0) + " player 2 score: " + GameControlActivity.game.getPlayersScoreAt(1));
+        if (com.example.hidon_home.MainActivity.isPlayer1) {
             rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1))); // set the left score to the your score
             leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
         } else {
-            Log.d("players score", "player 1 score: " + GameControlActivity.game.getPlayersScoreAt(0) + " player 2 score: " + GameControlActivity.game.getPlayersScoreAt(1));
             leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
             rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
         }
@@ -94,14 +96,11 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
                 if (lastQuestionPlayer1 == GameControlActivity.currentQuestion && player1Correct) {
                     Log.d("move to next screen", "last question answered by player 1: " + lastQuestionPlayer1 + " current question: " + GameControlActivity.currentQuestion);
-                    answer1.setEnabled(false);
-                    answer2.setEnabled(false);
-                    answer3.setEnabled(false);
-                    answer4.setEnabled(false);
+                    disableAllAnswerButtons();
 
                     isScreenFinished = true;
 
-                    GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(0) + 20, 0);
+                    GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(0) + CORRECT_ANSWER_POINTS, 0);
                     leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
                     rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
 
@@ -114,14 +113,11 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                     }, 2000);
                 } else if (lastQuestionPlayer2 == GameControlActivity.currentQuestion && player2Correct) {
                     Log.d("move to next screen", "last question answered by player 2: " + lastQuestionPlayer2 + " current question: " + GameControlActivity.currentQuestion);
-                    answer1.setEnabled(false);
-                    answer2.setEnabled(false);
-                    answer3.setEnabled(false);
-                    answer4.setEnabled(false);
+                    disableAllAnswerButtons();
 
                     isScreenFinished = true;
 
-                    GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(1) + 20, 1);
+                    GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(1) + CORRECT_ANSWER_POINTS, 1);
                     if (MainActivity.isPlayer1) {
                         rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1))); // set the left score to the your score
                         leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
@@ -174,10 +170,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
     }
 
     private void handleTimeout() {
-        answer1.setEnabled(false);
-        answer2.setEnabled(false);
-        answer3.setEnabled(false);
-        answer4.setEnabled(false);
+        disableAllAnswerButtons();
 
         isScreenFinished = true;
 
@@ -190,10 +183,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
     public void onAnswerClick(View view) {
 
         // Disable all answer buttons immediately
-        answer1.setEnabled(false);
-        answer2.setEnabled(false);
-        answer3.setEnabled(false);
-        answer4.setEnabled(false);
+        disableAllAnswerButtons();
 
         int viewID = view.getId() == R.id.Answer1 ? 0 : view.getId() == R.id.Answer2 ? 1 : view.getId() == R.id.Answer3 ? 2 : 3;
 
@@ -216,7 +206,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         }
 
         // Record the player's response in Firebase
-        String playerPath = MainActivity.isPlayer1 ? "0" : "1";
+        String playerPath = com.example.hidon_home.MainActivity.isPlayer1 ? "0" : "1";
         long answerTimestamp = System.currentTimeMillis();
         Game.PlayerState player = new Game.PlayerState(GameControlActivity.currentQuestion, isCorrect, answerTimestamp);
         gamesRef.child(GameControlActivity.game.getId()).child("playersState").child(playerPath).setValue(player);
@@ -254,18 +244,14 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
                     // Update scores and notify players
                     if (winner.equals("Player 1") && !isUpdatedScore) {
-                        Log.d("players score", "player 1 score: " + GameControlActivity.game.getPlayersScoreAt(0) + " player 2 score: " + GameControlActivity.game.getPlayersScoreAt(1));
-                        GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(0) + 20, 0);
+                        GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(0) + CORRECT_ANSWER_POINTS, 0);
                     } else if (winner.equals("Player 2") && !isUpdatedScore) {
-                        Log.d("players score", "player 1 score: " + GameControlActivity.game.getPlayersScoreAt(0) + " player 2 score: " + GameControlActivity.game.getPlayersScoreAt(1));
-                        GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(1) + 20, 1);
+                        GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(1) + CORRECT_ANSWER_POINTS, 1);
                     }
-                    if (MainActivity.isPlayer1) {
-                        Log.d("players Scores", "player 1 score: " + GameControlActivity.game.getPlayersScoreAt(0) + " player 2 score: " + GameControlActivity.game.getPlayersScoreAt(1));
+                    if (com.example.hidon_home.MainActivity.isPlayer1) {
                         rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1))); // set the left score to the your score
                         leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
                     } else {
-                        Log.d("players Scores", "player 1 score: " + GameControlActivity.game.getPlayersScoreAt(0) + " player 2 score: " + GameControlActivity.game.getPlayersScoreAt(1));
                         leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
                         rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
                     }
@@ -288,6 +274,13 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                 Log.e("Firebase Error", "Error: " + databaseError.getMessage());
             }
         });
+    }
+
+    private void disableAllAnswerButtons() {
+        answer1.setEnabled(false);
+        answer2.setEnabled(false);
+        answer3.setEnabled(false);
+        answer4.setEnabled(false);
     }
 
 

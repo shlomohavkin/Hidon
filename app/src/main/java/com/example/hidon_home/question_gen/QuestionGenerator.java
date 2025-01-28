@@ -1,12 +1,13 @@
-package com.example.hidon_home;
+package com.example.hidon_home.question_gen;
 
 import android.util.Log;
+
+import com.example.hidon_home.Question;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -28,24 +29,15 @@ public class QuestionGenerator {
 
         ChatGPTRequest.Message userMessage = new ChatGPTRequest.Message(
                 "user",
-                "Generate a JSON string with 5 random hard trivia questions for game " + rnd.nextInt(1000) + " in the following format:\n" +
-                "{\n" +
-                "  \"questions\": [\n" +
-                "    {\n" +
-                "      \"questionContent\": \"\",\n" +
-                "      \"answers\": [\"\", \"\", \"\", \"\"],\n" +
-                "      \"correctAnswer\": 0\n" +
-                "    },\n" +
-                "    ..." +
-                "  ]\n" +
-                "}\n" +
-                "Ensure that the questions and answers are valid and correct! Don't include any text other than the JSON string!");
+                "Generate a JSON string containing 5 hard, random trivia questions in this format: " +
+                        "{ \"questions\": [ { \"questionContent\": \"\", \"answers\": [\"\", \"\", \"\", \"\"], \"correctAnswer\": 0 } ] }. " +
+                        "Ensure all questions and answers are valid and accurate. Don't include any text other than the JSON string!");
 
         // Create Request Object
         ChatGPTRequest request = new ChatGPTRequest(
                 "gpt-4o-mini", // Model
                 new ChatGPTRequest.Message[]{systemMessage, userMessage},
-                500, 0.7f, 0.9f
+                500, 1f, 1f
         );
 
 

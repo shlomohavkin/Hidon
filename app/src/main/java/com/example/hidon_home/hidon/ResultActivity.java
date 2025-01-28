@@ -1,4 +1,4 @@
-package com.example.hidon_home;
+package com.example.hidon_home.hidon;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.hidon_home.MainActivity;
+import com.example.hidon_home.R;
+import com.example.hidon_home.hidon.GameControlActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

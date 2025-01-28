@@ -1,4 +1,4 @@
-package com.example.hidon_home;
+package com.example.hidon_home.notes_game;
 
 import android.os.Bundle;
 
@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.hidon_home.R;
 
 public class NotesGame extends AppCompatActivity {
 

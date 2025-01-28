@@ -1,4 +1,4 @@
-package com.example.hidon_home;
+package com.example.hidon_home.hidon;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.hidon_home.Game;
+import com.example.hidon_home.MainActivity;
+import com.example.hidon_home.Question;
+import com.example.hidon_home.question_gen.QuestionCallBack;
+import com.example.hidon_home.question_gen.QuestionGenerator;
+import com.example.hidon_home.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,11 +44,11 @@ public class GameControlActivity extends AppCompatActivity {
 
 
         if (currentQuestion == 0) {
-            if (MainActivity.isPlayer1) {
+            if (com.example.hidon_home.MainActivity.isPlayer1) {
                 questionGenerator = new QuestionGenerator();
                 generateQuestions(); // Generate questions
             } else {
-                gamesRef.child(MainActivity.gameID.toString()).addValueEventListener(new ValueEventListener() {
+                gamesRef.child(com.example.hidon_home.MainActivity.gameID.toString()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         game = snapshot.getValue(Game.class);

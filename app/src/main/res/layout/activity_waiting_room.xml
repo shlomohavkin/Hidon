@@ -9,7 +9,7 @@
 
     <!-- Title -->
     <TextView
-        android:id="@+id/tvWaitingRoomTitle"
+        android:id="@+id/waitingRoomTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Waiting Room"
@@ -20,24 +20,40 @@
         android:layout_marginTop="24dp"
         android:textStyle="bold" />
 
-    <!-- Room Code -->
-    <TextView
-        android:id="@+id/roomCode"
+    <LinearLayout
+        android:id="@+id/roomCodeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Room Code: 123456"
-        android:textSize="18sp"
-        android:textColor="#555555"
-        android:layout_below="@id/tvWaitingRoomTitle"
+        android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp" />
+        android:layout_below="@+id/waitingRoomTitle">
+
+        <!-- Room Code -->
+        <TextView
+            android:id="@+id/roomCodeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Room Code: "
+            android:textSize="18sp"
+            android:textColor="#555555"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/roomCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123456"
+            android:textSize="18sp"
+            android:textColor="#555555"
+            android:layout_marginBottom="16dp" />
+    </LinearLayout>
 
     <!-- Player List -->
     <ListView
         android:id="@+id/playersList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/roomCode"
+        android:layout_below="@id/roomCodeLayout"
         android:layout_above="@id/startGameButton"
         android:layout_marginTop="16dp"
         android:divider="@android:color/darker_gray"
@@ -53,7 +69,7 @@
         android:text="Waiting for players to join..."
         android:textSize="16sp"
         android:textColor="#888888"
-        android:layout_below="@id/roomCode"
+        android:layout_below="@id/roomCodeLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp" />
 
@@ -66,10 +82,11 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="24dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#2ECC71"
         android:textColor="#FFFFFF"
         android:padding="12dp"
         android:elevation="4dp"
-        android:enabled="false" />
+        android:visibility="gone"/>
 
 </RelativeLayout>

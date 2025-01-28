@@ -15,22 +15,22 @@
         android:theme="@style/Theme.Hidon_home"
         tools:targetApi="31" >
         <activity
-            android:name=".WaitingRoom"
+            android:name=".notes_game.WaitingRoom"
             android:exported="false" />
         <activity
-            android:name=".NotesGameQuestionsGen"
+            android:name=".notes_game.NotesGameQuestionsGen"
             android:exported="false" />
         <activity
-            android:name=".NotesGame"
+            android:name=".notes_game.NotesGame"
             android:exported="false" />
         <activity
-            android:name=".ResultActivity"
+            android:name=".hidon.ResultActivity"
             android:exported="false" />
         <activity
-            android:name=".GameControlActivity"
+            android:name=".hidon.GameControlActivity"
             android:exported="false" />
         <activity
-            android:name=".AmericanQuestionActivity"
+            android:name=".hidon.AmericanQuestionActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

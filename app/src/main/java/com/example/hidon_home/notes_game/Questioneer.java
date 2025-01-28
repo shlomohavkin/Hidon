@@ -1,4 +1,6 @@
-package com.example.hidon_home;
+package com.example.hidon_home.notes_game;
+
+import com.example.hidon_home.Question;
 
 import java.util.ArrayList;
 
