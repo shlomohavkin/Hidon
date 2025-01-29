@@ -1,24 +1,54 @@
 package com.example.hidon_home.notes_game;
 
-import android.os.Bundle;
+import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import java.util.ArrayList;
 
-import com.example.hidon_home.R;
+public class NotesGame {
+    private int roomNumber;
+    private int playerCount;
+    private ArrayList<String> names;
 
-public class NotesGame extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notes_game);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+    public NotesGame(int roomNumber, int playerCount, ArrayList<String> names) {
+        this.roomNumber = roomNumber;
+        this.playerCount = playerCount;
+        this.names = new ArrayList<>(names);
     }
+
+    public NotesGame(NotesGame other) {
+        this.roomNumber = other.roomNumber;
+        this.playerCount = other.playerCount;
+        if (other.names == null) {
+            this.names = new ArrayList<>();
+            return;
+        }
+        this.names = new ArrayList<>(other.names);
+    }
+
+    public NotesGame() {}
+
+    public int getPlayerCount() {
+        return this.playerCount;
+    }
+    public ArrayList<String> getNames() {
+        return names;
+    }
+    public int getRoomNumber() {
+        return this.roomNumber;
+    }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+    public void setPlayerCount(int playerCount) {
+        this.playerCount = playerCount;
+    }
+    public void setNames(ArrayList<String> names) {
+        this.names = new ArrayList<>(names);
+    }
+    public void addName(String name) {
+        this.names.add(name);
+    }
+
 }

@@ -24,9 +24,6 @@
             android:name=".notes_game.NotesGameQuestionsGen"
             android:exported="false" />
         <activity
-            android:name=".notes_game.NotesGame"
-            android:exported="false" />
-        <activity
             android:name=".hidon.ResultActivity"
             android:exported="false" />
         <activity

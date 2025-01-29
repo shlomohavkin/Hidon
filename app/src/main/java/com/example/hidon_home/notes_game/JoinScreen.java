@@ -12,9 +12,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class JoinScreen extends AppCompatActivity {
-    EditText roomCode, playerName;
+    EditText roomCodeText, playerNameText;
     FirebaseDatabase database;
     DatabaseReference kahootGamesRef;
+    public static int roomCode;
+    public static String playerName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,28 +26,29 @@ public class JoinScreen extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         kahootGamesRef = database.getReference("kahoot_games");
 
-        roomCode = findViewById(R.id.roomCodeInput);
-        playerName = findViewById(R.id.playerNameInput);
+        roomCodeText = findViewById(R.id.roomCodeInput);
+        playerNameText = findViewById(R.id.playerNameInput);
 
     }
 
     public void onJoinClick(View view) {
-        if (!playerName.getText().toString().trim().isEmpty() && !roomCode.getText().toString().trim().isEmpty()) {
-            kahootGamesRef.child(roomCode.getText().toString()).get().addOnCompleteListener(task -> {
+        if (!playerNameText.getText().toString().trim().isEmpty() && !roomCodeText.getText().toString().trim().isEmpty()) {
+            kahootGamesRef.child(roomCodeText.getText().toString()).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful() && task.getResult().exists()) {
-                    kahootGamesRef.child(roomCode.getText().toString()).child("players").child(playerName.getText().toString());
-                    WaitingRoom.roomNumber = Integer.parseInt(roomCode.getText().toString());
+                    kahootGamesRef.child(roomCodeText.getText().toString()).child("players").child(playerNameText.getText().toString());
+                    roomCode = Integer.parseInt(roomCodeText.getText().toString());
+                    playerName = playerNameText.getText().toString();
                     startActivity(new Intent(this, WaitingRoom.class));
                 } else {
-                    roomCode.setError("Room code does not exist");
+                    roomCodeText.setError("Room code does not exist");
                 }
             });
         } else {
-            if (playerName.getText().toString().trim().isEmpty()) {
-                playerName.setError("Please enter a name");
+            if (playerNameText.getText().toString().trim().isEmpty()) {
+                playerNameText.setError("Please enter a name");
             }
-            if (roomCode.getText().toString().trim().isEmpty()) {
-                roomCode.setError("Please enter a room code");
+            if (roomCodeText.getText().toString().trim().isEmpty()) {
+                roomCodeText.setError("Please enter a room code");
             }
         }
     }
