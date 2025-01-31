@@ -13,7 +13,7 @@ public class NotesGame {
     public NotesGame(int roomNumber, int playerCount, ArrayList<String> names) {
         this.roomNumber = roomNumber;
         this.playerCount = playerCount;
-        this.names = new ArrayList<>(names);
+        this.names = names != null ? names : new ArrayList<>();
     }
 
     public NotesGame(NotesGame other) {

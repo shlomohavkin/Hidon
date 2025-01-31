@@ -1,6 +1,5 @@
 package com.example.hidon_home.notes_game;
 
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -35,11 +34,13 @@ public class WaitingRoom extends AppCompatActivity {
     public static NotesGame notesGame;
     ListView nameList;
     ArrayAdapter<String> adapter;
+    List<String> playerNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_room);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -53,74 +54,87 @@ public class WaitingRoom extends AppCompatActivity {
         roomCodeNumber = findViewById(R.id.roomCode);
         playerCountNumber = findViewById(R.id.numberOfPlayers);
         nameList = findViewById(R.id.playersList);
-        if (notesGame != null) {
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notesGame.getNames());
-            nameList.setAdapter(adapter);
-        }
+        playerNames = new ArrayList<>();
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playerNames);
+        nameList.setAdapter(adapter);
 
         if (MainActivity.isMainPlayer) {
-            Random rnd = new Random();
-            int roomNumberGen = 10000000 + rnd.nextInt(90000000);
-            roomCodeNumber.setText(String.valueOf(roomNumberGen));
-
-            notesGame = new NotesGame(roomNumberGen, 0, new ArrayList<>());
-            myRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
-            if (nameList.getAdapter() == null) {
-                nameList.setAdapter(adapter);
-            }
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notesGame.getNames());
-
-            myRef.child(String.valueOf(notesGame.getRoomNumber())).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    Integer numberOfPlayersSnapshot = snapshot.child("playerCount").getValue(Integer.class);
-                    if (numberOfPlayersSnapshot == null) return;
-
-                    notesGame.setPlayerCount(numberOfPlayersSnapshot);
-                    if (nameList.getAdapter() != null)
-                        adapter.notifyDataSetChanged();
-                    playerCountNumber.setText(String.valueOf(notesGame.getPlayerCount()));
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.e("Firebase", "Error: " + error.getMessage());
-                }
-            });
-
-            startGameButton.setVisibility(Button.VISIBLE);
-            startGameButton.setOnClickListener(v -> {
-            });
+            createRoom();
         } else {
-            roomCodeNumber.setText(String.valueOf(JoinScreen.roomCode));
-            myRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    if (snapshot.getValue(NotesGame.class) == null)
-                        return;
-                    notesGame = new NotesGame(snapshot.getValue(NotesGame.class));
-
-                    notesGame.setPlayerCount(notesGame.getPlayerCount() + 1);
-                    // playerNum will be -1 if he just joined and doesn't have a number yet
-                    if (playerNum == -1) {
-                        playerNum = notesGame.getPlayerCount();
-                        notesGame.addName(JoinScreen.playerName);
-                        myRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
-                    }
-                    if (adapter == null) {
-                        adapter = new ArrayAdapter<>(WaitingRoom.this, android.R.layout.simple_list_item_1, notesGame.getNames());
-                        nameList.setAdapter(adapter);
-                    }
-                    adapter.notifyDataSetChanged();
-                    playerCountNumber.setText(String.valueOf(notesGame.getPlayerCount()));
-
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.e("Firebase", "Error: " + error.getMessage());
-                }
-            });
+            joinRoom();
         }
+    }
 
+    private void createRoom() {
+        Random rnd = new Random();
+        int roomNumberGen = 10000000 + rnd.nextInt(90000000);
+        roomCodeNumber.setText(String.valueOf(roomNumberGen));
 
+        notesGame = new NotesGame(roomNumberGen, 0, new ArrayList<>());
+        myRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
+
+        myRef.child(String.valueOf(notesGame.getRoomNumber())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                updatePlayerList(snapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Firebase", "Error: " + error.getMessage());
+            }
+        });
+
+        startGameButton.setVisibility(Button.VISIBLE);
+        startGameButton.setOnClickListener(v -> {
+            // Handle game start logic here
+        });
+    }
+
+    private void joinRoom() {
+        roomCodeNumber.setText(String.valueOf(JoinScreen.roomCode));
+
+        myRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) return;
+
+                notesGame = snapshot.getValue(NotesGame.class);
+                if (notesGame == null) return;
+
+                if (playerNum == -1) {
+                    notesGame.setPlayerCount(notesGame.getPlayerCount() + 1);
+                    playerNum = notesGame.getPlayerCount();
+
+                    if (notesGame.getNames() == null) {
+                        notesGame.setNames(new ArrayList<>());
+                    }
+                    notesGame.addName(JoinScreen.playerName);
+                    myRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
+                }
+
+                updatePlayerList(snapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Firebase", "Error: " + error.getMessage());
+            }
+        });
+    }
+
+    private void updatePlayerList(DataSnapshot snapshot1) {
+        runOnUiThread(() -> {
+            if (snapshot1.exists()) {
+                NotesGame updatedGame = snapshot1.getValue(NotesGame.class);
+                if (updatedGame != null && updatedGame.getNames() != null) {
+                    playerNames.clear();
+                    playerNames.addAll(updatedGame.getNames());
+                    adapter.notifyDataSetChanged();
+                    playerCountNumber.setText(String.valueOf(updatedGame.getPlayerCount()));
+                }
+            }
+        });
     }
 }

@@ -30,8 +30,8 @@ public class QuestionGenerator {
         ChatGPTRequest.Message userMessage = new ChatGPTRequest.Message(
                 "user",
                 "Generate a JSON string containing 5 hard, random trivia questions in this format: " +
-                        "{ \"questions\": [ { \"questionContent\": \"\", \"answers\": [\"\", \"\", \"\", \"\"], \"correctAnswer\": 0 } ] }. " +
-                        "Ensure all questions and answers are valid and accurate. Don't include any text other than the JSON string!");
+                        "{ \"questions\": [ { \"questionContent\": \"\", \"answers\": [\"\", \"\", \"\", \"\"], \"correctAnswer\": 0 } ] } " +
+                        "Ensure all questions and answers are valid and accurate. Don't!! include any text other than the JSON string!");
 
         // Create Request Object
         ChatGPTRequest request = new ChatGPTRequest(
