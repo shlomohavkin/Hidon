@@ -21,23 +21,31 @@ import com.example.hidon_home.Game;
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
+import com.example.hidon_home.notes_game.JoinScreen;
+import com.example.hidon_home.notes_game.NotesGameControlActivity;
+import com.example.hidon_home.notes_game.WaitingRoom;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.chrono.MinguoChronology;
+import java.util.ArrayList;
+
 public class AmericanQuestionActivity extends AppCompatActivity {
     private static final int CORRECT_ANSWER_POINTS = 20;
+    private static final long TIMEOUT_MILLIS = 15000; // 15 seconds
     Question question;
     TextView questionContent, leftPlayerScore, rightPlayerScore, leftPlayerName, rightPlayerName;
     Button answer1, answer2, answer3, answer4;
     FirebaseDatabase database;
-    DatabaseReference  gamesRef, playerRef;
-    private static final long TIMEOUT_MILLIS = 15000; // 15 seconds
+    DatabaseReference  gamesRef;
     private boolean isScreenFinished, isUpdatedScore = false;
     ProgressBar timeProgressBar;
     private ValueAnimator progressAnimator;
+    String gameId;
+    int numberOfPlayers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +55,16 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         isScreenFinished = false;
         isUpdatedScore = false;
 
-        leftPlayerName = findViewById(R.id.Player1);
-        rightPlayerName = findViewById(R.id.Player2);
-
-        leftPlayerName.setText("Your Score: ");
-        rightPlayerName.setText("Other's Score: ");
-
         database = FirebaseDatabase.getInstance();
-        gamesRef = database.getReference("games");
+
+        if (!MainActivity.isNotesGame) {
+            gamesRef = database.getReference("games");
+            numberOfPlayers = 2;
+        }
+        else {
+            gamesRef = database.getReference("kahoot_games");
+            numberOfPlayers = WaitingRoom.notesGame.getPlayerCount();
+        }
 
         question = GameControlActivity.game.getQuestions().get(GameControlActivity.currentQuestion - 1);
         timeProgressBar = findViewById(R.id.timeProgressBar);
@@ -71,67 +81,81 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         answer3.setText(question.getAnswers().get(2));
         answer4.setText(question.getAnswers().get(3));
 
-        leftPlayerScore = findViewById(R.id.Player1_Score);
-        rightPlayerScore = findViewById(R.id.Player2_Score);
 
-        if (com.example.hidon_home.MainActivity.isPlayer1) {
-            rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1))); // set the left score to the your score
-            leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
+        if (!MainActivity.isNotesGame) {
+            leftPlayerName = findViewById(R.id.Player1);
+            rightPlayerName = findViewById(R.id.Player2);
+
+            leftPlayerName.setText("Your Score: ");
+            rightPlayerName.setText("Other's Score: ");
+
+            leftPlayerScore = findViewById(R.id.Player1_Score);
+            rightPlayerScore = findViewById(R.id.Player2_Score);
+            if (MainActivity.isPlayer1) {
+                rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1))); // set the left score to the your score
+                leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
+            } else {
+                leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
+                rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
+            }
+
+            gameId = GameControlActivity.game.getId();
         } else {
-            leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
-            rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
+            gameId = String.valueOf(JoinScreen.roomCode);
         }
 
-        gamesRef.child(GameControlActivity.game.getId()).addValueEventListener(new ValueEventListener() {
+        gamesRef.child(gameId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (isScreenFinished) {
-                    gamesRef.child(GameControlActivity.game.getId()).removeEventListener(this);
+                    gamesRef.child(gameId).removeEventListener(this);
                     return;
                 }
-                boolean player1Correct = snapshot.child("playersState").child("0").child("isCorrectAnswerChosen").getValue(boolean.class);
-                boolean player2Correct = snapshot.child("playersState").child("1").child("isCorrectAnswerChosen").getValue(boolean.class);
-                int lastQuestionPlayer1 = snapshot.child("playersState").child("0").child("lastQuestionAnswered").getValue(int.class);
-                int lastQuestionPlayer2 = snapshot.child("playersState").child("1").child("lastQuestionAnswered").getValue(int.class);
-
-                if (lastQuestionPlayer1 == GameControlActivity.currentQuestion && player1Correct) {
-                    Log.d("move to next screen", "last question answered by player 1: " + lastQuestionPlayer1 + " current question: " + GameControlActivity.currentQuestion);
-                    disableAllAnswerButtons();
-
-                    isScreenFinished = true;
-
-                    GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(0) + CORRECT_ANSWER_POINTS, 0);
-                    leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
-                    rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
-
-
-                    // Proceed to the next question
-                    progressAnimator.cancel();
-                    new Handler().postDelayed(() -> {
-                        gamesRef.child(GameControlActivity.game.getId()).removeEventListener(this);
-                        startActivity(new Intent(AmericanQuestionActivity.this, GameControlActivity.class));
-                    }, 2000);
-                } else if (lastQuestionPlayer2 == GameControlActivity.currentQuestion && player2Correct) {
-                    Log.d("move to next screen", "last question answered by player 2: " + lastQuestionPlayer2 + " current question: " + GameControlActivity.currentQuestion);
-                    disableAllAnswerButtons();
-
-                    isScreenFinished = true;
-
-                    GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(1) + CORRECT_ANSWER_POINTS, 1);
-                    if (MainActivity.isPlayer1) {
-                        rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1))); // set the left score to the your score
-                        leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
-                    } else {
-                        leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
-                        rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
+                ArrayList<Game.PlayerState> playersState = new ArrayList<>();
+                for (DataSnapshot playerSnapshot : snapshot.child("playersState").getChildren()) {
+                    Game.PlayerState player = playerSnapshot.getValue(Game.PlayerState.class);
+                    if (player != null) {
+                        playersState.add(player);
                     }
+                }
+                boolean[] playeriCorrect = new boolean[numberOfPlayers];
+                int[] lastQuestionPlayeri = new int[numberOfPlayers];
 
-                    // Proceed to the next question
-                    progressAnimator.cancel();
-                    new Handler().postDelayed(() -> {
-                        gamesRef.child(GameControlActivity.game.getId()).removeEventListener(this);
-                        startActivity(new Intent(AmericanQuestionActivity.this, GameControlActivity.class));
-                    }, 2000);
+                for (int i = 0; i < numberOfPlayers; i++) {
+                    playeriCorrect[i] = playersState.get(i).getIsCorrectAnswerChosen();
+                    lastQuestionPlayeri[i] = playersState.get(i).getLastQuestionAnswered();
+                }
+
+                for (int i = 0; i < numberOfPlayers; i++) {
+                    if (lastQuestionPlayeri[i] == GameControlActivity.currentQuestion && playeriCorrect[i]) {
+                        Log.d("move to next screen", "last question answered by player " + i + ":" + lastQuestionPlayeri[i] + " current question: " + GameControlActivity.currentQuestion);
+                        disableAllAnswerButtons();
+
+                        isScreenFinished = true;
+
+                        GameControlActivity.game.setPlayersScoreAt(GameControlActivity.game.getPlayersScoreAt(i) + CORRECT_ANSWER_POINTS, i);
+
+                        if (!MainActivity.isNotesGame && i == 0) {
+                            leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
+                            rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
+                        } else if (!MainActivity.isNotesGame && i == 1) {
+                            if (MainActivity.isPlayer1) {
+                                rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1))); // set the left score to the your score
+                                leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
+                            } else {
+                                leftPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(1)));
+                                rightPlayerScore.setText(String.valueOf(GameControlActivity.game.getPlayersScoreAt(0)));
+                            }
+                        }
+
+
+                        // Proceed to the next question
+                        progressAnimator.cancel();
+                        new Handler().postDelayed(() -> {
+                            gamesRef.child(gameId).removeEventListener(this);
+                            startActivity(new Intent(AmericanQuestionActivity.this, GameControlActivity.class));
+                        }, 2000);
+                    }
                 }
             }
 
@@ -209,14 +233,14 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         String playerPath = com.example.hidon_home.MainActivity.isPlayer1 ? "0" : "1";
         long answerTimestamp = System.currentTimeMillis();
         Game.PlayerState player = new Game.PlayerState(GameControlActivity.currentQuestion, isCorrect, answerTimestamp);
-        gamesRef.child(GameControlActivity.game.getId()).child("playersState").child(playerPath).setValue(player);
+        gamesRef.child(gameId).child("playersState").child(playerPath).setValue(player);
 
         // Check the status of both players
-        gamesRef.child(GameControlActivity.game.getId()).addValueEventListener(new ValueEventListener() {
+        gamesRef.child(gameId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (isScreenFinished) {
-                    gamesRef.child(GameControlActivity.game.getId()).removeEventListener(this);
+                    gamesRef.child(gameId).removeEventListener(this);
                     return;
                 }
                 int player1HasAnswered = dataSnapshot.child("playersState").child("0").child("lastQuestionAnswered").getValue(int.class);
@@ -260,7 +284,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                     progressAnimator.cancel();
                     new Handler().postDelayed(() -> {
                         isScreenFinished = true;
-                        gamesRef.child(GameControlActivity.game.getId()).removeEventListener(this);
+                        gamesRef.child(gameId).removeEventListener(this);
                         startActivity(new Intent(AmericanQuestionActivity.this, GameControlActivity.class));
                     }, 2000);
                 } else {

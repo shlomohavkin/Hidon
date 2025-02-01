@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hidon_home.hidon.GameControlActivity;
+import com.example.hidon_home.notes_game.GameQuestionsActivity;
 import com.example.hidon_home.notes_game.JoinScreen;
 import com.example.hidon_home.notes_game.NotesGameQuestionsGen;
 import com.example.hidon_home.notes_game.WaitingRoom;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean isStarted;
     public static boolean isPlayer1;
     public static boolean isMainPlayer;
+    public static boolean isNotesGame;
     FirebaseDatabase database;
     DatabaseReference myRef;
     TextView title;
@@ -56,9 +58,6 @@ public class MainActivity extends AppCompatActivity {
         title = findViewById(R.id.textViewTitle);
     }
 
-    public void onStartClick(View view) {
-        startActivity(new Intent(this, GameControlActivity.class));
-    }
 
     public void onStartClickOnline(View view) {
         if (!isStarted) {
@@ -75,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         gameID = UUID.fromString(valueFB);
                         Log.d("start game id", gameID.toString());
                         myRef.removeValue();
+                        isNotesGame = false;
                         startActivity(new Intent(MainActivity.this, GameControlActivity.class));
                     }
                 }
@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                             isStarted = true;
                             Log.d("join game id", gameID.toString());
                             myRef.removeEventListener(this);
+                            isNotesGame = false;
                             startActivity(new Intent(MainActivity.this, GameControlActivity.class));
                         } else if (valueFB == null || !isValidUUID(valueFB)) {
                             Toast.makeText(MainActivity.this, "Can't join Game - No one started one", Toast.LENGTH_SHORT).show();
@@ -178,11 +179,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void onNotesGameStart(View view) {
         isMainPlayer = true;
-        startActivity(new Intent(this, WaitingRoom.class));
+        isNotesGame = true;
+        startActivity(new Intent(this, GameQuestionsActivity.class));
     }
 
     public void onNotesGameJoin(View view) {
         isMainPlayer = false;
+        isNotesGame = true;
         startActivity(new Intent(this, JoinScreen.class));
     }
 

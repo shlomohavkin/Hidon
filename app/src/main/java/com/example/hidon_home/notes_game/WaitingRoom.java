@@ -1,5 +1,6 @@
 package com.example.hidon_home.notes_game;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -104,7 +105,7 @@ public class WaitingRoom extends AppCompatActivity {
 
         startGameButton.setVisibility(Button.VISIBLE);
         startGameButton.setOnClickListener(v -> {
-            // logic when started the game (pressed the start button)
+            startActivity(new Intent(this, NotesGameControlActivity.class));
         });
     }
 
