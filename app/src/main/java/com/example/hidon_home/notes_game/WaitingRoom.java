@@ -27,14 +27,14 @@ import java.util.Random;
 
 public class WaitingRoom extends AppCompatActivity {
     FirebaseDatabase database;
-    DatabaseReference myRef;
+    DatabaseReference kahootGamesRef;
     Button startGameButton;
     TextView roomCodeNumber, playerCountNumber;
     public static int playerNum = -1;
     public static NotesGame notesGame;
     ListView nameList;
     ArrayAdapter<String> adapter;
-    List<String> playerNames;
+    ArrayList<String> playerNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,57 +48,27 @@ public class WaitingRoom extends AppCompatActivity {
         });
 
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("kahoot_games");
+        kahootGamesRef = database.getReference("kahoot_games");
 
         startGameButton = findViewById(R.id.startGameButton);
         roomCodeNumber = findViewById(R.id.roomCode);
         playerCountNumber = findViewById(R.id.numberOfPlayers);
         nameList = findViewById(R.id.playersList);
-        playerNames = new ArrayList<>();
 
+        playerNames = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playerNames);
         nameList.setAdapter(adapter);
 
         if (MainActivity.isMainPlayer) {
             createRoom();
-        } else {
-            joinRoom();
         }
-    }
-
-    private void createRoom() {
-        Random rnd = new Random();
-        int roomNumberGen = 10000000 + rnd.nextInt(90000000);
-        roomCodeNumber.setText(String.valueOf(roomNumberGen));
-
-        notesGame = new NotesGame(roomNumberGen, 0, new ArrayList<>());
-        myRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
-
-        myRef.child(String.valueOf(notesGame.getRoomNumber())).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                updatePlayerList(snapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Firebase", "Error: " + error.getMessage());
-            }
-        });
-
-        startGameButton.setVisibility(Button.VISIBLE);
-        startGameButton.setOnClickListener(v -> {
-            // Handle game start logic here
-        });
-    }
-
-    private void joinRoom() {
         roomCodeNumber.setText(String.valueOf(JoinScreen.roomCode));
 
-        myRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
+        kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) return;
+                Log.d("entered the data change ", "vdvdvdvdvdvdvdv: ");
 
                 notesGame = snapshot.getValue(NotesGame.class);
                 if (notesGame == null) return;
@@ -111,7 +81,7 @@ public class WaitingRoom extends AppCompatActivity {
                         notesGame.setNames(new ArrayList<>());
                     }
                     notesGame.addName(JoinScreen.playerName);
-                    myRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
+                    kahootGamesRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
                 }
 
                 updatePlayerList(snapshot);
@@ -124,17 +94,31 @@ public class WaitingRoom extends AppCompatActivity {
         });
     }
 
-    private void updatePlayerList(DataSnapshot snapshot1) {
-        runOnUiThread(() -> {
-            if (snapshot1.exists()) {
-                NotesGame updatedGame = snapshot1.getValue(NotesGame.class);
-                if (updatedGame != null && updatedGame.getNames() != null) {
-                    playerNames.clear();
-                    playerNames.addAll(updatedGame.getNames());
-                    adapter.notifyDataSetChanged();
-                    playerCountNumber.setText(String.valueOf(updatedGame.getPlayerCount()));
-                }
-            }
+    private void createRoom() {
+        Random rnd = new Random();
+        JoinScreen.roomCode = 10000000 + rnd.nextInt(90000000);
+        playerNum = 0;
+
+        notesGame = new NotesGame(JoinScreen.roomCode, 0, new ArrayList<>());
+        kahootGamesRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
+
+        startGameButton.setVisibility(Button.VISIBLE);
+        startGameButton.setOnClickListener(v -> {
+            // logic when started the game (pressed the start button)
         });
+    }
+
+
+    private void updatePlayerList(DataSnapshot snapshot1) {
+        if (snapshot1.exists()) {
+            NotesGame updatedGame = snapshot1.getValue(NotesGame.class);
+            if (updatedGame != null && updatedGame.getNames() != null) {
+                playerNames.clear();
+                playerNames.addAll(updatedGame.getNames());
+                nameList.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                playerCountNumber.setText(String.valueOf(updatedGame.getPlayerCount()));
+            }
+        }
     }
 }

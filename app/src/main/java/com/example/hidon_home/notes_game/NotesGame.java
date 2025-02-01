@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class NotesGame {
     private int roomNumber;
     private int playerCount;
-    private ArrayList<String> names;
+    private ArrayList<String> names = new ArrayList<>();
 
 
     public NotesGame(int roomNumber, int playerCount, ArrayList<String> names) {
@@ -32,7 +32,7 @@ public class NotesGame {
         return this.playerCount;
     }
     public ArrayList<String> getNames() {
-        return names;
+        return new ArrayList<>(this.names);
     }
     public int getRoomNumber() {
         return this.roomNumber;
@@ -45,7 +45,8 @@ public class NotesGame {
         this.playerCount = playerCount;
     }
     public void setNames(ArrayList<String> names) {
-        this.names = new ArrayList<>(names);
+        if (names != null)
+            this.names = new ArrayList<>(names);
     }
     public void addName(String name) {
         this.names.add(name);
