@@ -28,8 +28,8 @@ import java.util.ArrayList;
 public class NotesGameControlActivity extends AppCompatActivity {
 
     ArrayList<Question> questions = new ArrayList<>();
-    static Game game;
-    static int currentQuestion = 0;
+    public static Game game;
+    public static int currentQuestion = 0;
     QuestionGenerator questionGenerator;
     TextView loading_screen_text;
     DatabaseReference gamesRef;

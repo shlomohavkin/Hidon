@@ -36,6 +36,7 @@ public class WaitingRoom extends AppCompatActivity {
     ListView nameList;
     ArrayAdapter<String> adapter;
     ArrayList<String> playerNames;
+    ValueEventListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class WaitingRoom extends AppCompatActivity {
         }
         roomCodeNumber.setText(String.valueOf(JoinScreen.roomCode));
 
-        kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
+        kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) return;
@@ -73,6 +74,11 @@ public class WaitingRoom extends AppCompatActivity {
 
                 notesGame = snapshot.getValue(NotesGame.class);
                 if (notesGame == null) return;
+
+                if (notesGame.getIsStarted()) {
+                    kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).removeEventListener(this);
+                    startActivity(new Intent(WaitingRoom.this, NotesGameControlActivity.class));
+                }
 
                 if (playerNum == -1) {
                     notesGame.setPlayerCount(notesGame.getPlayerCount() + 1);
@@ -100,11 +106,13 @@ public class WaitingRoom extends AppCompatActivity {
         JoinScreen.roomCode = 10000000 + rnd.nextInt(90000000);
         playerNum = 0;
 
-        notesGame = new NotesGame(JoinScreen.roomCode, 0, new ArrayList<>());
+        notesGame = new NotesGame(JoinScreen.roomCode, 0, new ArrayList<>(), false);
         kahootGamesRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
 
         startGameButton.setVisibility(Button.VISIBLE);
         startGameButton.setOnClickListener(v -> {
+            kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).child("isStarted").setValue(true);
+            kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).removeEventListener(listener);
             startActivity(new Intent(this, NotesGameControlActivity.class));
         });
     }

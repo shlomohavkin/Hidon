@@ -18,6 +18,7 @@ public class JoinScreen extends AppCompatActivity {
     public static int roomCode;
     public static String playerName = "";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

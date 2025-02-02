@@ -8,9 +8,10 @@ public class NotesGame {
     private int roomNumber;
     private int playerCount;
     private ArrayList<String> names = new ArrayList<>();
+    private boolean isStarted = false;
 
 
-    public NotesGame(int roomNumber, int playerCount, ArrayList<String> names) {
+    public NotesGame(int roomNumber, int playerCount, ArrayList<String> names, boolean isStarted) {
         this.roomNumber = roomNumber;
         this.playerCount = playerCount;
         this.names = names != null ? names : new ArrayList<>();
@@ -24,6 +25,7 @@ public class NotesGame {
             return;
         }
         this.names = new ArrayList<>(other.names);
+        this.isStarted = other.isStarted;
     }
 
     public NotesGame() {}
@@ -37,6 +39,10 @@ public class NotesGame {
     public int getRoomNumber() {
         return this.roomNumber;
     }
+    public boolean getIsStarted() {
+        return this.isStarted;
+    }
+
 
     public void setRoomNumber(int roomNumber) {
         this.roomNumber = roomNumber;
@@ -51,5 +57,10 @@ public class NotesGame {
     public void addName(String name) {
         this.names.add(name);
     }
+    public void setIsStarted(boolean isStarted) {
+        this.isStarted = isStarted;
+    }
+
+
 
 }
