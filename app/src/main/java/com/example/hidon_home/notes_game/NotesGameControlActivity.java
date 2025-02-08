@@ -97,7 +97,7 @@ public class NotesGameControlActivity extends AppCompatActivity {
                     ArrayList<Game.PlayerState> playersState = new ArrayList<>();
                     ArrayList<Integer> playersScore = new ArrayList<>();
 
-                    for (int i = 0; i < WaitingRoom.notesGame.getPlayerCount(); i++) {
+                    for (int i = 0; i < WaitingRoom.notesGame.getPlayerCount() - 1; i++) {
                         playersState.add(new Game.PlayerState(0, false, 0));
                         playersScore.add(0);
                     }

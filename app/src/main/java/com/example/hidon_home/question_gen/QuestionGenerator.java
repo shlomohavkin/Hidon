@@ -31,7 +31,7 @@ public class QuestionGenerator {
                 "user",
                 "Generate a JSON string containing 5 hard, random trivia questions in this format: " +
                         "{ \"questions\": [ { \"questionContent\": \"\", \"answers\": [\"\", \"\", \"\", \"\"], \"correctAnswer\": 0 } ] } " +
-                        "Ensure all questions and answers are valid and accurate. Don't!! include any text other than the JSON string!");
+                        "Ensure all questions and answers are valid and accurate. Very Important: Don't!! add any text other than the format above");
 
         // Create Request Object
         ChatGPTRequest request = new ChatGPTRequest(

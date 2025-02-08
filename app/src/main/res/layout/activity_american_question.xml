@@ -10,7 +10,7 @@
 
     <!-- Scores Section -->
     <LinearLayout
-        android:id="@+id/Scores"
+        android:id="@+id/scores"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -70,7 +70,7 @@
         android:layout_margin="16dp"
         android:elevation="8dp"
         app:cardCornerRadius="16dp"
-        app:layout_constraintTop_toBottomOf="@id/Scores"
+        app:layout_constraintTop_toBottomOf="@id/scores"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:backgroundTint="@color/light_gray">
