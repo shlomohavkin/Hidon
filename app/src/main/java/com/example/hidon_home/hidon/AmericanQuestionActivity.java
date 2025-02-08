@@ -23,6 +23,7 @@ import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
 import com.example.hidon_home.notes_game.JoinScreen;
+import com.example.hidon_home.notes_game.LeaderboardActivity;
 import com.example.hidon_home.notes_game.NotesGameControlActivity;
 import com.example.hidon_home.notes_game.WaitingRoom;
 import com.google.firebase.database.DataSnapshot;
@@ -213,7 +214,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                         isScreenFinished = true;
                         gamesRef.child(gameId).removeEventListener(this);
                         gamesRef.child(gameId).child("game").setValue(game);
-                        startActivity(new Intent(AmericanQuestionActivity.this, NotesGameControlActivity.class));
+                        startActivity(new Intent(AmericanQuestionActivity.this, LeaderboardActivity.class));
                     }, 2000);
                 }
 
@@ -295,7 +296,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         progressAnimator.cancel();
         new Handler().postDelayed(() -> {
             if (MainActivity.isNotesGame) {
-                startActivity(new Intent(AmericanQuestionActivity.this, NotesGameControlActivity.class));
+                startActivity(new Intent(AmericanQuestionActivity.this, LeaderboardActivity.class));
             } else {
                 startActivity(new Intent(AmericanQuestionActivity.this, GameControlActivity.class));
             }
@@ -432,7 +433,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                         gamesRef.child(gameId).removeEventListener(this);
                         if (MainActivity.isNotesGame) {
                             gamesRef.child(gameId).child("game").setValue(game);
-                            startActivity(new Intent(AmericanQuestionActivity.this, NotesGameControlActivity.class));
+                            startActivity(new Intent(AmericanQuestionActivity.this, LeaderboardActivity.class));
                         } else {
                             gamesRef.child(gameId).setValue(game);
                             startActivity(new Intent(AmericanQuestionActivity.this, GameControlActivity.class));

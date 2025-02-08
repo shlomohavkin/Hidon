@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Hidon_home"
         tools:targetApi="31">
         <activity
+            android:name=".notes_game.LeaderboardActivity"
+            android:exported="false" />
+        <activity
             android:name=".notes_game.NotesGameControlActivity"
             android:exported="false" />
         <activity
