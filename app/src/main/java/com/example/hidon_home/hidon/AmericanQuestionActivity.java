@@ -48,7 +48,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
     private static final int KAHOOT_MAX_POINTS = 100;
     private static final long TIMEOUT_MILLIS = 15000; // 15 seconds
     Question question;
-    TextView questionContent, leftPlayerScore, rightPlayerScore, leftPlayerName, rightPlayerName;
+    TextView questionContent, leftPlayerScore, rightPlayerScore, leftPlayerName, rightPlayerName, numberOfPlayersText, numberAnsweredText;
     Button answer1, answer2, answer3, answer4;
     FirebaseDatabase database;
     DatabaseReference  gamesRef;
@@ -56,9 +56,9 @@ public class AmericanQuestionActivity extends AppCompatActivity {
     ProgressBar timeProgressBar;
     private ValueAnimator progressAnimator;
     String gameId;
-    int numberOfPlayers;
-    int currentQuestion;
+    int numberOfPlayers, currentQuestion, answeredPlayers = -1; // because when we start the activity we increment it by 1
     Game game;
+    LinearLayout scores, players;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,16 +98,21 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         answer3.setText(question.getAnswers().get(2));
         answer4.setText(question.getAnswers().get(3));
 
+        numberAnsweredText = findViewById(R.id.numberAnswered);
+        numberOfPlayersText = findViewById(R.id.numberOfPlayers);
+
+        leftPlayerName = findViewById(R.id.Player1);
+        rightPlayerName = findViewById(R.id.Player2);
+        leftPlayerScore = findViewById(R.id.Player1_Score);
+        rightPlayerScore = findViewById(R.id.Player2_Score);
 
         if (!MainActivity.isNotesGame) {
-            leftPlayerName = findViewById(R.id.Player1);
-            rightPlayerName = findViewById(R.id.Player2);
-
             leftPlayerName.setText("Your Score: ");
             rightPlayerName.setText("Other's Score: ");
 
-            leftPlayerScore = findViewById(R.id.Player1_Score);
-            rightPlayerScore = findViewById(R.id.Player2_Score);
+            numberAnsweredText.setVisibility(View.GONE);
+            numberOfPlayersText.setVisibility(View.GONE);
+
             if (MainActivity.isPlayer1) {
                 rightPlayerScore.setText(String.valueOf(game.getPlayersScoreAt(1))); // set the left score to the your score
                 leftPlayerScore.setText(String.valueOf(game.getPlayersScoreAt(0)));
@@ -119,14 +124,12 @@ public class AmericanQuestionActivity extends AppCompatActivity {
             gameId = game.getId();
         } else {
             gameId = String.valueOf(JoinScreen.roomCode);
-            leftPlayerName = findViewById(R.id.Player1);
-            rightPlayerName = findViewById(R.id.Player2);
             leftPlayerName.setVisibility(View.GONE);
             rightPlayerName.setVisibility(View.GONE);
-            leftPlayerScore = findViewById(R.id.Player1_Score);
-            rightPlayerScore = findViewById(R.id.Player2_Score);
             leftPlayerScore.setVisibility(View.GONE);
             rightPlayerScore.setVisibility(View.GONE);
+            numberOfPlayersText.setText("/" + numberOfPlayers);
+            numberAnsweredText.setText("0");
         }
 
         gamesRef.child(gameId).addValueEventListener(new ValueEventListener() {
@@ -136,6 +139,8 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                     gamesRef.child(gameId).removeEventListener(this);
                     return;
                 }
+                numberAnsweredText.setText(String.valueOf(++answeredPlayers));
+
 
                 // here we fill the array of the player states for the states of all the players
                 ArrayList<Game.PlayerState> playersState = new ArrayList<>();
