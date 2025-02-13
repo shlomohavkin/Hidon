@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <!-- Title for the result screen -->
+    <TextView
+        android:id="@+id/result_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:text="Game Results!"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#4CAF50" />
+
+    <!-- Current player placement card -->
+    <LinearLayout
+        android:id="@+id/current_player_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/result_title"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@drawable/card_background"
+        android:elevation="4dp">
+
+        <TextView
+            android:id="@+id/player_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You placed: 1st!"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/player_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score: 1500 points"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <!-- Leaderboard title -->
+    <TextView
+        android:id="@+id/leaderboard_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/current_player_card"
+        android:layout_centerHorizontal="true"
+        android:text="Leaderboard"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:textColor="#3F51B5" />
+
+    <!-- Leaderboard list -->
+    <ScrollView
+        android:id="@+id/leaderboard_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/leaderboard_title"
+        android:layout_margin="16dp">
+
+        <LinearLayout
+            android:id="@+id/leaderboard_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <!-- Back to Main Menu Button -->
+    <Button
+        android:id="@+id/back_to_menu_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#009688"
+        android:text="Back to Main Menu"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:textSize="16sp" />
+
+</RelativeLayout>
