@@ -37,6 +37,7 @@ public class WaitingRoom extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayList<String> playerNames;
     ValueEventListener listener;
+    static Questioneer pickedQuestioner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

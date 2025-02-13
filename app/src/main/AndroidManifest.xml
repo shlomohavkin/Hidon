@@ -15,6 +15,12 @@
         android:theme="@style/Theme.Hidon_home"
         tools:targetApi="31">
         <activity
+            android:name=".notes_game.SelectQuestioneerScreen"
+            android:exported="false" />
+        <activity
+            android:name=".NotesResultActivity"
+            android:exported="false" />
+        <activity
             android:name=".notes_game.LeaderboardActivity"
             android:exported="false" />
         <activity

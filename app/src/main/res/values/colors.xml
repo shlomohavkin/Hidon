@@ -13,4 +13,5 @@
     <color name="footer_color">#757575</color>
     <color name="divider_color">#BDBDBD</color>
     <color name="light_gray">#F5F5F5</color>
+    <color name="teal_700">#00796B</color>
 </resources>

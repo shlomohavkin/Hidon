@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.hidon_home.Game;
 import com.example.hidon_home.MainActivity;
+import com.example.hidon_home.NotesResultActivity;
 import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
 import com.example.hidon_home.hidon.AmericanQuestionActivity;
@@ -46,9 +47,21 @@ public class NotesGameControlActivity extends AppCompatActivity {
 
 
         if (currentQuestion == 0) {
-            if (MainActivity.isMainPlayer) {
+            if (MainActivity.isMainPlayer && GameQuestionsActivity.isAutoGenQuestionerChosen) {
                 questionGenerator = new QuestionGenerator();
                 generateQuestions(); // Generate questions
+            } else if (MainActivity.isMainPlayer && !GameQuestionsActivity.isAutoGenQuestionerChosen) {
+                ArrayList<Game.PlayerState> playersState = new ArrayList<>();
+                ArrayList<Integer> playersScore = new ArrayList<>();
+
+                for (int i = 0; i < WaitingRoom.notesGame.getPlayerCount() - 1; i++) {
+                    playersState.add(new Game.PlayerState(0, false, 0));
+                    playersScore.add(0);
+                }
+
+                game = new Game(String.valueOf(JoinScreen.roomCode), playersScore, WaitingRoom.pickedQuestioner.getQuestioneer(), playersState);
+                gamesRef.child(String.valueOf(JoinScreen.roomCode)).child("game").setValue(game);
+                startGame();
             } else {
                 gamesRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -128,7 +141,7 @@ public class NotesGameControlActivity extends AppCompatActivity {
             currentQuestion++;
             startActivity(new Intent(this, AmericanQuestionActivity.class));
         } else {
-            startActivity(new Intent(NotesGameControlActivity.this, ResultActivity.class));
+            startActivity(new Intent(NotesGameControlActivity.this, NotesResultActivity.class));
         }
     }
 

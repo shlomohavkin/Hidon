@@ -32,10 +32,10 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
     private CheckBox cbAnswer1, cbAnswer2, cbAnswer3, cbAnswer4;
     private Button btnAddQuestion;
     private LinearLayout questionNavigationLayout;
-    private ArrayList<Question> questions = new ArrayList<>();
-    private ArrayList<Button> navigationButtons = new ArrayList<>();
+    private ArrayList<Question> questions;
+    private ArrayList<Button> navigationButtons;
     private int currentQuestionIndex = -1;
-    public ArrayList<Questioneer> questioners = new ArrayList<>();
+    public static ArrayList<Questioneer> questioners = new ArrayList<>();
     private TextWatcher textWatcher = new FieldTextWatcher();
 
     @Override
@@ -47,6 +47,9 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        questions = new ArrayList<>();
+        navigationButtons = new ArrayList<>();
 
         // Initialize views
         etQuestion = findViewById(R.id.etQuestion);

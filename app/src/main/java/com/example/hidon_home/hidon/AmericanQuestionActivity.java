@@ -11,11 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hidon_home.Game;
@@ -32,15 +32,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
-import java.time.chrono.MinguoChronology;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +43,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
     private static final int KAHOOT_MAX_POINTS = 100;
     private static final long TIMEOUT_MILLIS = 15000; // 15 seconds
     Question question;
-    TextView questionContent, leftPlayerScore, rightPlayerScore, leftPlayerName, rightPlayerName, numberOfPlayersText, numberAnsweredText;
+    TextView questionContent, leftPlayerScore, rightPlayerScore, leftPlayerName, rightPlayerName, numberOfPlayersText, numberAnsweredText, answeredTextView;
     Button answer1, answer2, answer3, answer4;
     FirebaseDatabase database;
     DatabaseReference  gamesRef;
@@ -59,7 +53,6 @@ public class AmericanQuestionActivity extends AppCompatActivity {
     String gameId;
     int numberOfPlayers, currentQuestion, answeredPlayers = -1; // because when we start the activity we increment it by 1
     Game game;
-    LinearLayout scores, players;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +99,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         rightPlayerName = findViewById(R.id.Player2);
         leftPlayerScore = findViewById(R.id.Player1_Score);
         rightPlayerScore = findViewById(R.id.Player2_Score);
+        answeredTextView = findViewById(R.id.answeredText);
 
         if (!MainActivity.isNotesGame) {
             leftPlayerName.setText("Your Score: ");
@@ -113,6 +107,8 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
             numberAnsweredText.setVisibility(View.GONE);
             numberOfPlayersText.setVisibility(View.GONE);
+            answeredTextView.setVisibility(View.GONE);
+
 
             if (MainActivity.isPlayer1) {
                 rightPlayerScore.setText(String.valueOf(game.getPlayersScoreAt(1))); // set the left score to the your score
@@ -135,7 +131,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
         gamesRef.child(gameId).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (isScreenFinished) {
                     gamesRef.child(gameId).removeEventListener(this);
                     return;
@@ -255,7 +251,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("Firebase Error", "Error: " + error.getMessage());
             }
         });
@@ -318,9 +314,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
         // Provide immediate feedback
         if (isCorrect) {
-            new Handler().postDelayed(() -> {
-                view.setBackgroundColor(getResources().getColor(R.color.correct_answer_green));
-            }, 50);
+            new Handler().postDelayed(() -> view.setBackgroundColor(getResources().getColor(R.color.correct_answer_green)), 50);
         } else {
             new Handler().postDelayed(() -> {
                 view.setBackgroundColor(getResources().getColor(R.color.wrong_answer_red));
@@ -344,7 +338,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         // Check the status of both players
         gamesRef.child(gameId).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (isScreenFinished) {
                     gamesRef.child(gameId).removeEventListener(this);
                     return;
@@ -446,7 +440,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("Firebase Error", "Error: " + databaseError.getMessage());
             }
         });

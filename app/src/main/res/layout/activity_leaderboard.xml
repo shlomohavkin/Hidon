@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/white"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#ECEFF1">
 
     <!-- Header Title -->
     <TextView
@@ -57,14 +57,16 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Button to Proceed -->
-    <Button
-        android:id="@+id/next_question_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Next Question"
-        android:backgroundTint="@android:color/holo_blue_light"
-        android:textColor="@android:color/white"
-        android:padding="12dp"/>
+    <TextView
+        android:id="@+id/countdownText"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="5"
+        android:textSize="50sp"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="120dp"
+        android:background="@drawable/circular_background"/>
 
 </LinearLayout>

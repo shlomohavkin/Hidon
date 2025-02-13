@@ -10,7 +10,6 @@ import com.example.hidon_home.R;
 
 
 public class GameQuestionsActivity extends AppCompatActivity {
-    public static Questioneer pickedQuestioner;
     public static boolean isAutoGenQuestionerChosen = false;
 
     @Override
@@ -21,6 +20,7 @@ public class GameQuestionsActivity extends AppCompatActivity {
 
     public void onCustomQuestionerClick(View view) {
         isAutoGenQuestionerChosen = false;
+        startActivity(new Intent(this, SelectQuestioneerScreen.class));
     }
 
     public void onAutoGenQuestionerClick(View view) {

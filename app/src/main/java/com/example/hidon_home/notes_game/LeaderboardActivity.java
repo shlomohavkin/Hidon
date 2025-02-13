@@ -4,12 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.CountDownTimer;
+
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.hidon_home.R;
-import com.example.hidon_home.hidon.AmericanQuestionActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,6 +24,8 @@ public class LeaderboardActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference kahootGamesRef;
+    private TextView countdownText;
+    private static final long START_TIME_IN_MILLIS = 5000; // 5 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class LeaderboardActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         kahootGamesRef = database.getReference("kahoot_games");
         leaderboard = new ArrayList<>();
+        countdownText = findViewById(R.id.countdownText);
+
 
         // Get leaderboard from database
         kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).get().addOnCompleteListener(task -> {
@@ -54,10 +58,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
                 populateLeaderboard(leaderboard);
 
-                new Handler().postDelayed(() -> {
-                    leaderboard.clear();
-                    startActivity(new Intent(this, NotesGameControlActivity.class));
-                }, 3000);
+                startCountdown();
             } else {
                 // Handle error
             }
@@ -104,5 +105,26 @@ public class LeaderboardActivity extends AppCompatActivity {
 
             leaderboardContainer.addView(row);
         }
+    }
+
+    private void startCountdown() {
+        // Update the TextView with the remaining seconds
+        // Set countdown to 0 when finished
+        new CountDownTimer(START_TIME_IN_MILLIS, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // Update the TextView with the remaining seconds
+                long secondsLeft = millisUntilFinished / 1000;
+                countdownText.setText(String.valueOf(secondsLeft));
+            }
+
+            @Override
+            public void onFinish() {
+                // Set countdown to 0 when finished
+                countdownText.setText("0");
+                leaderboard.clear();
+                startActivity(new Intent(LeaderboardActivity.this, NotesGameControlActivity.class));
+            }
+        }.start();
     }
 }
