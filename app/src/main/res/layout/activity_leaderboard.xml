@@ -27,17 +27,19 @@
         android:padding="8dp">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Player Name"
             android:textStyle="bold"
+            android:textSize="22sp"
             android:textColor="@android:color/black"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Score"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"/>
     </LinearLayout>

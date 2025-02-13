@@ -103,10 +103,13 @@ public class WaitingRoom extends AppCompatActivity {
 
     private void createRoom() {
         Random rnd = new Random();
-        JoinScreen.roomCode = 10000000 + rnd.nextInt(90000000);
+        JoinScreen.roomCode = 1000 + rnd.nextInt(9000);
         playerNum = 0;
+        JoinScreen.playerName = "Leader";
+        ArrayList<String> names = new ArrayList<>();
+        names.add("Leader");
 
-        notesGame = new NotesGame(JoinScreen.roomCode, 1, new ArrayList<>(), false);
+        notesGame = new NotesGame(JoinScreen.roomCode, 1, names, false);
         kahootGamesRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
 
         startGameButton.setVisibility(Button.VISIBLE);

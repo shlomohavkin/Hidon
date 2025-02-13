@@ -46,7 +46,6 @@ public class LeaderboardActivity extends AppCompatActivity {
                     scores.add(snapshot.getValue(Integer.class));
                 }
                 ArrayList<String> names = new ArrayList<>();
-                names.add("Leader");
                 for (DataSnapshot snapshot : task.getResult().child("names").getChildren()) {
                     names.add(snapshot.getValue(String.class));
                 }
@@ -74,7 +73,13 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         for (Map.Entry<String, Integer> entry : leaderboard) {
             LinearLayout row = new LinearLayout(this);
+            if (entry.getKey().equals(JoinScreen.playerName))
+                row.setBackground(getDrawable(R.drawable.rounded_corners_background_highlighted));
+            else
+                row.setBackground(getDrawable(R.drawable.rounded_corners_background_not_highlighted));
             row.setOrientation(LinearLayout.HORIZONTAL);
+            row.setPadding(32, 32, 32, 32);
+
 
             LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -84,7 +89,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
             TextView nameTextView = new TextView(this);
             nameTextView.setText(entry.getKey());
-            nameTextView.setTextSize(18);
+            nameTextView.setTextSize(20);
             nameTextView.setTextColor(getResources().getColor(android.R.color.black));
 
             LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(
@@ -93,7 +98,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
             TextView scoreTextView = new TextView(this);
             scoreTextView.setText(String.valueOf(entry.getValue()));
-            scoreTextView.setTextSize(18);
+            scoreTextView.setTextSize(20);
             scoreTextView.setTextColor(getResources().getColor(android.R.color.black));
 
             LinearLayout.LayoutParams scoreParams = new LinearLayout.LayoutParams(

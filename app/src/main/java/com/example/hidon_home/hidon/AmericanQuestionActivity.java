@@ -435,7 +435,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                     }, 2000);
                 } else {
                     // Wait for the other player to answer
-                    Toast.makeText(AmericanQuestionActivity.this, "Waiting for the other player...", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AmericanQuestionActivity.this, "Waiting for the other player...", Toast.LENGTH_SHORT).show();
                 }
             }
 

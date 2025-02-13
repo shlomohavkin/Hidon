@@ -29,7 +29,7 @@ public class QuestionGenerator {
 
         ChatGPTRequest.Message userMessage = new ChatGPTRequest.Message(
                 "user",
-                "Generate a JSON string containing 5 hard, random trivia questions in this format: " +
+                "Create 20 hard trivia questions, choose random 5 of those and generate a JSON string containing those trivia questions in this format: " +
                         "{ \"questions\": [ { \"questionContent\": \"\", \"answers\": [\"\", \"\", \"\", \"\"], \"correctAnswer\": 0 } ] } " +
                         "Ensure all questions and answers are valid and accurate. Very Important: Don't!! add any text other than the format above");
 
