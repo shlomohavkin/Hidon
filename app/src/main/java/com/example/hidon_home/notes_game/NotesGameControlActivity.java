@@ -10,12 +10,10 @@ import android.widget.TextView;
 
 import com.example.hidon_home.Game;
 import com.example.hidon_home.MainActivity;
-import com.example.hidon_home.NotesResultActivity;
+import com.example.hidon_home.question_gen.NotesResultActivity;
 import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
 import com.example.hidon_home.hidon.AmericanQuestionActivity;
-import com.example.hidon_home.hidon.GameControlActivity;
-import com.example.hidon_home.hidon.ResultActivity;
 import com.example.hidon_home.question_gen.QuestionCallBack;
 import com.example.hidon_home.question_gen.QuestionGenerator;
 import com.google.firebase.database.DataSnapshot;

@@ -1,24 +1,21 @@
-package com.example.hidon_home;
+package com.example.hidon_home.question_gen;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.hidon_home.hidon.GameControlActivity;
+import com.example.hidon_home.MainActivity;
+import com.example.hidon_home.R;
 import com.example.hidon_home.notes_game.JoinScreen;
-import com.example.hidon_home.notes_game.LeaderboardActivity;
 import com.example.hidon_home.notes_game.NotesGameControlActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.w3c.dom.Text;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;

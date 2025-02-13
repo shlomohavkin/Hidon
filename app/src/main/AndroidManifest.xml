@@ -18,7 +18,7 @@
             android:name=".notes_game.SelectQuestioneerScreen"
             android:exported="false" />
         <activity
-            android:name=".NotesResultActivity"
+            android:name=".question_gen.NotesResultActivity"
             android:exported="false" />
         <activity
             android:name=".notes_game.LeaderboardActivity"
