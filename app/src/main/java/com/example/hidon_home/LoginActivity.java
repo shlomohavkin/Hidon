@@ -77,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(username).exists()) {
