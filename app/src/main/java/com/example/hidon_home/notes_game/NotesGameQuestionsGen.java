@@ -24,6 +24,8 @@ import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
 import com.example.hidon_home.notes_game.Questioneer;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,8 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
     private int currentQuestionIndex = -1;
     public static ArrayList<Questioneer> questioners = new ArrayList<>();
     private TextWatcher textWatcher = new FieldTextWatcher();
+    FirebaseDatabase database;
+    DatabaseReference usersRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,9 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        database = FirebaseDatabase.getInstance();
+        usersRef = database.getReference("users");
 
         questions = new ArrayList<>();
         navigationButtons = new ArrayList<>();
@@ -295,9 +302,10 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
                 Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
             } else {
                 // Handle saving the questionnaire name
-                questioners.add(new Questioneer(questions, questionnaireName));
+                MainActivity.user.addQuestion(new Questioneer(questions, questionnaireName));
+                usersRef.child(MainActivity.user.getName()).setValue(MainActivity.user);
                 Toast.makeText(this, "Saved as: " + questionnaireName, Toast.LENGTH_SHORT).show();
-                Log.d("Questioneer Saved", questioners.get(0).toString());
+                Log.d("Questioneer Saved", MainActivity.user.getQuestioners().get(0).toString());
                 dialog.dismiss();
                 startActivity(new Intent(this, MainActivity.class));
             }

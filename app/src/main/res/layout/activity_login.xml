@@ -22,7 +22,7 @@
 
     <!-- Username Field -->
     <EditText
-        android:id="@+id/etUsername"
+        android:id="@+id/et_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Username"
@@ -34,7 +34,7 @@
 
     <!-- Password Field -->
     <EditText
-        android:id="@+id/etPassword"
+        android:id="@+id/et_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
@@ -47,7 +47,7 @@
 
     <!-- Sign-In Button -->
     <Button
-        android:id="@+id/btnSignIn"
+        android:id="@+id/btn_sign_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign In"
@@ -59,14 +59,14 @@
 
     <!-- Google Sign-In Button -->
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/btnGoogleSignIn"
+        android:id="@+id/btn_google_sign_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp" />
 
     <!-- Register Text Button -->
     <TextView
-        android:id="@+id/registerText"
+        android:id="@+id/register_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Don't have an account? Register"

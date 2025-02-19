@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myRef;
     TextView title;
     public static @Nullable UUID gameID;
+    public static User user;
     Button notesGameButton, joinGameNotes, createQuestionsNotes, startGameNotes;
 
 

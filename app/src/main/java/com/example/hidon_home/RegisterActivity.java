@@ -27,9 +27,7 @@ import java.util.ArrayList;
 public class RegisterActivity extends AppCompatActivity {
     TextView loginText;
     private TextInputEditText nameEditText, emailEditText, passwordEditText, confirmPasswordEditText;
-    private MaterialButton registerButton;
     String name, email, password;
-    User user;
     FirebaseDatabase database;
     DatabaseReference usersRef;
     @Override
@@ -41,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("users");
 
@@ -50,22 +49,19 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             }
-        });
+        }); // on login click go to login screen
 
         // Initialize fields
         nameEditText = findViewById(R.id.et_full_name);
         emailEditText = findViewById(R.id.et_email);
         passwordEditText = findViewById(R.id.et_password);
         confirmPasswordEditText = findViewById(R.id.et_confirm_password);
-        registerButton = findViewById(R.id.btn_register);
+        MaterialButton registerButton = findViewById(R.id.btn_register);
 
         // Set click listener on the register button
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                validateFields();
-                // call for function that checks the fields and goes to the next screen if everything is correct
-            }
+        registerButton.setOnClickListener(view -> {
+            validateFields();
+            // call for function that checks the fields and goes to the next screen if everything is correct
         });
     }
 
@@ -94,26 +90,24 @@ public class RegisterActivity extends AppCompatActivity {
             confirmPasswordEditText.setError("Passwords do not match");
             return;
         }
-        user = new User(name, email, password, new ArrayList<>());
+        MainActivity.user = new User(name, email, password, new ArrayList<>());
 
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(user.getName()).exists()) {
+                if (dataSnapshot.child(MainActivity.user.getName()).exists()) {
                     nameEditText.setError("Name already exists");
                     return;
                 } else {
-                    usersRef.child(user.getName()).setValue(user);
+                    usersRef.child(MainActivity.user.getName()).setValue(MainActivity.user);
                     usersRef.removeEventListener(this);
                     startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
     }
 }

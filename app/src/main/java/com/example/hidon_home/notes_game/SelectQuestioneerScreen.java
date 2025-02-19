@@ -11,10 +11,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.R;
 
 public class SelectQuestioneerScreen extends AppCompatActivity {
     LinearLayout questionnairesContainer;
+    Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,24 +29,35 @@ public class SelectQuestioneerScreen extends AppCompatActivity {
         });
 
         questionnairesContainer = findViewById(R.id.questionnaireContainer);
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(view -> {
+            startActivity(new Intent(this, GameQuestionsActivity.class));
+        });
 
         populateQuestionnaireList();
     }
 
     private void populateQuestionnaireList() {
-        // Clear previous views (if any)
+        // Clear previous views
         questionnairesContainer.removeAllViews();
 
-        // Dynamically create buttons for each questionnaire
-        for (Questioneer questionnaire : NotesGameQuestionsGen.questioners) {
+        // create buttons for each questionnaire
+        for (Questioneer questionnaire : MainActivity.user.getQuestioners()) {
             Button button = new Button(this);
             button.setText(questionnaire.getTitle());
             button.setTextSize(18);
             button.setPadding(16, 8, 16, 8);
-            button.setBackgroundResource(R.drawable.button_background); // Custom background
+            button.setBackgroundResource(R.drawable.button_background);
             button.setTextColor(getResources().getColor(android.R.color.white));
 
-            // Set click listener
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(0, 24, 0, 0); // 24dp top margin for spacing
+            button.setLayoutParams(params);
+
             button.setOnClickListener(v -> {
                 WaitingRoom.pickedQuestioner = questionnaire;
                 startActivity(new Intent(this, WaitingRoom.class));
