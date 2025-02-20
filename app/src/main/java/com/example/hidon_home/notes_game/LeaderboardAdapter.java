@@ -1,0 +1,85 @@
+package com.example.hidon_home.notes_game;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.example.hidon_home.R;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder> {
+
+    private List<Map.Entry<String, Integer>> localDataSet;
+
+    /**
+     * Provide a reference to the type of views that you are using
+     * (custom ViewHolder)
+     */
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView rankTextView;
+        private final TextView usernameTextView;
+        private final TextView pointsTextView;
+
+        public ViewHolder(View view) {
+            super(view);
+            // Define click listener for the ViewHolder's View
+
+            rankTextView = (TextView) view.findViewById(R.id.tvRank);
+            usernameTextView = (TextView) view.findViewById(R.id.tvUsername);
+            pointsTextView = (TextView) view.findViewById(R.id.tvPoints);
+        }
+
+        public TextView getRankTextView() {
+            return this.rankTextView;
+        }
+        public TextView getUsernameTextView() {
+            return this.usernameTextView;
+        }
+        public TextView getPointsTextView() {
+            return this.pointsTextView;
+        }
+    }
+
+    /**
+     * Initialize the dataset of the Adapter
+     *
+     * @param dataSet String[] containing the data to populate views to be used
+     * by RecyclerView
+     */
+    public LeaderboardAdapter(List<Map.Entry<String, Integer>> dataSet) {
+        localDataSet = dataSet;
+    }
+
+    // Create new views (invoked by the layout manager)
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        // Create a new view, which defines the UI of the list item
+        View view = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.activity_leaderboard_adapter, viewGroup, false);
+
+        return new ViewHolder(view);
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+
+        // Get element from your dataset at this position and replace the
+        // contents of the view with that element
+//        viewHolder.getRankTextView().setText(localDataSet[position]);
+    }
+
+    // Return the size of your dataset (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return localDataSet.size();
+    }
+}

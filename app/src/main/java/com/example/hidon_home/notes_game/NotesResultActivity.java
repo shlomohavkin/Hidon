@@ -1,4 +1,4 @@
-package com.example.hidon_home.question_gen;
+package com.example.hidon_home.notes_game;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.R;
-import com.example.hidon_home.notes_game.JoinScreen;
-import com.example.hidon_home.notes_game.NotesGameControlActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

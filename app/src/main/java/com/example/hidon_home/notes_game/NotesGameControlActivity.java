@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.hidon_home.Game;
 import com.example.hidon_home.MainActivity;
-import com.example.hidon_home.question_gen.NotesResultActivity;
 import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
 import com.example.hidon_home.hidon.AmericanQuestionActivity;
@@ -34,6 +33,7 @@ public class NotesGameControlActivity extends AppCompatActivity {
     DatabaseReference gamesRef;
     FirebaseDatabase database;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +48,7 @@ public class NotesGameControlActivity extends AppCompatActivity {
             if (MainActivity.isMainPlayer && GameQuestionsActivity.isAutoGenQuestionerChosen) {
                 questionGenerator = new QuestionGenerator();
                 generateQuestions(); // Generate questions
-            } else if (MainActivity.isMainPlayer && !GameQuestionsActivity.isAutoGenQuestionerChosen) {
+            } else if (MainActivity.isMainPlayer) {
                 ArrayList<Game.PlayerState> playersState = new ArrayList<>();
                 ArrayList<Integer> playersScore = new ArrayList<>();
 
@@ -59,7 +59,7 @@ public class NotesGameControlActivity extends AppCompatActivity {
 
                 game = new Game(String.valueOf(JoinScreen.roomCode), playersScore, WaitingRoom.pickedQuestioner.getQuestioneer(), playersState);
                 gamesRef.child(String.valueOf(JoinScreen.roomCode)).child("game").setValue(game);
-                startGame();
+                startActivity(new Intent(this, HostGameActivity.class));
             } else {
                 gamesRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -134,7 +134,6 @@ public class NotesGameControlActivity extends AppCompatActivity {
             }
         }
 
-        // Start the first question activity
         if (currentQuestion != game.getQuestions().size()) {
             currentQuestion++;
             startActivity(new Intent(this, AmericanQuestionActivity.class));

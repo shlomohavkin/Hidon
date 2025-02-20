@@ -32,6 +32,16 @@ public class User {
         this.questioners.add(questioner);
     }
 
+    public User(User other) {
+        this.name = other.name;
+        this.email = other.email;
+        this.password = other.password;
+        this.questioners = new ArrayList<>();
+        for (Questioneer questioner : other.questioners) {
+            this.questioners.add(new Questioneer(questioner));
+        }
+    }
+
     public User() {}
 
     public String getName() {

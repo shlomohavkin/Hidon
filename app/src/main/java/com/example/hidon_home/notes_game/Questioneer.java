@@ -13,6 +13,14 @@ public class Questioneer {
         this.title = title;
     }
 
+    public Questioneer(Questioneer other) {
+        this.questioneer = new ArrayList<>();
+        for (Question question : other.questioneer) {
+            this.questioneer.add(new Question(question));
+        }
+        this.title = other.title;
+    }
+
     public Questioneer() {}
 
     public ArrayList<Question> getQuestioneer() {

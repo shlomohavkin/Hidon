@@ -13,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.textfield.TextInputEditText;
+import com.example.hidon_home.notes_game.HostGameActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 public class LoginActivity extends AppCompatActivity {
     TextView registerText;
     private EditText usernameEditText, passwordEditText;
-    private Button loginButton;
     FirebaseDatabase database;
     DatabaseReference usersRef;
 
@@ -50,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
         usernameEditText = findViewById(R.id.et_username);
         passwordEditText = findViewById(R.id.et_password);
-        loginButton = findViewById(R.id.btn_sign_in);
+        Button loginButton = findViewById(R.id.btn_sign_in);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (dataSnapshot.child(username).exists()) {
                     User user = dataSnapshot.child(username).getValue(User.class);
                     if (user.getPassword().equals(password)) {
-                        MainActivity.user = user;
+                        MainActivity.user = new User(user);
                         usersRef.removeEventListener(this);
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     } else {

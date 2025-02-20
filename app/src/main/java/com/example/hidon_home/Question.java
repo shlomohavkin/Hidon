@@ -21,6 +21,13 @@ public class Question {
         this.correctAnswer = correctAnswer;
     }
 
+    public Question(Question other) {
+        this.questionContent = other.questionContent;
+        this.answers = new ArrayList<>();
+        this.answers.addAll(other.answers);
+        this.correctAnswer = other.correctAnswer;
+    }
+
 
     public void fromJson(JSONObject json) throws Exception {
         this.questionContent = json.getString("questionContent");

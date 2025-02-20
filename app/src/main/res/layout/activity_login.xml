@@ -92,17 +92,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Forgot Password -->
-            <TextView
-                android:id="@+id/tv_forgot_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginBottom="24dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="Forgot password?"
-                android:textColor="@color/primary"
-                android:textSize="14sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/tv_forgot_password"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:layout_marginBottom="24dp"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:text="Forgot password?"-->
+<!--                android:textColor="@color/primary"-->
+<!--                android:textSize="14sp" />-->
 
             <!-- Sign-In Button with rounded corners -->
             <com.google.android.material.button.MaterialButton

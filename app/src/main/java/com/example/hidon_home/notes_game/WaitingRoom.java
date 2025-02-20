@@ -71,7 +71,6 @@ public class WaitingRoom extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) return;
-                Log.d("entered the data change ", "vdvdvdvdvdvdvdv: ");
 
                 notesGame = snapshot.getValue(NotesGame.class);
                 if (notesGame == null) return;
@@ -105,11 +104,15 @@ public class WaitingRoom extends AppCompatActivity {
         Random rnd = new Random();
         JoinScreen.roomCode = 1000 + rnd.nextInt(9000);
         playerNum = 0;
-        JoinScreen.playerName = "Leader";
+        JoinScreen.playerName = "Host";
         ArrayList<String> names = new ArrayList<>();
-        names.add("Leader");
+        if (GameQuestionsActivity.isAutoGenQuestionerChosen) {
+            names.add("Host");
+            notesGame = new NotesGame(JoinScreen.roomCode, 1, names, false);
+        } else {
+            notesGame = new NotesGame(JoinScreen.roomCode, 0, names, false);
+        }
 
-        notesGame = new NotesGame(JoinScreen.roomCode, 1, names, false);
         kahootGamesRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
 
         startGameButton.setVisibility(Button.VISIBLE);
