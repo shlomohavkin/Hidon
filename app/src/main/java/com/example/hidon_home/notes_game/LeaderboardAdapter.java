@@ -1,5 +1,6 @@
 package com.example.hidon_home.notes_game;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,9 +25,9 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
      * (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView rankTextView;
-        private final TextView usernameTextView;
-        private final TextView pointsTextView;
+        private TextView rankTextView;
+        private TextView usernameTextView;
+        private TextView pointsTextView;
 
         public ViewHolder(View view) {
             super(view);
@@ -55,10 +56,11 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
      * by RecyclerView
      */
     public LeaderboardAdapter(List<Map.Entry<String, Integer>> dataSet) {
-        localDataSet = dataSet;
+        this.localDataSet = dataSet;
     }
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
@@ -71,10 +73,13 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        String rank = String.valueOf(position + 1);
+        String username = localDataSet.get(position).getKey();
+        String points = String.valueOf(localDataSet.get(position).getValue());
 
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
-//        viewHolder.getRankTextView().setText(localDataSet[position]);
+        viewHolder.getRankTextView().setText(rank);
+        viewHolder.getUsernameTextView().setText(username);
+        viewHolder.getPointsTextView().setText(points);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

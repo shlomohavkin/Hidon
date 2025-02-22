@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public static @Nullable UUID gameID;
     public static User user;
     Button notesGameButton, joinGameNotes, createQuestionsNotes, startGameNotes;
+    LinearLayout waitingPopup;
 
 
     @Override
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         joinGameNotes = findViewById(R.id.join_notes_game_button);
         createQuestionsNotes = findViewById(R.id.create_questions_button);
 
-        title = findViewById(R.id.textViewTitle);
+        waitingPopup = findViewById(R.id.waiting_popup);
     }
 
 
@@ -64,7 +66,9 @@ public class MainActivity extends AppCompatActivity {
         if (!isStarted) {
             myRef.setValue("start");
             isPlayer1 = true;
-            title.setText("Waiting For A Player To Join...");
+            Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+            waitingPopup.startAnimation(slideDown);
+            waitingPopup.setVisibility(View.VISIBLE);
 
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -139,21 +143,17 @@ public class MainActivity extends AppCompatActivity {
 
             // Apply Slide Down animation
             Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-            Animation slideDown2 = AnimationUtils.loadAnimation(this, R.anim.slide_down2);
-            Animation slideDown3 = AnimationUtils.loadAnimation(this, R.anim.slide_down3);
 
             startGameNotes.startAnimation(slideDown);
-            joinGameNotes.startAnimation(slideDown2);
-            createQuestionsNotes.startAnimation(slideDown3);
+            joinGameNotes.startAnimation(slideDown);
+            createQuestionsNotes.startAnimation(slideDown);
         } else {
             // Apply Slide Down animation
             Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-            Animation slideUp2 = AnimationUtils.loadAnimation(this, R.anim.slide_up2);
-            Animation slideUp3 = AnimationUtils.loadAnimation(this, R.anim.slide_up3);
 
             startGameNotes.startAnimation(slideUp);
-            joinGameNotes.startAnimation(slideUp2);
-            createQuestionsNotes.startAnimation(slideUp3);
+            joinGameNotes.startAnimation(slideUp);
+            createQuestionsNotes.startAnimation(slideUp);
 
             // Set the visibility to GONE after animation completes
             slideUp.setAnimationListener(new Animation.AnimationListener() {

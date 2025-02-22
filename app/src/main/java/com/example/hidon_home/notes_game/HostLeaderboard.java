@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hidon_home.R;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -50,25 +52,34 @@ public class HostLeaderboard extends Fragment {
         rvLeaderboard.setAdapter(adapter);
 
         // Get leaderboard from database
-        kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult().exists()) {
-                ArrayList<Integer> scores = new ArrayList<>();
-                for (DataSnapshot snapshot : task.getResult().child("game").child("playersScore").getChildren()) {
-                    scores.add(snapshot.getValue(Integer.class));
-                }
-                ArrayList<String> names = new ArrayList<>();
-                for (DataSnapshot snapshot : task.getResult().child("names").getChildren()) {
-                    names.add(snapshot.getValue(String.class));
-                }
+        kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    ArrayList<Integer> scores = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.child("game").child("playersScore").getChildren()) {
+                        scores.add(snapshot.getValue(Integer.class));
+                    }
+                    ArrayList<String> names = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.child("names").getChildren()) {
+                        names.add(snapshot.getValue(String.class));
+                    }
 
-                for (int i = 0; i < scores.size(); i++) {
-                    leaderboard.add(new AbstractMap.SimpleEntry<>(names.get(i), scores.get(i)));
-                }
-                leaderboard.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+                    leaderboard.clear();
+                    for (int i = 0; i < scores.size(); i++) {
+                        leaderboard.add(new AbstractMap.SimpleEntry<>(names.get(i), scores.get(i)));
+                    }
+                    leaderboard.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
 
-                updatePlayerList(new ArrayList<>(leaderboard));
-            } else {
-                // Handle error
+                    updatePlayerList(new ArrayList<>(leaderboard));
+                } else {
+                    // Handle error
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 

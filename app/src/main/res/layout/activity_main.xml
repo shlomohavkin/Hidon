@@ -1,164 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
 
-    <!-- Title TextView -->
-    <TextView
-        android:id="@+id/gameTitle"
-        android:layout_width="wrap_content"
+    <!-- Header Section -->
+    <LinearLayout
+        android:id="@+id/headerSection"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quiz Game"
-        android:textSize="45sp"
-        android:textStyle="bold"
-        android:textColor="@color/title_color"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="4"
-        android:shadowColor="@color/black"/>
+        android:orientation="vertical"
+        android:layout_marginTop="32dp">
 
-    <!-- Decorative Divider -->
-    <View
-        android:id="@+id/divider"
-        android:layout_width="220dp"
-        android:layout_height="3dp"
-        android:background="@color/divider_color"
-        android:layout_below="@id/gameTitle"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp" />
+        <TextView
+            android:id="@+id/gameTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quiz Game"
+            android:textSize="52sp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="#333333"
+            android:layout_gravity="center"
+            android:letterSpacing="0.05"/>
 
-    <!-- Start Button -->
-    <Button
-        android:id="@+id/start_button"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:text="Start Game"
-        android:textSize="25sp"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/button_color"
-        android:textColor="@color/white"
-        android:padding="12dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="180dp"
-        android:onClick="onStartClickOnline"
-        android:background="@drawable/rounded_corners_background"
-        android:elevation="6dp"/>
+        <View
+            android:id="@+id/divider"
+            android:layout_width="120dp"
+            android:layout_height="4dp"
+            android:background="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"/>
+    </LinearLayout>
 
-    <!-- Join Button -->
-    <Button
-        android:id="@+id/join_button"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:text="Join Game"
-        android:textSize="25sp"
-        android:layout_below="@id/start_button"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/button_color"
-        android:textColor="@color/white"
-        android:padding="12dp"
-        android:layout_marginTop="30dp"
-        android:onClick="onJoinCLickOnline"
-        android:background="@drawable/rounded_corners_background"
-        android:elevation="6dp"/>
-
-    <!-- Notes Game Button -->
-    <Button
-        android:id="@+id/notes_button"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:text="Notes Game"
-        android:textSize="25sp"
-        android:layout_below="@id/join_button"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/button_color"
-        android:textColor="@color/white"
-        android:padding="12dp"
-        android:layout_marginTop="30dp"
-        android:onClick="onNotesGameButtonClick"
-        android:background="@drawable/rounded_corners_background"
-        android:elevation="6dp"/>
-
-    <!-- Additional Buttons (Start/Join Game for Notes Game) -->
-    <Button
-        android:id="@+id/start_notes_game_button"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:text="Start Game"
-        android:textSize="25sp"
-        android:layout_below="@id/notes_button"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/button_color"
-        android:textColor="@color/white"
-        android:padding="12dp"
-        android:layout_marginTop="10dp"
-        android:onClick="onNotesGameStart"
-        android:visibility="gone"
-        android:background="@drawable/rounded_corners_background"
-        android:elevation="6dp"/>
-
-    <Button
-        android:id="@+id/join_notes_game_button"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:text="Join Game"
-        android:textSize="25sp"
-        android:layout_below="@id/start_notes_game_button"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/button_color"
-        android:textColor="@color/white"
-        android:padding="12dp"
-        android:layout_marginTop="10dp"
-        android:onClick="onNotesGameJoin"
-        android:visibility="gone"
-        android:background="@drawable/rounded_corners_background"
-        android:elevation="6dp"/>
-
-    <Button
-        android:id="@+id/create_questions_button"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:text="Create Questions"
-        android:textSize="25sp"
-        android:layout_below="@id/join_notes_game_button"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/button_color"
-        android:textColor="@color/white"
-        android:padding="12dp"
-        android:layout_marginTop="10dp"
-        android:onClick="onNotesCreateClick"
-        android:visibility="gone"
-        android:background="@drawable/rounded_corners_background"
-        android:elevation="6dp"/>
-
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
+    <!-- Main Content ScrollView -->
+    <ScrollView
+        android:id="@+id/mainScrollView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="25sp"
-        android:textColor="@color/footer_color"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/create_questions_button"
-        android:layout_marginTop="40dp" />
+        android:layout_below="@id/headerSection"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="24dp"
+        android:paddingBottom="32dp">
 
-    <!-- Footer TextView -->
+        <LinearLayout
+            android:id="@+id/mainContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 1v1 Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1v1 Challenge"
+                android:textSize="24sp"
+                android:textColor="#333333"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="4dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/start_button"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:text="Start Game"
+                android:textSize="22sp"
+                app:cornerRadius="15dp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#007BFF"
+                android:onClick="onStartClickOnline"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Hidden Waiting Popup -->
+            <LinearLayout
+                android:id="@+id/waiting_popup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Waiting for another player..."
+                    android:textSize="20sp"
+                    android:textColor="#4d4c4c"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/join_button"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:text="Join Game"
+                android:textSize="22sp"
+                app:cornerRadius="15dp"
+                android:backgroundTint="#FFFFFF"
+                app:strokeColor="#0056b3"
+                app:strokeWidth="3dp"
+                android:textColor="#0056b3"
+                android:onClick="onJoinCLickOnline"
+                android:layout_marginBottom="32dp"/>
+
+            <!-- Multiplayer Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Multiplayer Quiz"
+                android:textSize="24sp"
+                android:textColor="#333333"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="4dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/notes_button"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:text="Notes Game"
+                android:textSize="22sp"
+                app:cornerRadius="15dp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#007BFF"
+                android:onClick="onNotesGameButtonClick"/>
+
+            <!-- Hidden Notes Game Options -->
+            <LinearLayout
+                android:id="@+id/notes_game_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_notes_game_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:text="Start Game"
+                    android:textSize="22sp"
+                    app:cornerRadius="15dp"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#007BFF"
+                    android:onClick="onNotesGameStart"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/join_notes_game_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:text="Join Game"
+                    android:textSize="22sp"
+                    app:cornerRadius="15dp"
+                    android:backgroundTint="#FFFFFF"
+                    app:strokeColor="#0056b3"
+                    app:strokeWidth="3dp"
+                    android:textColor="#0056b3"
+                    android:onClick="onNotesGameJoin"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/create_questions_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:text="Create Questions"
+                    android:textSize="22sp"
+                    app:cornerRadius="15dp"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#28A745"
+                    android:onClick="onNotesCreateClick"
+                    android:visibility="gone"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Footer -->
     <TextView
         android:id="@+id/footer_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ready to test your knowledge?"
-        android:textSize="25sp"
-        android:textColor="@color/footer_color"
+        android:textSize="20sp"
+        android:textColor="#333333"
+        android:fontFamily="sans-serif-medium"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="4"
-        android:shadowColor="@color/black"/>
-
+        android:layout_marginBottom="24dp"/>
 </RelativeLayout>
