@@ -6,15 +6,22 @@ import android.os.CountDownTimer;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.R;
+import com.example.hidon_home.hidon.AmericanQuestionActivity;
 import com.example.hidon_home.notes_game.HostPageAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +33,8 @@ public class HostGameActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private HostPageAdapter pagerAdapter;
+    FirebaseDatabase database;
+    DatabaseReference kahootGameRef;
 
     // Data models
 //    private QuizSession currentQuiz;
@@ -41,11 +50,14 @@ public class HostGameActivity extends AppCompatActivity {
         initViews();
         setupViewPager();
         setupListeners();
-//        loadQuizData();
+        loadQuizData();
         startQuizTimer();
     }
 
     private void initViews() {
+        database = FirebaseDatabase.getInstance();
+        kahootGameRef = database.getReference("kahoot_games");
+
         tvQuizTitle = findViewById(R.id.tvQuizTitle);
         tvQuestionProgress = findViewById(R.id.tvQuestionProgress);
         tvTimer = findViewById(R.id.tvTimer);
@@ -112,53 +124,60 @@ public class HostGameActivity extends AppCompatActivity {
 
     private void loadQuizData() {
 //        // Update UI with quiz data
-//        updateQuizInfoUI();
+        updateQuizInfoUI();
 
         // Update fragments with data
         updateFragmentsWithData();
     }
 
-//    private void updateQuizInfoUI() {
-//        tvQuizTitle.setText(currentQuiz.getTitle());
-//        tvQuestionProgress.setText("Question: " + currentQuiz.getCurrentQuestionNumber() +
-//                "/" + currentQuiz.getTotalQuestions());
-//    }
+    private void updateQuizInfoUI() {
+        tvQuizTitle.setText(WaitingRoom.pickedQuestioner.getTitle());
+
+        kahootGameRef.child(String.valueOf(JoinScreen.roomCode)).child("currentQuestion").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                tvQuestionProgress.setText("Question: " + snapshot.getValue(Integer.class) +
+                "/" + WaitingRoom.pickedQuestioner.getQuestioneer().size());
+                startQuizTimer(); // when the question changes, start the timer again
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     private void updateFragmentsWithData() {
-        // This is how we update our fragments with new data
-        // We need to find the current fragments that are shown
 
         try {
             HostLeaderboard leaderboardFragment =
                     (HostLeaderboard) getSupportFragmentManager().findFragmentByTag("f0");
-            if (leaderboardFragment != null) {
-//                leaderboardFragment.updatePlayerList(players);
-            }
+//            if (leaderboardFragment != null) {
+//                leaderboardFragment.updatePlayerList(updatedLeaderboard);
+//            } i don't see the need at this time.
 
             HostQuestionStats statsFragment =
                     (HostQuestionStats) getSupportFragmentManager().findFragmentByTag("f1");
             if (statsFragment != null) {
-//                statsFragment.updateStats(currentQuestionStats);
+                statsFragment.updateStats();
             }
 
         } catch (Exception e) {
-            // Sometimes fragments might not be initialized yet
-            // We'll update them when they're created
         }
     }
 
     private void startQuizTimer() {
-        // Cancel any existing timer
         if (questionTimer != null) {
             questionTimer.cancel();
         }
 
         // Start a new timer (example: 30 seconds per question)
-        questionTimer = new CountDownTimer(30000, 1000) {
+        questionTimer = new CountDownTimer(15000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
-                tvTimer.setText("Time: 00:" + (seconds < 10 ? "0" : "") + seconds);
+                tvTimer.setText("Time: " + (seconds < 10 ? "0" : "") + seconds);
             }
 
             @Override

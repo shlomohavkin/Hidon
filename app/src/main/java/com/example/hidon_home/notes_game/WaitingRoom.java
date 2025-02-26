@@ -108,9 +108,9 @@ public class WaitingRoom extends AppCompatActivity {
         ArrayList<String> names = new ArrayList<>();
         if (GameQuestionsActivity.isAutoGenQuestionerChosen) {
             names.add("Host");
-            notesGame = new NotesGame(JoinScreen.roomCode, 1, names, false);
+            notesGame = new NotesGame(JoinScreen.roomCode, 1, names, false, 0);
         } else {
-            notesGame = new NotesGame(JoinScreen.roomCode, 0, names, false);
+            notesGame = new NotesGame(JoinScreen.roomCode, 0, names, false, 0);
         }
 
         kahootGamesRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);

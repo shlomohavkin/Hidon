@@ -81,17 +81,20 @@ public class Game {
         private int lastQuestionAnswered;
         private boolean isCorrectAnswerChosen;
         private long timeStamp;
+        private int answerChosen;
 
-        public PlayerState(int lastQuestionAnswered, boolean isCorrectAnswerChosen, long timeStamp) {
+        public PlayerState(int lastQuestionAnswered, boolean isCorrectAnswerChosen, long timeStamp, int answerChosen) {
             this.lastQuestionAnswered = lastQuestionAnswered;
             this.isCorrectAnswerChosen = isCorrectAnswerChosen;
             this.timeStamp = timeStamp;
+            this.answerChosen = answerChosen;
         }
 
         public PlayerState(PlayerState other) {
             this.lastQuestionAnswered = other.lastQuestionAnswered;
             this.isCorrectAnswerChosen = other.isCorrectAnswerChosen;
             this.timeStamp = other.timeStamp;
+            this.answerChosen = other.answerChosen;
         }
 
         public PlayerState() {
@@ -119,6 +122,12 @@ public class Game {
         }
         public void setTimeStamp(long timeStamp) {
             this.timeStamp = timeStamp;
+        }
+        public int getAnswerChosen() {
+            return this.answerChosen;
+        }
+        public void setAnswerChosen(int answerChosen) {
+            this.answerChosen = answerChosen;
         }
     }
 }

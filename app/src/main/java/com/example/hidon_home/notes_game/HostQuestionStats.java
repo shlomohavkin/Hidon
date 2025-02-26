@@ -11,23 +11,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.hidon_home.Game;
 import com.example.hidon_home.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class HostQuestionStats extends Fragment {
+    private ProgressBar progressBarA, progressBarB, progressBarC, progressBarD;
 
-    private TextView tvQuestionCategory;
-    private TextView tvResponseCount;
-    private TextView tvAverageTime;
-
-    private ProgressBar progressBarA;
-    private ProgressBar progressBarB;
-    private ProgressBar progressBarC;
-    private ProgressBar progressBarD;
-
-    private TextView tvPercentA;
-    private TextView tvPercentB;
-    private TextView tvPercentC;
-    private TextView tvPercentD;
+    private TextView tvPercentA, tvPercentB, tvPercentC, tvPercentD, tvResponseCount, tvAverageTime;
+    FirebaseDatabase database;
+    DatabaseReference kahootGameRef;
+    int[] optionCounts = new int[] {0, 0, 0, 0};
 
     @Nullable
     @Override
@@ -40,8 +38,6 @@ public class HostQuestionStats extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize views
-        tvQuestionCategory = view.findViewById(R.id.tvQuestionCategory);
         tvResponseCount = view.findViewById(R.id.tvResponseCount);
         tvAverageTime = view.findViewById(R.id.tvAverageTime);
 
@@ -54,16 +50,37 @@ public class HostQuestionStats extends Fragment {
         tvPercentB = view.findViewById(R.id.tvPercentB);
         tvPercentC = view.findViewById(R.id.tvPercentC);
         tvPercentD = view.findViewById(R.id.tvPercentD);
+
+        database = FirebaseDatabase.getInstance();
+        kahootGameRef = database.getReference("kahoot_games").child(String.valueOf(JoinScreen.roomCode));
+        updateStats();
     }
 
-//    public void updateStats(QuestionStats stats) {
-//        if (tvQuestionCategory == null) return; // View not initialized yet
-//
-//        tvQuestionCategory.setText("Category: " + stats.getCategory());
-//        tvResponseCount.setText("Responses: " + stats.getResponseCount() + " players");
+    public void updateStats() {
+
+        kahootGameRef.child("game").child("playerState").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot playerStateSnap : snapshot.getChildren()) {
+                    Game.PlayerState playerState = playerStateSnap.getValue(Game.PlayerState.class);
+                    optionCounts[playerState.getAnswerChosen()]++;
+                }
+
+                tvPercentA.setText(String.valueOf(optionCounts[0]));
+                tvPercentB.setText(String.valueOf(optionCounts[1]));
+                tvPercentC.setText(String.valueOf(optionCounts[2]));
+                tvPercentD.setText(String.valueOf(optionCounts[3]));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+//        tvResponseCount.setText("Responses: " +  + " players");
 //        tvAverageTime.setText("Average response time: " + stats.getAverageResponseTime() + "s");
 //
-//        int[] optionCounts = stats.getOptionCounts();
+//
 //        int totalResponses = stats.getResponseCount();
 //
 //        // Update progress bars and percentage texts
@@ -77,11 +94,6 @@ public class HostQuestionStats extends Fragment {
 //            progressBarB.setProgress(percentB);
 //            progressBarC.setProgress(percentC);
 //            progressBarD.setProgress(percentD);
-//
-//            tvPercentA.setText(percentA + "% (" + optionCounts[0] + ")");
-//            tvPercentB.setText(percentB + "% (" + optionCounts[1] + ")");
-//            tvPercentC.setText(percentC + "% (" + optionCounts[2] + ")");
-//            tvPercentD.setText(percentD + "% (" + optionCounts[3] + ")");
-//        }
-//    }
+       // }
+    }
 }

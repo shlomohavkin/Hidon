@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import java.util.Map;
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder> {
 
     private List<Map.Entry<String, Integer>> localDataSet;
+    int currentScore;
 
     /**
      * Provide a reference to the type of views that you are using
@@ -76,10 +78,17 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         String rank = String.valueOf(position + 1);
         String username = localDataSet.get(position).getKey();
         String points = String.valueOf(localDataSet.get(position).getValue());
+        int newScore = localDataSet.get(position).getValue();
 
         viewHolder.getRankTextView().setText(rank);
         viewHolder.getUsernameTextView().setText(username);
-        viewHolder.getPointsTextView().setText(points);
+
+        ValueAnimator animator = ValueAnimator.ofInt(currentScore, newScore);
+        animator.setDuration(500);
+        animator.addUpdateListener(animation ->
+                viewHolder.getPointsTextView().setText(animation.getAnimatedValue().toString()));
+        animator.start();
+        currentScore = newScore;
     }
 
     // Return the size of your dataset (invoked by the layout manager)

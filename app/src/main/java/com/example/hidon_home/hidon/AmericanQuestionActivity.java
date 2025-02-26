@@ -24,6 +24,7 @@ import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
 import com.example.hidon_home.notes_game.JoinScreen;
 import com.example.hidon_home.notes_game.LeaderboardActivity;
+import com.example.hidon_home.notes_game.NotesGame;
 import com.example.hidon_home.notes_game.NotesGameControlActivity;
 import com.example.hidon_home.notes_game.WaitingRoom;
 import com.google.firebase.database.DataSnapshot;
@@ -41,7 +42,7 @@ import java.util.Map;
 public class AmericanQuestionActivity extends AppCompatActivity {
     private static final int CORRECT_ANSWER_POINTS = 20;
     private static final int KAHOOT_MAX_POINTS = 100;
-    private static final long TIMEOUT_MILLIS = 15000; // 15 seconds
+    public static final long TIMEOUT_MILLIS = 15000; // 15 seconds
     Question question;
     TextView questionContent, leftPlayerScore, rightPlayerScore, leftPlayerName, rightPlayerName, numberOfPlayersText, numberAnsweredText, answeredTextView;
     Button answer1, answer2, answer3, answer4;
@@ -127,6 +128,10 @@ public class AmericanQuestionActivity extends AppCompatActivity {
             rightPlayerScore.setVisibility(View.GONE);
             numberOfPlayersText.setText("/" + numberOfPlayers);
             numberAnsweredText.setText("0");
+
+            if (WaitingRoom.playerNum == 0) {
+                gamesRef.child(gameId).child("currentQuestion").setValue(currentQuestion);
+            }
         }
 
         gamesRef.child(gameId).addValueEventListener(new ValueEventListener() {
@@ -328,7 +333,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
             playerPath = String.valueOf(WaitingRoom.playerNum);
         }
         long answerTimestamp = System.currentTimeMillis();
-        Game.PlayerState player = new Game.PlayerState(currentQuestion, isCorrect, answerTimestamp);
+        Game.PlayerState player = new Game.PlayerState(currentQuestion, isCorrect, answerTimestamp, viewID);
         if (MainActivity.isNotesGame) {
             gamesRef.child(gameId).child("game").child("playersState").child(playerPath).setValue(player);
         } else {

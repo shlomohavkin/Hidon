@@ -53,7 +53,7 @@ public class NotesGameControlActivity extends AppCompatActivity {
                 ArrayList<Integer> playersScore = new ArrayList<>();
 
                 for (int i = 0; i < WaitingRoom.notesGame.getPlayerCount() - 1; i++) {
-                    playersState.add(new Game.PlayerState(0, false, 0));
+                    playersState.add(new Game.PlayerState(0, false, 0, 0));
                     playersScore.add(0);
                 }
 
@@ -109,7 +109,7 @@ public class NotesGameControlActivity extends AppCompatActivity {
                     ArrayList<Integer> playersScore = new ArrayList<>();
 
                     for (int i = 0; i < WaitingRoom.notesGame.getPlayerCount() - 1; i++) {
-                        playersState.add(new Game.PlayerState(0, false, 0));
+                        playersState.add(new Game.PlayerState(0, false, 0, 0));
                         playersScore.add(0);
                     }
 
