@@ -83,11 +83,10 @@ public class Game {
         private long timeStamp;
         private int answerChosen;
 
-        public PlayerState(int lastQuestionAnswered, boolean isCorrectAnswerChosen, long timeStamp, int answerChosen) {
+        public PlayerState(int lastQuestionAnswered, boolean isCorrectAnswerChosen, long timeStamp) {
             this.lastQuestionAnswered = lastQuestionAnswered;
             this.isCorrectAnswerChosen = isCorrectAnswerChosen;
             this.timeStamp = timeStamp;
-            this.answerChosen = answerChosen;
         }
 
         public PlayerState(PlayerState other) {

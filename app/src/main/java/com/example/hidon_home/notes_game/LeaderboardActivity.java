@@ -9,6 +9,7 @@ import android.os.CountDownTimer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.hidon_home.Game;
 import com.example.hidon_home.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +22,6 @@ import java.util.Map;
 
 public class LeaderboardActivity extends AppCompatActivity {
     List<Map.Entry<String, Integer>> leaderboard;
-
     FirebaseDatabase database;
     DatabaseReference kahootGamesRef;
     private TextView countdownText;
@@ -56,6 +56,15 @@ public class LeaderboardActivity extends AppCompatActivity {
                 leaderboard.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
 
                 populateLeaderboard(leaderboard);
+
+                NotesGame notesGame = task.getResult().getValue(NotesGame.class);
+                ArrayList<Game.PlayerState> playerStates = new ArrayList<>();
+                for (int i = 0; i < notesGame.getPlayerCount(); i++) {
+                    Game.PlayerState playerState = new Game.PlayerState(0, false, 0);
+                    playerState.setAnswerChosen(4);
+                    playerStates.add(playerState);
+                }
+                kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).child("game").child("playersState").setValue(playerStates);
 
                 startCountdown();
             } else {

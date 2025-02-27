@@ -95,8 +95,13 @@ public class GameControlActivity extends AppCompatActivity {
                     ArrayList<Game.PlayerState> playersState = new ArrayList<>();
                     ArrayList<Integer> playersScore = new ArrayList<>();
 
-                    playersState.add(new Game.PlayerState(0, false, 0, 0));
-                    playersState.add(new Game.PlayerState(0, false, 0, 0));
+                    Game.PlayerState playerState = new Game.PlayerState(0, false, 0);
+                    playerState.setAnswerChosen(4);
+                    playersState.add(playerState);
+
+                    playerState = new Game.PlayerState(0, false, 0);
+                    playerState.setAnswerChosen(4);
+                    playersState.add(playerState);
 
                     playersScore.add(0);
                     playersScore.add(0);

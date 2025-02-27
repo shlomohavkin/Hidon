@@ -41,6 +41,7 @@ public class HostGameActivity extends AppCompatActivity {
 //    private List<Player> players = new ArrayList<>();
 //    private QuestionStats currentQuestionStats;
     private CountDownTimer questionTimer;
+    public static int currentQuestion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +124,7 @@ public class HostGameActivity extends AppCompatActivity {
     }
 
     private void loadQuizData() {
-//        // Update UI with quiz data
+        //Update UI with quiz data
         updateQuizInfoUI();
 
         // Update fragments with data
@@ -136,8 +137,17 @@ public class HostGameActivity extends AppCompatActivity {
         kahootGameRef.child(String.valueOf(JoinScreen.roomCode)).child("currentQuestion").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                tvQuestionProgress.setText("Question: " + snapshot.getValue(Integer.class) +
+                currentQuestion = snapshot.getValue(Integer.class);
+
+                tvQuestionProgress.setText("Question: " + currentQuestion +
                 "/" + WaitingRoom.pickedQuestioner.getQuestioneer().size());
+
+
+                HostQuestionStats statsFragment = (HostQuestionStats) getSupportFragmentManager().findFragmentByTag("f1");
+                if (statsFragment != null) {
+                    HostQuestionStats.resetStats();
+                }
+
                 startQuizTimer(); // when the question changes, start the timer again
             }
 
@@ -160,7 +170,7 @@ public class HostGameActivity extends AppCompatActivity {
             HostQuestionStats statsFragment =
                     (HostQuestionStats) getSupportFragmentManager().findFragmentByTag("f1");
             if (statsFragment != null) {
-                statsFragment.updateStats();
+                statsFragment.updateStats(); // used this code in updateQuizStats method to reset the stats, if needed
             }
 
         } catch (Exception e) {
@@ -173,7 +183,7 @@ public class HostGameActivity extends AppCompatActivity {
         }
 
         // Start a new timer (example: 30 seconds per question)
-        questionTimer = new CountDownTimer(15000, 1000) {
+        questionTimer = new CountDownTimer(20000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
@@ -190,7 +200,7 @@ public class HostGameActivity extends AppCompatActivity {
     }
 
     private void handleTimeExpired() {
-        startActivity(new Intent(this, MainActivity.class));
+//        startActivity(new Intent(this, MainActivity.class));
     }
 
 //    private void skipToNextQuestion() {

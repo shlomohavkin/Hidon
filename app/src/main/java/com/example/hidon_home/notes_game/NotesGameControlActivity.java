@@ -43,7 +43,6 @@ public class NotesGameControlActivity extends AppCompatActivity {
         loading_screen_text = findViewById(R.id.loading_message);
         gamesRef = database.getReference("kahoot_games");
 
-
         if (currentQuestion == 0) {
             if (MainActivity.isMainPlayer && GameQuestionsActivity.isAutoGenQuestionerChosen) {
                 questionGenerator = new QuestionGenerator();
@@ -53,7 +52,10 @@ public class NotesGameControlActivity extends AppCompatActivity {
                 ArrayList<Integer> playersScore = new ArrayList<>();
 
                 for (int i = 0; i < WaitingRoom.notesGame.getPlayerCount() - 1; i++) {
-                    playersState.add(new Game.PlayerState(0, false, 0, 0));
+                    Game.PlayerState playerState = new Game.PlayerState(0, false, 0);
+                    playerState.setAnswerChosen(4);
+                    playersState.add(playerState);
+
                     playersScore.add(0);
                 }
 
@@ -109,7 +111,10 @@ public class NotesGameControlActivity extends AppCompatActivity {
                     ArrayList<Integer> playersScore = new ArrayList<>();
 
                     for (int i = 0; i < WaitingRoom.notesGame.getPlayerCount() - 1; i++) {
-                        playersState.add(new Game.PlayerState(0, false, 0, 0));
+                        Game.PlayerState playerState = new Game.PlayerState(0, false, 0);
+                        playerState.setAnswerChosen(4);
+                        playersState.add(playerState);
+
                         playersScore.add(0);
                     }
 

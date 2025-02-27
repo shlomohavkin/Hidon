@@ -27,6 +27,7 @@ import com.example.hidon_home.notes_game.LeaderboardActivity;
 import com.example.hidon_home.notes_game.NotesGame;
 import com.example.hidon_home.notes_game.NotesGameControlActivity;
 import com.example.hidon_home.notes_game.WaitingRoom;
+import com.google.firebase.Timestamp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,8 +53,10 @@ public class AmericanQuestionActivity extends AppCompatActivity {
     ProgressBar timeProgressBar;
     private ValueAnimator progressAnimator;
     String gameId;
-    int numberOfPlayers, currentQuestion, answeredPlayers = -1; // because when we start the activity we increment it by 1
+    public static int numberOfPlayers;
+    int currentQuestion, answeredPlayers = -1; // because when we start the activity we increment it by 1
     Game game;
+    long questionCreatedTimestamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,8 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
         isScreenFinished = false;
         isUpdatedScore = false;
+
+        questionCreatedTimestamp = System.currentTimeMillis(); // get the time the question was created
 
         database = FirebaseDatabase.getInstance();
 
@@ -332,8 +337,9 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         if (MainActivity.isNotesGame) {
             playerPath = String.valueOf(WaitingRoom.playerNum);
         }
-        long answerTimestamp = System.currentTimeMillis();
-        Game.PlayerState player = new Game.PlayerState(currentQuestion, isCorrect, answerTimestamp, viewID);
+        long answerTimestamp = System.currentTimeMillis() - questionCreatedTimestamp; // get the time the player answered the question
+        Game.PlayerState player = new Game.PlayerState(currentQuestion, isCorrect, answerTimestamp);
+        player.setAnswerChosen(viewID);
         if (MainActivity.isNotesGame) {
             gamesRef.child(gameId).child("game").child("playersState").child(playerPath).setValue(player);
         } else {

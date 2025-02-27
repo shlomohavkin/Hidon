@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textSize="22sp"
         android:text="Responses: 5/7 players" />
 
     <TextView
@@ -19,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:textSize="22sp"
         android:text="Average response time: 5.7s" />
 
     <TextView
@@ -26,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Answer Distribution"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <!-- Option A -->
@@ -39,6 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Option A:"
+            android:textSize="20sp"
             android:layout_marginEnd="8dp" />
 
         <ProgressBar
@@ -47,13 +51,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:progress="40" />
+            android:progress="0" />
 
         <TextView
             android:id="@+id/tvPercentA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="40% (2)"
+            android:text="0 (0%)"
+            android:textSize="20sp"
             android:layout_marginStart="8dp" />
     </LinearLayout>
 
@@ -68,6 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Option B:"
+            android:textSize="20sp"
             android:layout_marginEnd="8dp" />
 
         <ProgressBar
@@ -76,13 +82,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:progress="40" />
+            android:progress="0" />
 
         <TextView
             android:id="@+id/tvPercentB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="40% (2)"
+            android:text="0 (0%)"
+            android:textSize="20sp"
             android:layout_marginStart="8dp" />
     </LinearLayout>
 
@@ -97,6 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Option C:"
+            android:textSize="20sp"
             android:layout_marginEnd="8dp" />
 
         <ProgressBar
@@ -105,13 +113,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:progress="40" />
+            android:progress="0" />
 
         <TextView
             android:id="@+id/tvPercentC"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="40% (2)"
+            android:text="0 (0%)"
+            android:textSize="20sp"
             android:layout_marginStart="8dp" />
     </LinearLayout>
 
@@ -126,6 +135,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Option D:"
+            android:textSize="20sp"
             android:layout_marginEnd="8dp" />
 
         <ProgressBar
@@ -134,13 +144,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:progress="40" />
+            android:progress="0" />
 
         <TextView
             android:id="@+id/tvPercentD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="40% (2)"
+            android:text="0 (0%)"
+            android:textSize="20sp"
             android:layout_marginStart="8dp" />
     </LinearLayout>
 

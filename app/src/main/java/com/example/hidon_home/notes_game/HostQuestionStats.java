@@ -12,7 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.hidon_home.Game;
+import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.R;
+import com.example.hidon_home.hidon.AmericanQuestionActivity;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,12 +23,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class HostQuestionStats extends Fragment {
-    private ProgressBar progressBarA, progressBarB, progressBarC, progressBarD;
+    private static ProgressBar progressBarA, progressBarB, progressBarC, progressBarD;
 
-    private TextView tvPercentA, tvPercentB, tvPercentC, tvPercentD, tvResponseCount, tvAverageTime;
+    private static TextView tvPercentA, tvPercentB, tvPercentC, tvPercentD, tvResponseCount, tvAverageTime;
     FirebaseDatabase database;
     DatabaseReference kahootGameRef;
-    int[] optionCounts = new int[] {0, 0, 0, 0};
+    public static int[] optionCounts = new int[] {0, 0, 0, 0, 0};
+    private static int realTimeResponses = 0;
 
     @Nullable
     @Override
@@ -51,49 +55,78 @@ public class HostQuestionStats extends Fragment {
         tvPercentC = view.findViewById(R.id.tvPercentC);
         tvPercentD = view.findViewById(R.id.tvPercentD);
 
+
         database = FirebaseDatabase.getInstance();
         kahootGameRef = database.getReference("kahoot_games").child(String.valueOf(JoinScreen.roomCode));
+
+        resetStats();
         updateStats();
     }
 
     public void updateStats() {
-
-        kahootGameRef.child("game").child("playerState").addValueEventListener(new ValueEventListener() {
+        kahootGameRef.child("game").child("playersState").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot playerStateSnap : snapshot.getChildren()) {
-                    Game.PlayerState playerState = playerStateSnap.getValue(Game.PlayerState.class);
-                    optionCounts[playerState.getAnswerChosen()]++;
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Game.PlayerState playerState = snapshot.getValue(Game.PlayerState.class);
+
+                double sumForAvg = 0;
+                if (playerState.getAnswerChosen() != 4) {
+                    realTimeResponses++;
+                    sumForAvg += playerState.getTimeStamp() / 1000.0;
                 }
+                optionCounts[playerState.getAnswerChosen()]++;
 
-                tvPercentA.setText(String.valueOf(optionCounts[0]));
-                tvPercentB.setText(String.valueOf(optionCounts[1]));
-                tvPercentC.setText(String.valueOf(optionCounts[2]));
-                tvPercentD.setText(String.valueOf(optionCounts[3]));
+                tvResponseCount.setText("Responses: " + realTimeResponses + "/" + (WaitingRoom.notesGame.getPlayerCount() - 1) + " players");
+
+                if (realTimeResponses > 0) {
+                    int percentA = optionCounts[0] * 100 / realTimeResponses;
+                    int percentB = optionCounts[1] * 100 / realTimeResponses;
+                    int percentC = optionCounts[2] * 100 / realTimeResponses;
+                    int percentD = optionCounts[3] * 100 / realTimeResponses;
+
+                    tvPercentA.setText(optionCounts[0] + " (" + percentA + "%)");
+                    tvPercentB.setText(optionCounts[1] + " (" + percentB + "%)");
+                    tvPercentC.setText(optionCounts[2] + " (" + percentC + "%)");
+                    tvPercentD.setText(optionCounts[3] + " (" + percentD + "%)");
+
+                    progressBarA.setProgress(percentA);
+                    progressBarB.setProgress(percentB);
+                    progressBarC.setProgress(percentC);
+                    progressBarD.setProgress(percentD);
+
+                    tvAverageTime.setText("Average time: " + (sumForAvg / realTimeResponses) + "s");
+                }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
-//        tvResponseCount.setText("Responses: " +  + " players");
-//        tvAverageTime.setText("Average response time: " + stats.getAverageResponseTime() + "s");
-//
-//
-//        int totalResponses = stats.getResponseCount();
-//
-//        // Update progress bars and percentage texts
-//        if (totalResponses > 0) {
-//            int percentA = optionCounts[0] * 100 / totalResponses;
-//            int percentB = optionCounts[1] * 100 / totalResponses;
-//            int percentC = optionCounts[2] * 100 / totalResponses;
-//            int percentD = optionCounts[3] * 100 / totalResponses;
-//
-//            progressBarA.setProgress(percentA);
-//            progressBarB.setProgress(percentB);
-//            progressBarC.setProgress(percentC);
-//            progressBarD.setProgress(percentD);
-       // }
+    }
+
+    public static void resetStats() {
+        optionCounts = new int[] {0, 0, 0, 0, 0};
+        realTimeResponses = 0;
+
+        tvResponseCount.setText("Responses: " + realTimeResponses + "/" + (WaitingRoom.notesGame.getPlayerCount() - 1) + " players");
+        tvAverageTime.setText("Average time: 0.000s");
+
+
+        tvPercentA.setText("0 (0%)");
+        tvPercentB.setText("0 (0%)");
+        tvPercentC.setText("0 (0%)");
+        tvPercentD.setText("0 (0%)");
+
+        progressBarA.setProgress(0);
+        progressBarB.setProgress(0);
+        progressBarC.setProgress(0);
+        progressBarD.setProgress(0);
     }
 }
