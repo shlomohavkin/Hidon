@@ -1,158 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
+    android:background="@color/light_gray"
     android:id="@+id/main">
 
-
-    <TextView
-        android:id="@+id/tvResponseCount"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="22sp"
-        android:text="Responses: 5/7 players" />
+        android:elevation="4dp"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/white"
+        android:layout_marginBottom="16dp">
 
-    <TextView
-        android:id="@+id/tvAverageTime"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tvResponseCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Responses: 5/7 players"
+                android:textSize="18sp"
+                android:textColor="@color/text_primary"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:id="@+id/tvAverageTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Average response time: 0.00s"
+                android:textSize="18sp"
+                android:textColor="@color/text_primary"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textSize="22sp"
-        android:text="Average response time: 5.7s" />
+        android:elevation="4dp"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/white">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Answer Distribution"
-        android:textSize="22sp"
-        android:textStyle="bold" />
-
-    <!-- Option A -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Option A:"
-            android:textSize="20sp"
-            android:layout_marginEnd="8dp" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <ProgressBar
-            android:id="@+id/progressBarA"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:progress="0" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Answer Distribution"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="12dp" />
 
-        <TextView
-            android:id="@+id/tvPercentA"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0 (0%)"
-            android:textSize="20sp"
-            android:layout_marginStart="8dp" />
-    </LinearLayout>
+            <!-- Option A -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
 
-    <!-- Option B -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Option B:"
-            android:textSize="20sp"
-            android:layout_marginEnd="8dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option A"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginEnd="8dp" />
 
-        <ProgressBar
-            android:id="@+id/progressBarB"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:progress="0" />
+                    <TextView
+                        android:id="@+id/tvPercentA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 (0%)"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_secondary" />
+                </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvPercentB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0 (0%)"
-            android:textSize="20sp"
-            android:layout_marginStart="8dp" />
-    </LinearLayout>
+                <ProgressBar
+                    android:id="@+id/progressBarA"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:progressTint="@color/option_a"
+                    android:progressBackgroundTint="@color/progress_background"
+                    android:progress="0" />
+            </LinearLayout>
 
-    <!-- Option C -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+            <!-- Option B -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Option C:"
-            android:textSize="20sp"
-            android:layout_marginEnd="8dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp">
 
-        <ProgressBar
-            android:id="@+id/progressBarC"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:progress="0" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option B"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginEnd="8dp" />
 
-        <TextView
-            android:id="@+id/tvPercentC"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0 (0%)"
-            android:textSize="20sp"
-            android:layout_marginStart="8dp" />
-    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvPercentB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 (0%)"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_secondary" />
+                </LinearLayout>
 
-    <!-- Option D -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+                <ProgressBar
+                    android:id="@+id/progressBarB"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:progressTint="@color/option_b"
+                    android:progressBackgroundTint="@color/progress_background"
+                    android:progress="0" />
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Option D:"
-            android:textSize="20sp"
-            android:layout_marginEnd="8dp" />
+            <!-- Option C -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
 
-        <ProgressBar
-            android:id="@+id/progressBarD"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:progress="0" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp">
 
-        <TextView
-            android:id="@+id/tvPercentD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0 (0%)"
-            android:textSize="20sp"
-            android:layout_marginStart="8dp" />
-    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option C"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginEnd="8dp" />
 
+                    <TextView
+                        android:id="@+id/tvPercentC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 (0%)"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_secondary" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressBarC"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:progressTint="@color/option_c"
+                    android:progressBackgroundTint="@color/progress_background"
+                    android:progress="0" />
+            </LinearLayout>
+
+            <!-- Option D -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option D"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvPercentD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 (0%)"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_secondary" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressBarD"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:progressTint="@color/option_d"
+                    android:progressBackgroundTint="@color/progress_background"
+                    android:progress="0" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

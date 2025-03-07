@@ -1,6 +1,7 @@
 package com.example.hidon_home.notes_game;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,16 +25,18 @@ import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
 import com.example.hidon_home.notes_game.Questioneer;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 public class NotesGameQuestionsGen extends AppCompatActivity {
-    private EditText etQuestion, etAnswer1, etAnswer2, etAnswer3, etAnswer4;
-    private CheckBox cbAnswer1, cbAnswer2, cbAnswer3, cbAnswer4;
-    private Button btnAddQuestion;
-    private LinearLayout questionNavigationLayout;
+    private com.google.android.material.textfield.TextInputEditText etQuestion, etAnswer1, etAnswer2, etAnswer3, etAnswer4;
+    private com.google.android.material.checkbox.MaterialCheckBox checkBoxAnswer1, checkBoxAnswer2, checkBoxAnswer3, checkBoxAnswer4;
+    private com.google.android.material.button.MaterialButton btnAddQuestion;
+    private com.google.android.material.chip.ChipGroup questionsNavigation;
     private ArrayList<Question> questions;
     private ArrayList<Button> navigationButtons;
     private int currentQuestionIndex = -1;
@@ -65,13 +68,13 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
         etAnswer3 = findViewById(R.id.etAnswer3);
         etAnswer4 = findViewById(R.id.etAnswer4);
 
-        cbAnswer1 = findViewById(R.id.cbAnswer1);
-        cbAnswer2 = findViewById(R.id.cbAnswer2);
-        cbAnswer3 = findViewById(R.id.cbAnswer3);
-        cbAnswer4 = findViewById(R.id.cbAnswer4);
+        checkBoxAnswer1 = findViewById(R.id.cbAnswer1);
+        checkBoxAnswer2 = findViewById(R.id.cbAnswer2);
+        checkBoxAnswer3 = findViewById(R.id.cbAnswer3);
+        checkBoxAnswer4 = findViewById(R.id.cbAnswer4);
 
         btnAddQuestion = findViewById(R.id.btnAddQuestion);
-        questionNavigationLayout = findViewById(R.id.questionNavigationLayout);
+        questionsNavigation = findViewById(R.id.questionNavigationChips);
 
         etQuestion.addTextChangedListener(textWatcher);
         etAnswer1.addTextChangedListener(textWatcher);
@@ -82,7 +85,6 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
         // Add a new question
         btnAddQuestion.setOnClickListener(v -> {
             addNewQuestion();
-            Toast.makeText(this, "New question added!", Toast.LENGTH_SHORT).show();
         });
 
         // Automatically add the first question on activity start
@@ -102,25 +104,39 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
         questions.add(question);
 
         int index = questions.size();
-        Button navButton = new Button(this);
-        navButton.setText(String.valueOf(index));
-        navButton.setBackgroundColor(Color.parseColor("#E74C3C")); // Start as red (empty)
+        Chip chip = new Chip(this);
 
-        // Set margins to add spacing between buttons
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics()),
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics())
+        // Configure the chip appearance
+        chip.setText(String.valueOf(index));
+        chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#E74C3C"))); // Start as red (empty)
+        chip.setTextColor(Color.WHITE);
+        chip.setChipStrokeWidth(6);
+        chip.setClickable(true);
+        chip.setCheckable(true);
+        questionsNavigation.clearCheck();
+        chip.setChecked(true);
+
+        int chipSize = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                50,
+                getResources().getDisplayMetrics()
         );
-        params.setMargins(8, 0, 8, 0); // Left, Top, Right, Bottom margin (8dp horizontal spacing)
-        navButton.setLayoutParams(params);
 
-        navButton.setOnClickListener(v -> {
+        // Set margins to add spacing between chips
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(chipSize, chipSize);
+        chip.setLayoutParams(params);
+
+        // Set click listener
+        chip.setOnClickListener(v -> {
+            questionsNavigation.clearCheck();
+            chip.setChecked(true);
             saveCurrentQuestion();
             loadQuestion(index - 1);
         });
 
-        questionNavigationLayout.addView(navButton);
-        navigationButtons.add(navButton);
+        // Add to your ChipGroup or whatever parent you're using
+        questionsNavigation.addView(chip);
+        navigationButtons.add(chip);
         loadQuestion(index - 1);
 
         if (currentQuestionIndex == -1) {
@@ -141,10 +157,10 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
         String answer4 = etAnswer4.getText().toString().trim();
 
         int correctAnswerIndex = -1;
-        if (cbAnswer1.isChecked()) correctAnswerIndex = 0;
-        if (cbAnswer2.isChecked()) correctAnswerIndex = 1;
-        if (cbAnswer3.isChecked()) correctAnswerIndex = 2;
-        if (cbAnswer4.isChecked()) correctAnswerIndex = 3;
+        if (checkBoxAnswer1.isChecked()) correctAnswerIndex = 0;
+        if (checkBoxAnswer2.isChecked()) correctAnswerIndex = 1;
+        if (checkBoxAnswer3.isChecked()) correctAnswerIndex = 2;
+        if (checkBoxAnswer4.isChecked()) correctAnswerIndex = 3;
 
         // Save data only to the current question object
         Question question = questions.get(currentQuestionIndex);
@@ -162,17 +178,17 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
         updateNavigationButtonColor(currentQuestionIndex);
     }
     private int areAllFieldsFilled() {
-        if (!(etQuestion.getText().toString().trim().isEmpty()
+        if (!etQuestion.getText().toString().trim().isEmpty()
                 && !etAnswer1.getText().toString().trim().isEmpty()
                 && !etAnswer2.getText().toString().trim().isEmpty()
                 && !etAnswer3.getText().toString().trim().isEmpty()
-                && !etAnswer4.getText().toString().trim().isEmpty())) {
+                && !etAnswer4.getText().toString().trim().isEmpty()) {
             return 1;
         } else if ((etQuestion.getText().toString().trim().isEmpty()
-                && !etAnswer1.getText().toString().trim().isEmpty()
-                && !etAnswer2.getText().toString().trim().isEmpty()
-                && !etAnswer3.getText().toString().trim().isEmpty()
-                && !etAnswer4.getText().toString().trim().isEmpty())) {
+                && etAnswer1.getText().toString().trim().isEmpty()
+                && etAnswer2.getText().toString().trim().isEmpty()
+                && etAnswer3.getText().toString().trim().isEmpty()
+                && etAnswer4.getText().toString().trim().isEmpty())) {
             return 0;
         } else {
             return -1;
@@ -188,17 +204,17 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            Button button = navigationButtons.get(currentQuestionIndex);
+            Chip chip = (Chip) questionsNavigation.getChildAt(currentQuestionIndex);
             // Check if all fields are filled
             if (areAllFieldsFilled() == 1) {
                 // Change navigation button to green
-                button.setBackgroundColor(Color.parseColor("#2ECC71")); // all fields valid - green
+                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#339900"))); // change to green
                 saveCurrentQuestion();
             } else if (areAllFieldsFilled() == 0) {
-                button.setBackgroundColor(Color.parseColor("#F1C40F")); // Some fields are filled - yellow
+                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#E74C3C"))); // all fields arent filled - red
             } else {
                 // If not filled, change navigation button to red
-                button.setBackgroundColor(Color.parseColor("#E74C3C")); // All fields are empty - red
+                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#ffcc00"))); // some fields are empty - yellow
             }
         }
 
@@ -235,9 +251,9 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
         if (allFieldsEmpty) {
             button.setBackgroundColor(Color.parseColor("#E74C3C")); // All fields are empty - red
         } else if (allFieldsFilled) {
-            button.setBackgroundColor(Color.parseColor("#2ECC71")); // all fields valid - green
+            button.setBackgroundColor(Color.parseColor("#339900")); // all fields valid - green
         } else {
-            button.setBackgroundColor(Color.parseColor("#F1C40F")); // Some fields are filled - yellow
+            button.setBackgroundColor(Color.parseColor("#ffcc00")); // Some fields are filled - yellow
         }
     }
 
@@ -266,10 +282,10 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
         etAnswer3.setText(question.getAnswers().get(2));
         etAnswer4.setText(question.getAnswers().get(3));
 
-        cbAnswer1.setChecked(question.getCorrectAnswer() == 0);
-        cbAnswer2.setChecked(question.getCorrectAnswer() == 1);
-        cbAnswer3.setChecked(question.getCorrectAnswer() == 2);
-        cbAnswer4.setChecked(question.getCorrectAnswer() == 3);
+        checkBoxAnswer1.setChecked(question.getCorrectAnswer() == 0);
+        checkBoxAnswer2.setChecked(question.getCorrectAnswer() == 1);
+        checkBoxAnswer3.setChecked(question.getCorrectAnswer() == 2);
+        checkBoxAnswer4.setChecked(question.getCorrectAnswer() == 3);
 
         // Re-enable TextWatchers after resetting fields
         etQuestion.addTextChangedListener(textWatcher);
