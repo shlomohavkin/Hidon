@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.hidon_home.MainActivity;
+import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
 import com.example.hidon_home.hidon.AmericanQuestionActivity;
 import com.example.hidon_home.notes_game.HostPageAdapter;
@@ -42,6 +43,7 @@ public class HostGameActivity extends AppCompatActivity {
 //    private QuestionStats currentQuestionStats;
     private CountDownTimer questionTimer;
     public static int currentQuestion;
+    Questioneer questioneer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

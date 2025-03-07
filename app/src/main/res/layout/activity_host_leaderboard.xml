@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:padding="8dp"
     android:id="@+id/main"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:backgroundTint="@color/light_gray">
 
     <androidx.recyclerview.widget.RecyclerView
