@@ -36,11 +36,6 @@ public class HostGameActivity extends AppCompatActivity {
     private HostPageAdapter pagerAdapter;
     FirebaseDatabase database;
     DatabaseReference kahootGameRef;
-
-    // Data models
-//    private QuizSession currentQuiz;
-//    private List<Player> players = new ArrayList<>();
-//    private QuestionStats currentQuestionStats;
     private CountDownTimer questionTimer;
     public static int currentQuestion;
     Questioneer questioneer;
@@ -144,18 +139,16 @@ public class HostGameActivity extends AppCompatActivity {
                 tvQuestionProgress.setText("Question: " + currentQuestion +
                 "/" + WaitingRoom.pickedQuestioner.getQuestioneer().size());
 
-
-                HostQuestionStats statsFragment = (HostQuestionStats) getSupportFragmentManager().findFragmentByTag("f1");
-                if (statsFragment != null) {
-                    HostQuestionStats.resetStats();
-                }
+//                HostQuestionStats statsFragment = (HostQuestionStats) getSupportFragmentManager().findFragmentByTag("f1");
+//                if (statsFragment != null) {
+//                    resetStats();
+//                }
 
                 startQuizTimer(); // when the question changes, start the timer again
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
@@ -169,11 +162,11 @@ public class HostGameActivity extends AppCompatActivity {
 //                leaderboardFragment.updatePlayerList(updatedLeaderboard);
 //            } i don't see the need at this time.
 
-            HostQuestionStats statsFragment =
-                    (HostQuestionStats) getSupportFragmentManager().findFragmentByTag("f1");
-            if (statsFragment != null) {
-                statsFragment.updateStats(); // used this code in updateQuizStats method to reset the stats, if needed
-            }
+//            HostQuestionStats statsFragment =
+//                    (HostQuestionStats) getSupportFragmentManager().findFragmentByTag("f1");
+//            if (statsFragment != null) {
+//                statsFragment.updateStats(); // used this code in updateQuizStats method to reset the stats, if needed
+//            }
 
         } catch (Exception e) {
         }

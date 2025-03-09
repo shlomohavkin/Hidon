@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:cardCornerRadius="16dp"
     android:clipToPadding="false"
     android:clipChildren="false"
     app:cardBackgroundColor="@color/white"
-    app:contentPadding="0dp"> <!-- Added explicit zero padding -->
+    app:contentPadding="0dp"
+    android:layout_marginLeft="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_vertical"
-        android:padding="0dp"> <!-- Changed from 5dp to 0dp -->
+        android:padding="0dp">
 
         <!-- General Stats Card -->
         <androidx.cardview.widget.CardView
@@ -23,19 +24,19 @@
             android:elevation="4dp"
             app:cardCornerRadius="8dp"
             app:cardBackgroundColor="@color/white"
-            android:layout_marginBottom="8dp"> <!-- Reduced from 16dp -->
+            android:layout_marginBottom="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="8dp"> <!-- Reduced from 12dp -->
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/tvResponseCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Responses: 5/7 players"
+                    android:text="Responses: 0/7 players"
                     android:textSize="18sp"
                     android:textColor="@color/text_primary"
                     android:drawablePadding="8dp"
@@ -64,7 +65,7 @@
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:layout_marginBottom="8dp"
-            android:paddingHorizontal="8dp" /> <!-- Added horizontal padding -->
+            android:paddingHorizontal="8dp" />
 
         <!-- Answer Distribution Card -->
         <androidx.cardview.widget.CardView
@@ -73,13 +74,13 @@
             android:elevation="4dp"
             app:cardCornerRadius="8dp"
             app:cardBackgroundColor="@color/white"
-            android:layout_marginBottom="0dp"> <!-- Added zero bottom margin -->
+            android:layout_marginBottom="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"> <!-- Reduced from 16dp -->
+                android:padding="12dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -88,14 +89,15 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:layout_marginBottom="8dp" /> <!-- Reduced from 12dp -->
+                    android:layout_marginBottom="8dp" />
 
                 <!-- Option A -->
                 <LinearLayout
+                    android:id="@+id/answer1Layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="4dp"> <!-- Reduced from 8dp -->
+                    android:layout_marginTop="4dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -104,6 +106,7 @@
                         android:layout_marginBottom="4dp">
 
                         <TextView
+                            android:id="@+id/tvAnswer1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Option A"
@@ -130,15 +133,14 @@
                         android:progress="0" />
                 </LinearLayout>
 
-                <!-- Other options remain the same -->
                 <!-- Option B -->
                 <LinearLayout
+                    android:id="@+id/answer2Layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="12dp"> <!-- Reduced from 16dp -->
+                    android:layout_marginTop="12dp">
 
-                    <!-- B option content remains unchanged -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -146,6 +148,7 @@
                         android:layout_marginBottom="4dp">
 
                         <TextView
+                            android:id="@+id/tvAnswer2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Option B"
@@ -174,12 +177,12 @@
 
                 <!-- Option C -->
                 <LinearLayout
+                    android:id="@+id/answer3Layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="12dp"> <!-- Reduced from 16dp -->
+                    android:layout_marginTop="12dp">
 
-                    <!-- C option content remains unchanged -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -187,6 +190,7 @@
                         android:layout_marginBottom="4dp">
 
                         <TextView
+                            android:id="@+id/tvAnswer3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Option C"
@@ -215,12 +219,12 @@
 
                 <!-- Option D -->
                 <LinearLayout
+                    android:id="@+id/answer4Layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="12dp"> <!-- Reduced from 16dp -->
+                    android:layout_marginTop="12dp">
 
-                    <!-- D option content remains unchanged -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -228,6 +232,7 @@
                         android:layout_marginBottom="4dp">
 
                         <TextView
+                            android:id="@+id/tvAnswer4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Option D"
