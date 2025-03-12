@@ -33,12 +33,12 @@ public class HostQuestionStats extends Fragment {
     private TextView tvPercentA, tvPercentB, tvPercentC, tvPercentD, tvResponseCount, tvAverageTime;
     FirebaseDatabase database;
     DatabaseReference kahootGameRef;
-    int playerCount = WaitingRoom.notesGame.getPlayerCount() - 1;
     LinearLayout dotIndicatorContainer;
     ViewPager2 viewPager;
     View[] dots;
     View view;
     private ArrayList<QuestionStatsCardFragment> fragmentReferences = new ArrayList<>();
+    int prevChangeIndex = -1;
 
     @Nullable
     @Override
@@ -179,6 +179,9 @@ public class HostQuestionStats extends Fragment {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (HostGameActivity.isEnded) {
+                    kahootGameRef.removeEventListener(this);
+                }
                 Game.PlayerState playerState = snapshot.getValue(Game.PlayerState.class);
 
                 // Find the fragment for the current question
@@ -188,6 +191,10 @@ public class HostQuestionStats extends Fragment {
 
                     // Update the fragment if it's been created
                     if (fragment != null && fragment.isAdded()) {
+//                        if (prevChangeIndex != questionIndex) {
+//                            fragment.resetStats();
+//                        }
+//                        prevChangeIndex = questionIndex;
                         fragment.updateStats(playerState);
                     } else {
                         // Store the update for when the fragment becomes available

@@ -146,8 +146,8 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                     gamesRef.child(gameId).removeEventListener(this);
                     return;
                 }
-                numberAnsweredText.setText(String.valueOf(++answeredPlayers));
 
+                int actualAnsweredCount = 0;
 
                 // here we fill the array of the player states for the states of all the players
                 ArrayList<Game.PlayerState> playersState = new ArrayList<>();
@@ -156,6 +156,9 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                         Game.PlayerState player = playerSnapshot.getValue(Game.PlayerState.class);
                         if (player != null) {
                             playersState.add(player);
+                            if (player.getLastQuestionAnswered() == currentQuestion) {
+                                actualAnsweredCount++;
+                            }
                         }
                     }
                 } else {
@@ -163,9 +166,14 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                         Game.PlayerState player = playerSnapshot.getValue(Game.PlayerState.class);
                         if (player != null) {
                             playersState.add(player);
+                            if (player.getLastQuestionAnswered() == currentQuestion) {
+                                actualAnsweredCount++;
+                            }
                         }
                     }
                 }
+
+                numberAnsweredText.setText(String.valueOf(actualAnsweredCount));
 
                 // we fill the array of the correct answers of the players and the last question answered by the players from the players state array
                 boolean[] playeriCorrect = new boolean[numberOfPlayers];

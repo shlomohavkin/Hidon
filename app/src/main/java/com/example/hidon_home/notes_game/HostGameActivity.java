@@ -3,6 +3,8 @@ package com.example.hidon_home.notes_game;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -39,6 +41,7 @@ public class HostGameActivity extends AppCompatActivity {
     private CountDownTimer questionTimer;
     public static int currentQuestion;
     Questioneer questioneer;
+    public static boolean isEnded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,7 @@ public class HostGameActivity extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
+
     }
 
     private void setupViewPager() {
@@ -131,18 +135,19 @@ public class HostGameActivity extends AppCompatActivity {
     private void updateQuizInfoUI() {
         tvQuizTitle.setText(WaitingRoom.pickedQuestioner.getTitle());
 
-        kahootGameRef.child(String.valueOf(JoinScreen.roomCode)).child("currentQuestion").addValueEventListener(new ValueEventListener() {
+        kahootGameRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                currentQuestion = snapshot.getValue(Integer.class);
+                currentQuestion = snapshot.child("currentQuestion").getValue(Integer.class);
 
                 tvQuestionProgress.setText("Question: " + currentQuestion +
                 "/" + WaitingRoom.pickedQuestioner.getQuestioneer().size());
 
-//                HostQuestionStats statsFragment = (HostQuestionStats) getSupportFragmentManager().findFragmentByTag("f1");
-//                if (statsFragment != null) {
-//                    resetStats();
-//                }
+                if (isEnded) {
+                    kahootGameRef.removeEventListener(this);
+                    endGame();
+                }
+
 
                 startQuizTimer(); // when the question changes, start the timer again
             }
@@ -239,4 +244,26 @@ public class HostGameActivity extends AppCompatActivity {
 //        // In a real app, this would notify all players that we've moved to a new question
 //        System.out.println("Notifying players: Moving to question " + currentQuiz.getCurrentQuestionNumber());
 //    }
+
+    public void endGame() {
+        Button goBackButton = findViewById(R.id.goBackButton);
+        goBackButton.setVisibility(View.VISIBLE);
+        goBackButton.setTranslationY(goBackButton.getHeight()); // Move it out of view
+        goBackButton.setAlpha(0f); // Make it transparent
+
+        goBackButton.animate()
+                .translationY(0f)
+                .alpha(1f)
+                .setDuration(500)
+                .setInterpolator(new DecelerateInterpolator())
+                .start();
+
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                startActivity(new Intent(HostGameActivity.this, MainActivity.class));
+            }
+        });
+    }
 }

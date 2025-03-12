@@ -32,6 +32,7 @@ public class QuestionStatsPagerAdapter extends FragmentStateAdapter {
         QuestionStatsCardFragment fragment = new QuestionStatsCardFragment();
         Bundle args = new Bundle();
         args.putInt("questionIndex", HostGameActivity.currentQuestion - 1);
+        args.putInt("questionNumber", position + 1);
         args.putString("questionText", question.getQuestionContent());
         args.putString("Answer1", question.getAnswers().get(0));
         args.putString("Answer2", question.getAnswers().get(1));
