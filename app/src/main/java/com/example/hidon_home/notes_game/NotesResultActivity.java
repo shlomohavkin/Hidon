@@ -3,6 +3,7 @@ package com.example.hidon_home.notes_game;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -71,9 +72,17 @@ public class NotesResultActivity extends AppCompatActivity {
             public void onClick(View v) {
                 MainActivity.isStarted = false;
                 MainActivity.isPlayer1 = false;
+                MainActivity.isMainPlayer = false;
+                MainActivity.isNotesGame = false;
                 NotesGameControlActivity.game = null;
                 NotesGameControlActivity.currentQuestion = 0;
-                kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).removeValue();
+                WaitingRoom.notesGame = null;
+                WaitingRoom.pickedQuestioner = null;
+                WaitingRoom.playerNum = -1;
+                if (GameQuestionsActivity.isAutoGenQuestionerChosen) {
+                    kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).removeValue();
+                    // if the questions are generated automatically then remove the game from the database from the user and not the host
+                }
                 startActivity(new Intent(NotesResultActivity.this, MainActivity.class));
             }
         });

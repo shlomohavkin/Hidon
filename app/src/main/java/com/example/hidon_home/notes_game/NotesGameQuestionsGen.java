@@ -40,7 +40,6 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
     private ArrayList<Question> questions;
     private ArrayList<Button> navigationButtons;
     private int currentQuestionIndex = -1;
-    public static ArrayList<Questioneer> questioners = new ArrayList<>();
     private TextWatcher textWatcher = new FieldTextWatcher();
     FirebaseDatabase database;
     DatabaseReference usersRef;

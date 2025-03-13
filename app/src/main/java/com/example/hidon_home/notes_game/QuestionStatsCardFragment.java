@@ -17,7 +17,8 @@ import com.example.hidon_home.R;
 
 public class QuestionStatsCardFragment extends Fragment {
     LinearLayout llAnswer1, llAnswer2, llAnswer3, llAnswer4;
-    private static int realTimeResponses = 0, sumForAvg = 0;
+    private static int realTimeResponses = 0;
+    public static float sumForAvg = 0f;
     public static int[] optionCounts = new int[] {0, 0, 0, 0, 0};
 
     ProgressBar progressBarA, progressBarB, progressBarC, progressBarD;

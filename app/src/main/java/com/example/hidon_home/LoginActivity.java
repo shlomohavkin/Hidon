@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
     FirebaseDatabase database;
     DatabaseReference usersRef;
+    public static User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +80,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(username).exists()) {
-                    User user = dataSnapshot.child(username).getValue(User.class);
+                    user = dataSnapshot.child(username).getValue(User.class);
                     if (user.getPassword().equals(password)) {
-                        MainActivity.user = new User(user);
                         usersRef.removeEventListener(this);
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     } else {

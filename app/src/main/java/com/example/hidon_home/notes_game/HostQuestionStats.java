@@ -27,10 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HostQuestionStats extends Fragment {
-    private ProgressBar progressBarA, progressBarB, progressBarC, progressBarD;
     public static Questioneer questioneer;
-
-    private TextView tvPercentA, tvPercentB, tvPercentC, tvPercentD, tvResponseCount, tvAverageTime;
     FirebaseDatabase database;
     DatabaseReference kahootGameRef;
     LinearLayout dotIndicatorContainer;
@@ -38,7 +35,6 @@ public class HostQuestionStats extends Fragment {
     View[] dots;
     View view;
     private ArrayList<QuestionStatsCardFragment> fragmentReferences = new ArrayList<>();
-    int prevChangeIndex = -1;
 
     @Nullable
     @Override

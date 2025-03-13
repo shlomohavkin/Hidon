@@ -32,7 +32,7 @@ import java.util.List;
 public class HostGameActivity extends AppCompatActivity {
 
     private TextView tvQuizTitle, tvQuestionProgress, tvTimer;
-    private Button btnPause, btnSkip, btnEnd;
+    private Button btnPause, btnSkip, btnEnd, goBackButton;
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private HostPageAdapter pagerAdapter;
@@ -40,7 +40,6 @@ public class HostGameActivity extends AppCompatActivity {
     DatabaseReference kahootGameRef;
     private CountDownTimer questionTimer;
     public static int currentQuestion;
-    Questioneer questioneer;
     public static boolean isEnded = false;
 
     @Override
@@ -70,6 +69,8 @@ public class HostGameActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
+        goBackButton = findViewById(R.id.goBackButton);
+        goBackButton.setVisibility(View.GONE);
     }
 
     private void setupViewPager() {
@@ -138,16 +139,15 @@ public class HostGameActivity extends AppCompatActivity {
         kahootGameRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (isEnded) {
+                    kahootGameRef.child(String.valueOf(JoinScreen.roomCode)).removeEventListener(this);
+                    endGame();
+                    return;
+                }
                 currentQuestion = snapshot.child("currentQuestion").getValue(Integer.class);
 
                 tvQuestionProgress.setText("Question: " + currentQuestion +
                 "/" + WaitingRoom.pickedQuestioner.getQuestioneer().size());
-
-                if (isEnded) {
-                    kahootGameRef.removeEventListener(this);
-                    endGame();
-                }
-
 
                 startQuizTimer(); // when the question changes, start the timer again
             }
@@ -245,8 +245,7 @@ public class HostGameActivity extends AppCompatActivity {
 //        System.out.println("Notifying players: Moving to question " + currentQuiz.getCurrentQuestionNumber());
 //    }
 
-    public void endGame() {
-        Button goBackButton = findViewById(R.id.goBackButton);
+    private void endGame() {
         goBackButton.setVisibility(View.VISIBLE);
         goBackButton.setTranslationY(goBackButton.getHeight()); // Move it out of view
         goBackButton.setAlpha(0f); // Make it transparent
@@ -261,6 +260,17 @@ public class HostGameActivity extends AppCompatActivity {
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.isStarted = false;
+                MainActivity.isPlayer1 = false;
+                NotesGameControlActivity.game = null;
+                NotesGameControlActivity.currentQuestion = 0;
+                WaitingRoom.notesGame = null;
+                WaitingRoom.pickedQuestioner = null;
+                WaitingRoom.playerNum = -1;
+                HostQuestionStats.questioneer = null;
+                HostGameActivity.isEnded = false;
+                HostGameActivity.currentQuestion = 0;
+                kahootGameRef.child(String.valueOf(JoinScreen.roomCode)).removeValue();
                 finish();
                 startActivity(new Intent(HostGameActivity.this, MainActivity.class));
             }

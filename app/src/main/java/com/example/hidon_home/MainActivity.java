@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     public static boolean isNotesGame;
     FirebaseDatabase database;
     DatabaseReference myRef;
-    TextView title;
     public static @Nullable UUID gameID;
     public static User user;
     Button notesGameButton, joinGameNotes, createQuestionsNotes, startGameNotes;
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("hello world");
         isStarted = false;
         isPlayer1 = false;
+        user = new User(LoginActivity.user);
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("game_status");
 
