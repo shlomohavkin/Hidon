@@ -5,11 +5,11 @@
             <gradient
                 android:startColor="#B0D0FF"
                 android:endColor="#FFFFFF"
-                android:angle="270" />
+                android:angle="45" />
         </shape>
     </item>
 
-    <!-- Pattern Overlay (optional) -->
+    <!-- Pattern -->
     <item>
         <bitmap
             android:src="@drawable/pattern"

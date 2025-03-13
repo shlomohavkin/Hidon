@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="24dp"
+    android:width="24dp"
+    android:viewportHeight="24"
+    android:viewportWidth="24"
+    android:name="ic_join">
+    <path
+        android:fillColor="#000000"
+        android:pathData="M19,3H5V15H9L6,12L10,8L14,12L11,15H19V3M14,17V21H11V17H14Z"/>
+</vector>

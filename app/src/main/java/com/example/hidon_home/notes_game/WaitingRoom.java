@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ public class WaitingRoom extends AppCompatActivity {
     public static NotesGame notesGame;
     ListView nameList;
     ArrayAdapter<String> adapter;
+    LinearLayout waitingLayout;
     ArrayList<String> playerNames;
     ValueEventListener listener;
     static Questioneer pickedQuestioner;
@@ -57,9 +59,10 @@ public class WaitingRoom extends AppCompatActivity {
         roomCodeNumber = findViewById(R.id.roomCode);
         playerCountNumber = findViewById(R.id.numberOfPlayers);
         nameList = findViewById(R.id.playersList);
+        waitingLayout = findViewById(R.id.waitingLayout);
 
         playerNames = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playerNames);
+        adapter = new WaitingScreenPlayerListAdapter(this, playerNames);
         nameList.setAdapter(adapter);
 
         if (MainActivity.isMainPlayer) {
@@ -67,6 +70,8 @@ public class WaitingRoom extends AppCompatActivity {
         }
         roomCodeNumber.setText(String.valueOf(JoinScreen.roomCode));
 
+
+        // listener to check if the game has started by the host or if the player has joined the game
         kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -81,7 +86,7 @@ public class WaitingRoom extends AppCompatActivity {
                 }
                 notesGame.setPlayerCount(notesGame.getPlayerCount() + 1);
                 if (playerNum == -1) {
-                    playerNum = notesGame.getPlayerCount() - 1;
+                    playerNum = notesGame.getPlayerCount() - 1; // give the player a number
 
                     if (notesGame.getNames() == null) {
                         notesGame.setNames(new ArrayList<>());
@@ -128,6 +133,9 @@ public class WaitingRoom extends AppCompatActivity {
         if (snapshot1.exists()) {
             NotesGame updatedGame = snapshot1.getValue(NotesGame.class);
             if (updatedGame != null && updatedGame.getNames() != null) {
+                if (updatedGame.getPlayerCount() > 0 && waitingLayout.getVisibility() == LinearLayout.VISIBLE) {
+                    waitingLayout.setVisibility(LinearLayout.GONE);
+                }
                 playerNames.clear();
                 playerNames.addAll(updatedGame.getNames());
                 nameList.setAdapter(adapter);

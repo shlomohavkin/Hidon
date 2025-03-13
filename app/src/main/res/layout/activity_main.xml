@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- Main Layout XML -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -21,15 +21,20 @@
             android:text="Quiz Game"
             android:textSize="52sp"
             android:fontFamily="sans-serif-black"
-            android:textColor="#333333"
+            android:textColor="@color/text_primary"
             android:layout_gravity="center"
-            android:letterSpacing="0.05"/>
+            android:letterSpacing="0.05"
+            android:shadowColor="#20000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"/>
 
         <View
             android:id="@+id/divider"
             android:layout_width="120dp"
             android:layout_height="4dp"
-            android:background="@color/white"
+            android:background="@color/text_primary"
+            android:alpha="0.3"
             android:layout_gravity="center"
             android:layout_marginTop="8dp"/>
     </LinearLayout>
@@ -48,19 +53,22 @@
             android:id="@+id/mainContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingVertical="16dp">
 
             <!-- 1v1 Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1v1 Challenge"
+                app:icon="@drawable/ic_versus"
                 android:textSize="24sp"
-                android:textColor="#333333"
+                android:textColor="@color/text_primary"
                 android:fontFamily="sans-serif-medium"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="4dp"/>
 
+            <!-- Start Game Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/start_button"
                 android:layout_width="match_parent"
@@ -68,24 +76,28 @@
                 android:text="Start Game"
                 android:textSize="22sp"
                 app:cornerRadius="15dp"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#007BFF"
-                android:onClick="onStartClickOnline"
-                android:layout_marginBottom="16dp"/>
+                android:textColor="@android:color/white"
+                app:iconTint="@android:color/white"
+                app:icon="@drawable/ic_play"
+                app:backgroundTint="@color/button_primary"
+                android:layout_marginBottom="16dp"
+                style="@style/Widget.MaterialComponents.Button"
+                android:onClick="onStartClickOnline"/>
 
-            <!-- Hidden Waiting Popup -->
+            <!-- Waiting Popup -->
             <LinearLayout
                 android:id="@+id/waiting_popup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="5dp"
+                android:padding="4dp"
                 android:layout_marginBottom="8dp"
                 android:visibility="gone">
 
                 <ProgressBar
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:indeterminateTint="@color/button_primary"
                     android:layout_gravity="center_vertical"/>
 
                 <TextView
@@ -93,10 +105,12 @@
                     android:layout_height="wrap_content"
                     android:text="Waiting for another player..."
                     android:textSize="20sp"
-                    android:textColor="#4d4c4c"
-                    android:layout_marginStart="8dp"/>
+                    android:textColor="@color/text_primary"
+                    android:alpha="0.9"
+                    android:layout_marginStart="16dp"/>
             </LinearLayout>
 
+            <!-- Join Game Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/join_button"
                 android:layout_width="match_parent"
@@ -104,12 +118,15 @@
                 android:text="Join Game"
                 android:textSize="22sp"
                 app:cornerRadius="15dp"
-                android:backgroundTint="#FFFFFF"
-                app:strokeColor="#0056b3"
-                app:strokeWidth="3dp"
-                android:textColor="#0056b3"
-                android:onClick="onJoinCLickOnline"
-                android:layout_marginBottom="32dp"/>
+                app:icon="@drawable/ic_join"
+                app:iconTint="@color/button_primary"
+                app:strokeColor="@color/button_outline"
+                app:strokeWidth="2dp"
+                android:textColor="@color/button_primary"
+                android:backgroundTint="@color/button_secondary"
+                android:layout_marginBottom="32dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:onClick="onJoinCLickOnline"/>
 
             <!-- Multiplayer Section -->
             <TextView
@@ -117,30 +134,35 @@
                 android:layout_height="wrap_content"
                 android:text="Multiplayer Quiz"
                 android:textSize="24sp"
-                android:textColor="#333333"
+                android:textColor="@color/text_primary"
                 android:fontFamily="sans-serif-medium"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="4dp"/>
 
+            <!-- Notes Game Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/notes_button"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:text="Notes Game"
+                app:icon="@drawable/ic_notes"
                 android:textSize="22sp"
                 app:cornerRadius="15dp"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#007BFF"
+                android:textColor="@android:color/white"
+                app:iconTint="@android:color/white"
+                app:backgroundTint="@color/button_primary"
+                android:layout_marginBottom="8dp"
                 android:onClick="onNotesGameButtonClick"/>
 
-            <!-- Hidden Notes Game Options -->
+            <!-- Notes Game Options -->
             <LinearLayout
                 android:id="@+id/notes_game_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="8dp">
+                android:padding="8dp">
 
+                <!-- Start Notes Game Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/start_notes_game_button"
                     android:layout_width="match_parent"
@@ -148,12 +170,15 @@
                     android:text="Start Game"
                     android:textSize="22sp"
                     app:cornerRadius="15dp"
-                    android:textColor="#FFFFFF"
-                    android:backgroundTint="#007BFF"
-                    android:onClick="onNotesGameStart"
+                    android:textColor="@android:color/white"
+                    app:icon="@drawable/ic_play"
+                    app:iconTint="@android:color/white"
+                    app:backgroundTint="@color/button_primary"
                     android:layout_marginBottom="8dp"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:onClick="onNotesGameStart"/>
 
+                <!-- Join Notes Game Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/join_notes_game_button"
                     android:layout_width="match_parent"
@@ -161,25 +186,31 @@
                     android:text="Join Game"
                     android:textSize="22sp"
                     app:cornerRadius="15dp"
-                    android:backgroundTint="#FFFFFF"
-                    app:strokeColor="#0056b3"
-                    app:strokeWidth="3dp"
-                    android:textColor="#0056b3"
-                    android:onClick="onNotesGameJoin"
+                    app:icon="@drawable/ic_join"
+                    app:iconTint="@color/button_primary"
+                    app:strokeColor="@color/button_outline"
+                    app:strokeWidth="2dp"
+                    android:textColor="@color/button_primary"
+                    android:backgroundTint="@color/button_secondary"
                     android:layout_marginBottom="8dp"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:onClick="onNotesGameJoin"/>
 
+                <!-- Create Questions Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/create_questions_button"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:text="Create Questions"
+                    app:icon="@drawable/ic_create"
                     android:textSize="22sp"
                     app:cornerRadius="15dp"
-                    android:textColor="#FFFFFF"
-                    android:backgroundTint="#28A745"
-                    android:onClick="onNotesCreateClick"
-                    android:visibility="gone"/>
+                    android:textColor="@android:color/white"
+                    app:iconTint="@android:color/white"
+                    app:backgroundTint="@color/button_success"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"
+                    android:onClick="onNotesCreateClick"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -191,9 +222,10 @@
         android:layout_height="wrap_content"
         android:text="Ready to test your knowledge?"
         android:textSize="20sp"
-        android:textColor="#333333"
+        android:textColor="@color/text_primary"
+        android:alpha="0.9"
         android:fontFamily="sans-serif-medium"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="12dp"/>
 </RelativeLayout>
