@@ -177,20 +177,24 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
         updateNavigationButtonColor(currentQuestionIndex);
     }
     private int areAllFieldsFilled() {
+        boolean isOneChecked = checkBoxAnswer1.isChecked() || checkBoxAnswer2.isChecked() || checkBoxAnswer3.isChecked() || checkBoxAnswer4.isChecked();
+
         if (!etQuestion.getText().toString().trim().isEmpty()
                 && !etAnswer1.getText().toString().trim().isEmpty()
                 && !etAnswer2.getText().toString().trim().isEmpty()
                 && !etAnswer3.getText().toString().trim().isEmpty()
-                && !etAnswer4.getText().toString().trim().isEmpty()) {
-            return 1;
-        } else if ((etQuestion.getText().toString().trim().isEmpty()
+                && !etAnswer4.getText().toString().trim().isEmpty()
+                && isOneChecked) {
+            return 1; // return 1 if all fields are filled
+        } else if (etQuestion.getText().toString().trim().isEmpty()
                 && etAnswer1.getText().toString().trim().isEmpty()
                 && etAnswer2.getText().toString().trim().isEmpty()
                 && etAnswer3.getText().toString().trim().isEmpty()
-                && etAnswer4.getText().toString().trim().isEmpty())) {
-            return 0;
+                && etAnswer4.getText().toString().trim().isEmpty()
+                && !isOneChecked) {
+            return 0; // return 0 if all fields are empty
         } else {
-            return -1;
+            return -1; // return -1 if some fields are empty
         }
     }
 
@@ -206,13 +210,14 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
             Chip chip = (Chip) questionsNavigation.getChildAt(currentQuestionIndex);
             // Check if all fields are filled
             if (areAllFieldsFilled() == 1) {
-                // Change navigation button to green
+                // Change navigation button to green if all fields filled
                 chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#339900"))); // change to green
                 saveCurrentQuestion();
             } else if (areAllFieldsFilled() == 0) {
+                // If all fields are empty, change navigation button to red
                 chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#E74C3C"))); // all fields arent filled - red
             } else {
-                // If not filled, change navigation button to red
+                // If not all filled, change navigation button to yellow
                 chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#ffcc00"))); // some fields are empty - yellow
             }
         }
