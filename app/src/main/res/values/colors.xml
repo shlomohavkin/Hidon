@@ -40,8 +40,8 @@
     <color name="text_secondary">#6C7A89</color> <!-- Medium gray -->
 
     <!-- Button Colors -->
-    <color name="button_primary">#4A90E2</color>  <!-- Soft blue -->
+    <color name="button_primary">#5E35B1</color>
     <color name="button_secondary">#F5F5F5</color>
-    <color name="button_outline">#4A90E2</color>
-    <color name="button_success">#2ECC71</color>  <!-- Soft green -->
+    <color name="button_outline">#5E35B1</color>
+    <color name="button_success">#4DD0E1  </color>  <!-- Soft green -->
 </resources>

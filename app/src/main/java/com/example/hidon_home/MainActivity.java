@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("game_status");
 
-        notesGameButton = findViewById(R.id.notes_button);
+        notesGameButton = findViewById(R.id.multiplayer_button);
         startGameNotes = findViewById(R.id.start_notes_game_button);
         joinGameNotes = findViewById(R.id.join_notes_game_button);
         createQuestionsNotes = findViewById(R.id.create_questions_button);
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onNotesGameButtonClick(View view) {
+    public void onMultiplayerGameButtonClick(View view) {
         if (startGameNotes.getVisibility() == View.GONE) {
             joinGameNotes.setVisibility(View.VISIBLE);
             createQuestionsNotes.setVisibility(View.VISIBLE);
