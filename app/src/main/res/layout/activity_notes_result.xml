@@ -88,12 +88,13 @@
     <!-- Back to Main Menu Button -->
     <Button
         android:id="@+id/back_to_menu_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="32dp"
-        android:backgroundTint="#009688"
+        android:backgroundTint="@color/primary"
         android:text="Back to Main Menu"
         android:textColor="#FFFFFF"
         android:padding="12dp"

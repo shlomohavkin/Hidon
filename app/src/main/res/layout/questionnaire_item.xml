@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp"
+    app:strokeWidth="2dp"
+    app:strokeColor="#AAB7B8"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="@color/light_blue">
+
+        <!-- Questionnaire Title -->
+        <TextView
+            android:id="@+id/questionnaireTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sample Questionnaire"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textAlignment="center"/>
+
+        <!-- Subtitle -->
+        <TextView
+            android:id="@+id/questionnaireSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap to select this questionnaire"
+            android:textSize="12sp"
+            android:textColor="#1C2833"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:textAlignment="center"/>
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -43,5 +43,6 @@
     <color name="button_primary">#5E35B1</color>
     <color name="button_secondary">#F5F5F5</color>
     <color name="button_outline">#5E35B1</color>
-    <color name="button_success">#4DD0E1  </color>  <!-- Soft green -->
+    <color name="button_success">#4DD0E1  </color>
+    <color name="light_blue">#E6F0FF</color>
 </resources>
