@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.hidon_home.LoginActivity;
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
@@ -41,6 +43,7 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
     private ArrayList<Button> navigationButtons;
     private int currentQuestionIndex = -1;
     private TextWatcher textWatcher = new FieldTextWatcher();
+    private CheckBoxChangedListener checkboxWatcher = new CheckBoxChangedListener();
     FirebaseDatabase database;
     DatabaseReference usersRef;
 
@@ -80,6 +83,13 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
         etAnswer2.addTextChangedListener(textWatcher);
         etAnswer3.addTextChangedListener(textWatcher);
         etAnswer4.addTextChangedListener(textWatcher);
+
+        checkBoxAnswer1.setOnCheckedChangeListener(checkboxWatcher);
+        checkBoxAnswer2.setOnCheckedChangeListener(checkboxWatcher);
+        checkBoxAnswer3.setOnCheckedChangeListener(checkboxWatcher);
+        checkBoxAnswer4.setOnCheckedChangeListener(checkboxWatcher);
+
+
 
         // Add a new question
         btnAddQuestion.setOnClickListener(v -> {
@@ -228,6 +238,43 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
         }
     }
 
+    private class CheckBoxChangedListener implements CompoundButton.OnCheckedChangeListener {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            // if a checkbox is checked then the other should be unchecked
+            if (isChecked) {
+                if (buttonView.getId() == R.id.cbAnswer1) {
+                    checkBoxAnswer2.setChecked(false);
+                    checkBoxAnswer3.setChecked(false);
+                    checkBoxAnswer4.setChecked(false);
+                } else if (buttonView.getId() == R.id.cbAnswer2) {
+                    checkBoxAnswer1.setChecked(false);
+                    checkBoxAnswer3.setChecked(false);
+                    checkBoxAnswer4.setChecked(false);
+                } else if (buttonView.getId() == R.id.cbAnswer3) {
+                    checkBoxAnswer1.setChecked(false);
+                    checkBoxAnswer2.setChecked(false);
+                    checkBoxAnswer4.setChecked(false);
+                } else if (buttonView.getId() == R.id.cbAnswer4) {
+                    checkBoxAnswer1.setChecked(false);
+                    checkBoxAnswer2.setChecked(false);
+                    checkBoxAnswer3.setChecked(false);
+                }
+            }
+
+            // Update the navigation button color
+            Chip chip = (Chip) questionsNavigation.getChildAt(currentQuestionIndex);
+            if (areAllFieldsFilled() == 1) {
+                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#339900"))); // change to green
+                saveCurrentQuestion();
+            } else if (areAllFieldsFilled() == 0) {
+                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#E74C3C"))); // all fields arent filled - red
+            } else {
+                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#ffcc00"))); // some fields are empty - yellow
+            }
+        }
+    }
+
     /**
      * Update the color of the navigation button based on the question's completion status.
      *
@@ -322,7 +369,8 @@ public class NotesGameQuestionsGen extends AppCompatActivity {
                 Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
             } else {
                 // Handle saving the questionnaire name
-                MainActivity.user.addQuestion(new Questioneer(questions, questionnaireName));
+                MainActivity.user.addQuestioneer(new Questioneer(questions, questionnaireName));
+                LoginActivity.user.addQuestioneer(new Questioneer(questions, questionnaireName));
                 usersRef.child(MainActivity.user.getName()).setValue(MainActivity.user);
                 Toast.makeText(this, "Saved as: " + questionnaireName, Toast.LENGTH_SHORT).show();
                 Log.d("Questioneer Saved", MainActivity.user.getQuestioners().get(0).toString());

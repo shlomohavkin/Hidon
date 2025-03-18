@@ -30,7 +30,6 @@ public class NotesResultActivity extends AppCompatActivity {
     Button backMenuButton;
     int score;
     int ranking;
-    private static final long START_TIME_IN_MILLIS = 5000; // 5 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

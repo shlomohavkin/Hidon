@@ -76,7 +76,7 @@ public class User {
         this.questioners = questioners;
     }
 
-    public void addQuestion(Questioneer questioneer) {
+    public void addQuestioneer(Questioneer questioneer) {
         if (this.questioners == null) {
             this.questioners = new ArrayList<>();
         }
