@@ -130,7 +130,10 @@ public class GameControlActivity extends AppCompatActivity {
         // Start the first question activity
         if (currentQuestion != game.getQuestions().size()) {
             currentQuestion++;
-            startActivity(new Intent(this, AmericanQuestionActivity.class));
+            Intent intent = new Intent(this, AmericanQuestionActivity.class);
+            intent.putExtra("questionNumber", currentQuestion); // send the current question the AmericanQuestionActivity
+            intent.putExtra("game", game); // send the game object to the AmericanQuestionActivity
+            startActivity(intent);
         } else {
             startActivity(new Intent(GameControlActivity.this, ResultActivity.class));
         }

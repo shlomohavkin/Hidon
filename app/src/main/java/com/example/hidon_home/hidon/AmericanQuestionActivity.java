@@ -43,7 +43,7 @@ import java.util.Map;
 public class AmericanQuestionActivity extends AppCompatActivity {
     private static final int CORRECT_ANSWER_POINTS = 20;
     private static final int KAHOOT_MAX_POINTS = 100;
-    public static final long TIMEOUT_MILLIS = 15000; // 15 seconds
+    public static final long TIMEOUT_MILLIS = 15000; // 15 seconds to answer a question
     Question question;
     TextView questionContent, leftPlayerScore, rightPlayerScore, leftPlayerName, rightPlayerName, numberOfPlayersText, numberAnsweredText, answeredTextView;
     Button answer1, answer2, answer3, answer4;
@@ -54,7 +54,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
     private ValueAnimator progressAnimator;
     String gameId;
     public static int numberOfPlayers;
-    int currentQuestion, answeredPlayers = -1; // because when we start the activity we increment it by 1
+    int currentQuestion;
     Game game;
     long questionCreatedTimestamp;
 
@@ -66,25 +66,24 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         isScreenFinished = false;
         isUpdatedScore = false;
 
-        questionCreatedTimestamp = System.currentTimeMillis(); // get the time the question was created
-
         database = FirebaseDatabase.getInstance();
+
+        Intent intent = getIntent();
+        currentQuestion = intent.getIntExtra("questionNumber", 0);
+        game = intent.getParcelableExtra("game");
 
         if (!MainActivity.isNotesGame) {
             gamesRef = database.getReference("games");
             numberOfPlayers = 2;
-            currentQuestion = GameControlActivity.currentQuestion;
-            game = GameControlActivity.game;
         }
         else {
             gamesRef = database.getReference("kahoot_games");
             numberOfPlayers = WaitingRoom.notesGame.getPlayerCount() - 1;
-            currentQuestion = NotesGameControlActivity.currentQuestion;
-            game = NotesGameControlActivity.game;
         }
 
         question = game.getQuestions().get(currentQuestion - 1);
         timeProgressBar = findViewById(R.id.timeProgressBar);
+        questionCreatedTimestamp = System.currentTimeMillis(); // get the time the question was created
 
         questionContent = findViewById(R.id.QuestionContent);
         answer1 = findViewById(R.id.Answer1);
@@ -261,7 +260,9 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                             new Handler().postDelayed(() -> {
                                 gamesRef.child(gameId).removeEventListener(this);
                                 gamesRef.child(gameId).setValue(game);
-                                startActivity(new Intent(AmericanQuestionActivity.this, GameControlActivity.class));
+                                Intent intent = new Intent(AmericanQuestionActivity.this, GameControlActivity.class);
+                                intent.putExtra("game", game);
+                                startActivity(intent);
                             }, 2000);
                         }
                     }
@@ -446,10 +447,14 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                         gamesRef.child(gameId).removeEventListener(this);
                         if (MainActivity.isNotesGame) {
                             gamesRef.child(gameId).child("game").setValue(game);
-                            startActivity(new Intent(AmericanQuestionActivity.this, LeaderboardActivity.class));
+                            Intent intent = new Intent(AmericanQuestionActivity.this, LeaderboardActivity.class);
+                            intent.putExtra("game", game); // need to fix here, so that the info gets to the gameControlActivity
+                            startActivity(intent);
                         } else {
                             gamesRef.child(gameId).setValue(game);
-                            startActivity(new Intent(AmericanQuestionActivity.this, GameControlActivity.class));
+                            Intent intent = new Intent(AmericanQuestionActivity.this, GameControlActivity.class);
+                            intent.putExtra("game", game); // and here, because i send it, but i dont update the game object in the gameControlActivity
+                            startActivity(intent);
                         }
                     }, 2000);
                 } else {

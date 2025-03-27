@@ -1,8 +1,11 @@
 package com.example.hidon_home;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class Game {
+public class Game implements Parcelable {
     private String id;
     private ArrayList<Integer> playersScore = new ArrayList<>();
     private ArrayList<Question> questions = new ArrayList<>();
@@ -19,6 +22,45 @@ public class Game {
     public Game() {
         // Default constructor required for Firebase
     }
+
+    // Parcelable Constructor
+    protected Game(Parcel in) {
+        this.id = in.readString();
+        this.playersScore = new ArrayList<>();
+        in.readList(this.playersScore, Integer.class.getClassLoader());
+        this.questions = in.createTypedArrayList(Question.CREATOR);
+        this.playersState = in.createTypedArrayList(PlayerState.CREATOR);
+    }
+
+    // Parcelable Creator
+    public static final Creator<Game> CREATOR = new Creator<Game>() {
+        @Override
+        public Game createFromParcel(Parcel in) {
+            return new Game(in);
+        }
+
+        @Override
+        public Game[] newArray(int size) {
+            return new Game[size];
+        }
+    };
+
+    // Parcelable method to describe contents
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // Write object data to parcel
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeList(this.playersScore);
+        dest.writeTypedList(this.questions);
+        dest.writeTypedList(this.playersState);
+    }
+
+
 
     public String getId() {
         return id;
@@ -76,8 +118,9 @@ public class Game {
     }
 
 
+
     // Nested class for Player State
-    public static class PlayerState {
+    public static class PlayerState implements Parcelable {
         private int lastQuestionAnswered;
         private boolean isCorrectAnswerChosen;
         private long timeStamp;
@@ -98,6 +141,42 @@ public class Game {
 
         public PlayerState() {
             // Default constructor required for Firebase
+        }
+
+        // Parcelable Constructor
+        protected PlayerState(Parcel in) {
+            this.lastQuestionAnswered = in.readInt();
+            this.isCorrectAnswerChosen = in.readByte() != 0;
+            this.timeStamp = in.readLong();
+            this.answerChosen = in.readInt();
+        }
+
+        // Parcelable Creator
+        public static final Creator<PlayerState> CREATOR = new Creator<PlayerState>() {
+            @Override
+            public PlayerState createFromParcel(Parcel in) {
+                return new PlayerState(in);
+            }
+
+            @Override
+            public PlayerState[] newArray(int size) {
+                return new PlayerState[size];
+            }
+        };
+
+        // Parcelable method to describe contents
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        // Write object data to parcel
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.lastQuestionAnswered);
+            dest.writeByte((byte) (this.isCorrectAnswerChosen ? 1 : 0));
+            dest.writeLong(this.timeStamp);
+            dest.writeInt(this.answerChosen);
         }
 
         public int getLastQuestionAnswered() {

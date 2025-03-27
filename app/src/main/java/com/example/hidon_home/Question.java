@@ -1,5 +1,8 @@
 package com.example.hidon_home;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -7,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class Question {
+public class Question implements Parcelable {
 
     private String questionContent;
     private ArrayList<String> answers = new ArrayList<>();
@@ -26,6 +29,43 @@ public class Question {
         this.answers = new ArrayList<>();
         this.answers.addAll(other.answers);
         this.correctAnswer = other.correctAnswer;
+    }
+
+    protected Question(Parcel in) {
+        this.questionContent = in.readString();
+
+        // Read answers
+        this.answers = new ArrayList<>();
+        in.readStringList(this.answers);
+
+        this.correctAnswer = in.readInt();
+    }
+
+    // Parcelable Creator
+    public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {
+        @Override
+        public Question createFromParcel(Parcel in) {
+            return new Question(in);
+        }
+
+        @Override
+        public Question[] newArray(int size) {
+            return new Question[size];
+        }
+    };
+
+    // Parcelable method to describe contents
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // Write object data to parcel
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.questionContent);
+        dest.writeStringList(this.answers);
+        dest.writeInt(this.correctAnswer);
     }
 
 
