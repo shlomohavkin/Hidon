@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.hidon_home.Game;
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.Question;
+import com.example.hidon_home.notes_game.NotesGameControlActivity;
 import com.example.hidon_home.question_gen.QuestionCallBack;
 import com.example.hidon_home.question_gen.QuestionGenerator;
 import com.example.hidon_home.R;
@@ -41,11 +42,6 @@ public class GameControlActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         loading_screen_text = findViewById(R.id.loading_message);
         gamesRef = database.getReference("games");
-        Intent intent = getIntent();
-        Game updatedGame = intent.getParcelableExtra("game");
-        if (intent.getParcelableExtra("game") != null) {
-            game = updatedGame;
-        }
 
 
         if (currentQuestion == 0) {
@@ -135,9 +131,8 @@ public class GameControlActivity extends AppCompatActivity {
         // Start the first question activity
         if (currentQuestion != game.getQuestions().size()) {
             currentQuestion++;
-            Intent intent = new Intent(this, AmericanQuestionActivity.class);
-            intent.putExtra("questionNumber", currentQuestion); // send the current question the AmericanQuestionActivity
-            intent.putExtra("game", game); // send the game object to the AmericanQuestionActivity
+            Intent intent = new Intent(GameControlActivity.this, AmericanQuestionActivity.class);
+            intent.putExtra("currentQuestion", currentQuestion);
             startActivity(intent);
         } else {
             startActivity(new Intent(GameControlActivity.this, ResultActivity.class));

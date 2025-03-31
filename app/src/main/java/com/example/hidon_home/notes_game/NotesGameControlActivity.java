@@ -42,11 +42,6 @@ public class NotesGameControlActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         loading_screen_text = findViewById(R.id.loading_message);
         gamesRef = database.getReference("kahoot_games");
-        Intent currentIntent = getIntent();
-        Game updatedGame = currentIntent.getParcelableExtra("game");
-        if (updatedGame != null) {
-            game = updatedGame;
-        }
 
         if (currentQuestion == 0) {
             if (MainActivity.isMainPlayer && GameQuestionsActivity.isAutoGenQuestionerChosen) {
@@ -146,9 +141,8 @@ public class NotesGameControlActivity extends AppCompatActivity {
 
         if (currentQuestion != game.getQuestions().size()) {
             currentQuestion++;
-            Intent intent = new Intent(this, AmericanQuestionActivity.class);
-            intent.putExtra("questionNumber", currentQuestion); // send the current question the AmericanQuestionActivity
-            intent.putExtra("game", game); // send the game object to the AmericanQuestionActivity
+            Intent intent = new Intent(NotesGameControlActivity.this, AmericanQuestionActivity.class);
+            intent.putExtra("currentQuestion", currentQuestion);
             startActivity(intent);
         } else {
             startActivity(new Intent(NotesGameControlActivity.this, NotesResultActivity.class));
