@@ -26,6 +26,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     DatabaseReference kahootGamesRef;
     private TextView countdownText;
     private static final long START_TIME_IN_MILLIS = 5000; // 5 seconds
+    Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,9 @@ public class LeaderboardActivity extends AppCompatActivity {
         kahootGamesRef = database.getReference("kahoot_games");
         leaderboard = new ArrayList<>();
         countdownText = findViewById(R.id.countdownText);
+
+        Intent thisIntent = getIntent(); // get the game object that is sent
+        game = thisIntent.getParcelableExtra("game");
 
 
         // Get leaderboard from database
@@ -137,7 +141,10 @@ public class LeaderboardActivity extends AppCompatActivity {
                 // Set countdown to 0 when finished
                 countdownText.setText("0");
                 leaderboard.clear();
-                startActivity(new Intent(LeaderboardActivity.this, NotesGameControlActivity.class));
+
+                Intent intent = new Intent(LeaderboardActivity.this, NotesGameControlActivity.class);
+                intent.putExtra("game", game); // forward it to the game control activity
+                startActivity(intent);
             }
         }.start();
     }

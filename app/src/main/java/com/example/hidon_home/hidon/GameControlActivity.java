@@ -41,6 +41,11 @@ public class GameControlActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         loading_screen_text = findViewById(R.id.loading_message);
         gamesRef = database.getReference("games");
+        Intent intent = getIntent();
+        Game updatedGame = intent.getParcelableExtra("game");
+        if (intent.getParcelableExtra("game") != null) {
+            game = updatedGame;
+        }
 
 
         if (currentQuestion == 0) {

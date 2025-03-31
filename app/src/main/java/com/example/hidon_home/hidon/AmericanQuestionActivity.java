@@ -241,10 +241,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
                             game.setPlayersScoreAt(game.getPlayersScoreAt(i) + CORRECT_ANSWER_POINTS, i);
 
-                            if (!MainActivity.isNotesGame && i == 0) {
-                                leftPlayerScore.setText(String.valueOf(game.getPlayersScoreAt(0)));
-                                rightPlayerScore.setText(String.valueOf(game.getPlayersScoreAt(1)));
-                            } else if (!MainActivity.isNotesGame && i == 1) {
+                            if (!MainActivity.isNotesGame && i == 0 || i == 1) {
                                 if (MainActivity.isPlayer1) {
                                     rightPlayerScore.setText(String.valueOf(game.getPlayersScoreAt(1))); // set the left score to the your score
                                     leftPlayerScore.setText(String.valueOf(game.getPlayersScoreAt(0)));

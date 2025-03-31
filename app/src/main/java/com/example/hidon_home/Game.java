@@ -14,9 +14,9 @@ public class Game implements Parcelable {
 
     public Game(String id, ArrayList<Integer> playersScore1, ArrayList<Question> questions, ArrayList<PlayerState> playersState) {
         this.id = id;
-        this.questions = new ArrayList<>(questions); // Deep copy of questions
-        this.playersState = new ArrayList<>(playersState); // Deep copy of players state
-        this.playersScore = new ArrayList<>(playersScore1); // Deep copy of players score
+        this.questions = new ArrayList<>(questions); // copy of questions
+        this.playersState = new ArrayList<>(playersState); // copy of players state
+        this.playersScore = new ArrayList<>(playersScore1); // copy of players score
     }
 
     public Game() {

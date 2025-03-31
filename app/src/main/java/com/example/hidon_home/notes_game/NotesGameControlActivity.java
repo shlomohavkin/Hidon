@@ -42,6 +42,11 @@ public class NotesGameControlActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         loading_screen_text = findViewById(R.id.loading_message);
         gamesRef = database.getReference("kahoot_games");
+        Intent currentIntent = getIntent();
+        Game updatedGame = currentIntent.getParcelableExtra("game");
+        if (updatedGame != null) {
+            game = updatedGame;
+        }
 
         if (currentQuestion == 0) {
             if (MainActivity.isMainPlayer && GameQuestionsActivity.isAutoGenQuestionerChosen) {
