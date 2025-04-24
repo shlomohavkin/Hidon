@@ -32,7 +32,7 @@ import java.util.List;
 public class HostGameActivity extends AppCompatActivity {
 
     private TextView tvQuizTitle, tvQuestionProgress, tvTimer;
-    private Button btnPause, btnSkip, btnEnd, goBackButton;
+    private Button goBackButton;
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private HostPageAdapter pagerAdapter;
@@ -49,7 +49,6 @@ public class HostGameActivity extends AppCompatActivity {
 
         initViews();
         setupViewPager();
-        setupListeners();
         loadQuizData();
         startQuizTimer();
     }
@@ -61,10 +60,6 @@ public class HostGameActivity extends AppCompatActivity {
         tvQuizTitle = findViewById(R.id.tvQuizTitle);
         tvQuestionProgress = findViewById(R.id.tvQuestionProgress);
         tvTimer = findViewById(R.id.tvTimer);
-
-        btnPause = findViewById(R.id.btnPause);
-        btnSkip = findViewById(R.id.btnSkip);
-        btnEnd = findViewById(R.id.btnEnd);
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
@@ -90,47 +85,9 @@ public class HostGameActivity extends AppCompatActivity {
         }).attach();
     }
 
-    private void setupListeners() {
-//        btnPause.setOnClickListener(v -> {
-//            // Toggle pause state
-//            boolean isPaused = currentQuiz.togglePauseState();
-//            btnPause.setText(isPaused ? "RESUME" : "PAUSE");
-//            // Update UI and notify players of pause/resume
-//            if (isPaused) {
-//                if (questionTimer != null) questionTimer.cancel();
-//            } else {
-//                startQuizTimer();
-//            }
-//            notifyPlayersOfPauseState(isPaused);
-//        });
-//
-//        btnSkip.setOnClickListener(v -> {
-//            // Confirm with dialog
-//            new AlertDialog.Builder(this)
-//                    .setTitle("Skip Question")
-//                    .setMessage("Are you sure you want to skip to the next question?")
-//                    .setPositiveButton("Skip", (dialog, which) -> skipToNextQuestion())
-//                    .setNegativeButton("Cancel", null)
-//                    .show();
-//        });
-//
-//        btnEnd.setOnClickListener(v -> {
-//            // Confirm with dialog
-//            new AlertDialog.Builder(this)
-//                    .setTitle("End Quiz")
-//                    .setMessage("Are you sure you want to end the quiz? This will show final results to all players.")
-//                    .setPositiveButton("End Quiz", (dialog, which) -> endQuiz())
-//                    .setNegativeButton("Cancel", null)
-//                    .show();
-//        });
-    }
-
     private void loadQuizData() {
         //Update UI with quiz data
         updateQuizInfoUI();
-
-        // Update fragments with data
-        updateFragmentsWithData();
     }
 
     private void updateQuizInfoUI() {
@@ -156,25 +113,6 @@ public class HostGameActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-    }
-
-    private void updateFragmentsWithData() {
-
-        try {
-            HostLeaderboard leaderboardFragment =
-                    (HostLeaderboard) getSupportFragmentManager().findFragmentByTag("f0");
-//            if (leaderboardFragment != null) {
-//                leaderboardFragment.updatePlayerList(updatedLeaderboard);
-//            } i don't see the need at this time.
-
-//            HostQuestionStats statsFragment =
-//                    (HostQuestionStats) getSupportFragmentManager().findFragmentByTag("f1");
-//            if (statsFragment != null) {
-//                statsFragment.updateStats(); // used this code in updateQuizStats method to reset the stats, if needed
-//            }
-
-        } catch (Exception e) {
-        }
     }
 
     private void startQuizTimer() {
@@ -203,36 +141,6 @@ public class HostGameActivity extends AppCompatActivity {
 //        startActivity(new Intent(this, MainActivity.class));
     }
 
-//    private void skipToNextQuestion() {
-//        // Logic to move to next question
-//        currentQuiz.moveToNextQuestion();
-//        updateQuizInfoUI();
-//
-//        // Reset timer
-//        startQuizTimer();
-//
-//        // Get new question stats (would come from server in real app)
-//        currentQuestionStats = new QuestionStats(currentQuiz.getCurrentQuestionNumber(), "New Category");
-//
-//        // Update fragments
-//        updateFragmentsWithData();
-//
-//        // Notify all players about question change
-//        notifyPlayersOfQuestionChange();
-//    }
-
-//    private void endQuiz() {
-//        // Logic to end quiz and show results
-//        if (questionTimer != null) {
-//            questionTimer.cancel();
-//        }
-//
-//        // Navigate to results screen
-//        Intent intent = new Intent(this, QuizResultsActivity.class);
-//        intent.putExtra("QUIZ_ID", currentQuiz.getQuizId());
-//        startActivity(intent);
-//        finish();
-//    }
 
     private void notifyPlayersOfPauseState(boolean isPaused) {
         // In a real app, this would send a message to your backend/server

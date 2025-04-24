@@ -60,7 +60,7 @@
             android:name=".notes_game.WaitingRoom"
             android:exported="false" />
         <activity
-            android:name=".notes_game.NotesGameQuestionsGen"
+            android:name=".notes_game.NotesGameQuestionsGenActivity"
             android:exported="false" />
         <activity
             android:name=".hidon.ResultActivity"

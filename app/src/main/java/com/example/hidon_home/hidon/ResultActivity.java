@@ -16,25 +16,31 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ResultActivity extends AppCompatActivity {
     TextView score, result;
+    final int MAX_SCORE = 140;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         boolean isPlayer1Won = false;
+        boolean isDraw = false;
         score = findViewById(R.id.score_text);
         result = findViewById(R.id.explanation_text);
 
         score.setText("You scored: " +
                 (MainActivity.isPlayer1 ? GameControlActivity.game.getPlayersScoreAt(0) : GameControlActivity.game.getPlayersScoreAt(1))
-                + "/100");
+                + "/" + MAX_SCORE);
 
         if (GameControlActivity.game.getPlayersScoreAt(0) > GameControlActivity.game.getPlayersScoreAt(1))
             isPlayer1Won = true;
+        else if (GameControlActivity.game.getPlayersScoreAt(0) == GameControlActivity.game.getPlayersScoreAt(1))
+            isDraw = true;
 
-        if ((MainActivity.isPlayer1 && isPlayer1Won) || (!MainActivity.isPlayer1 && !isPlayer1Won)) {
+        if (!isDraw && ((MainActivity.isPlayer1 && isPlayer1Won) || (!MainActivity.isPlayer1 && !isPlayer1Won))) {
             result.setText("You won! Congratulations!");
-        } else {
+        } else if (isDraw) {
+            result.setText("It's a draw! Try again?");
+        }else {
             result.setText("You lost! Better luck next time!");
         }
 

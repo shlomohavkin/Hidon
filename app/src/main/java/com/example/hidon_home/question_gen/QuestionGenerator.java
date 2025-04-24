@@ -25,19 +25,18 @@ public class QuestionGenerator {
                 "system",
                 "You are an assistant for generating different trivia questions in JSON format for a trivia game."
         );
-        Random rnd = new Random();
 
         ChatGPTRequest.Message userMessage = new ChatGPTRequest.Message(
                 "user",
-                "Create 20 hard trivia questions, choose random 5 of those and generate a JSON string containing those trivia questions in this format: " +
+                "Generate 22 hard trivia questions, choose random 7 from those and generate a JSON string containing those trivia questions in this format: " +
                         "{ \"questions\": [ { \"questionContent\": \"\", \"answers\": [\"\", \"\", \"\", \"\"], \"correctAnswer\": 0 } ] } " +
-                        "Ensure all questions and answers are valid and accurate. Very Important: Don't!! add any text or symbols other than the format above");
+                        "Ensure all questions and answers are valid and accurate. Very Important: Don't!! add any text or symbols other than the format above.");
 
         // Create Request Object
         ChatGPTRequest request = new ChatGPTRequest(
                 "gpt-4o-mini", // Model
                 new ChatGPTRequest.Message[]{systemMessage, userMessage},
-                500, 1f, 1f
+                1000, 1f, 1f
         );
 
 

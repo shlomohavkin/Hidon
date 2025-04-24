@@ -34,7 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class NotesGameQuestionsGen extends AppCompatActivity {
+public class NotesGameQuestionsGenActivity extends AppCompatActivity {
     private com.google.android.material.textfield.TextInputEditText etQuestion, etAnswer1, etAnswer2, etAnswer3, etAnswer4;
     private com.google.android.material.checkbox.MaterialCheckBox checkBoxAnswer1, checkBoxAnswer2, checkBoxAnswer3, checkBoxAnswer4;
     private com.google.android.material.button.MaterialButton btnAddQuestion;

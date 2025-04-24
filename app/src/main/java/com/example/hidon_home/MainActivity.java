@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.hidon_home.hidon.GameControlActivity;
 import com.example.hidon_home.notes_game.GameQuestionsActivity;
 import com.example.hidon_home.notes_game.JoinScreen;
-import com.example.hidon_home.notes_game.NotesGameQuestionsGen;
+import com.example.hidon_home.notes_game.NotesGameQuestionsGenActivity;
 import com.example.hidon_home.notes_game.WaitingRoom;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onNotesCreateClick(View view) {
-        startActivity(new Intent(this, NotesGameQuestionsGen.class));
+        startActivity(new Intent(this, NotesGameQuestionsGenActivity.class));
     }
 
     public void onNotesGameStart(View view) {

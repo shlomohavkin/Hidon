@@ -54,7 +54,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
     private ValueAnimator progressAnimator;
     String gameId;
     public static int numberOfPlayers;
-    int currentQuestion, answeredPlayers = -1; // because when we start the activity we increment it by 1
+    int currentQuestion; // because when we start the activity we increment it by 1
     Game game;
     long questionCreatedTimestamp;
 
