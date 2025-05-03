@@ -3,7 +3,6 @@ package com.example.hidon_home.notes_game;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -44,7 +43,7 @@ public class NotesResultActivity extends AppCompatActivity {
         playerScore = findViewById(R.id.player_score);
 
         // Get leaderboard from database
-        kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).get().addOnCompleteListener(task -> {
+        kahootGamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
                 ArrayList<Integer> scores = new ArrayList<>();
                 for (DataSnapshot snapshot : task.getResult().child("game").child("playersScore").getChildren()) {
@@ -75,11 +74,11 @@ public class NotesResultActivity extends AppCompatActivity {
                 MainActivity.isNotesGame = false;
                 NotesGameControlActivity.game = null;
                 NotesGameControlActivity.currentQuestion = 0;
-                WaitingRoom.notesGame = null;
-                WaitingRoom.pickedQuestioner = null;
-                WaitingRoom.playerNum = -1;
+                WaitingRoomActivity.notesGame = null;
+                WaitingRoomActivity.pickedQuestioner = null;
+                WaitingRoomActivity.playerNum = -1;
                 if (GameQuestionsActivity.isAutoGenQuestionerChosen) {
-                    kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).removeValue();
+                    kahootGamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).removeValue();
                     // if the questions are generated automatically then remove the game from the database from the user and not the host
                 }
                 startActivity(new Intent(NotesResultActivity.this, MainActivity.class));
@@ -93,7 +92,7 @@ public class NotesResultActivity extends AppCompatActivity {
         leaderboardContainer.removeAllViews();
 
         for (Map.Entry<String, Integer> entry : leaderboard) {
-            if (entry.getKey().equals(JoinScreen.playerName)) {
+            if (entry.getKey().equals(JoinScreenActivity.playerName)) {
                 score = entry.getValue();
                 ranking = leaderboard.indexOf(entry) + 1;
                 String rankingString = ranking == 1 ? "1st" : ranking == 2 ? "2nd" : ranking == 3 ? "3rd" : (String.valueOf(ranking) + "th");
@@ -102,7 +101,7 @@ public class NotesResultActivity extends AppCompatActivity {
             }
 
             LinearLayout row = new LinearLayout(this);
-            if (entry.getKey().equals(JoinScreen.playerName))
+            if (entry.getKey().equals(JoinScreenActivity.playerName))
                 row.setBackground(getDrawable(R.drawable.rounded_corners_background_highlighted));
             else
                 row.setBackground(getDrawable(R.drawable.rounded_corners_background_not_highlighted));

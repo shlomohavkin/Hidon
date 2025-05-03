@@ -12,7 +12,7 @@ import com.example.hidon_home.R;
 
 import java.util.List;
 
-public class SelectQuestioneerScreen extends AppCompatActivity {
+public class SelectQuestioneerActivity extends AppCompatActivity {
     RecyclerView questionnaireRecyclerView;
     Button backButton;
     List<Questioneer> questionList;

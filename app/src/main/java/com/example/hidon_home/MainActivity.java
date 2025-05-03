@@ -8,7 +8,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -16,9 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hidon_home.hidon.GameControlActivity;
 import com.example.hidon_home.notes_game.GameQuestionsActivity;
-import com.example.hidon_home.notes_game.JoinScreen;
+import com.example.hidon_home.notes_game.JoinScreenActivity;
 import com.example.hidon_home.notes_game.NotesGameQuestionsGenActivity;
-import com.example.hidon_home.notes_game.WaitingRoom;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -187,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
     public void onNotesGameJoin(View view) {
         isMainPlayer = false;
         isNotesGame = true;
-        startActivity(new Intent(this, JoinScreen.class));
+        startActivity(new Intent(this, JoinScreenActivity.class));
     }
 
 

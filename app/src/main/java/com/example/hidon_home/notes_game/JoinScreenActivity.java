@@ -11,7 +11,7 @@ import com.example.hidon_home.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class JoinScreen extends AppCompatActivity {
+public class JoinScreenActivity extends AppCompatActivity {
     EditText roomCodeText, playerNameText;
     FirebaseDatabase database;
     DatabaseReference kahootGamesRef;
@@ -39,7 +39,7 @@ public class JoinScreen extends AppCompatActivity {
                     kahootGamesRef.child(roomCodeText.getText().toString()).child("players").child(playerNameText.getText().toString());
                     roomCode = Integer.parseInt(roomCodeText.getText().toString());
                     playerName = playerNameText.getText().toString();
-                    startActivity(new Intent(this, WaitingRoom.class));
+                    startActivity(new Intent(this, WaitingRoomActivity.class));
                 } else {
                     roomCodeText.setError("Room code does not exist");
                 }

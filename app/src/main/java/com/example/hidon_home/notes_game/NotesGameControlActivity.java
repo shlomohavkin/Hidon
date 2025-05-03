@@ -51,7 +51,7 @@ public class NotesGameControlActivity extends AppCompatActivity {
                 ArrayList<Game.PlayerState> playersState = new ArrayList<>();
                 ArrayList<Integer> playersScore = new ArrayList<>();
 
-                for (int i = 0; i < WaitingRoom.notesGame.getPlayerCount() - 1; i++) {
+                for (int i = 0; i < WaitingRoomActivity.notesGame.getPlayerCount() - 1; i++) {
                     Game.PlayerState playerState = new Game.PlayerState(0, false, 0);
                     playerState.setAnswerChosen(4);
                     playersState.add(playerState);
@@ -59,11 +59,11 @@ public class NotesGameControlActivity extends AppCompatActivity {
                     playersScore.add(0);
                 }
 
-                game = new Game(String.valueOf(JoinScreen.roomCode), playersScore, WaitingRoom.pickedQuestioner.getQuestioneer(), playersState);
-                gamesRef.child(String.valueOf(JoinScreen.roomCode)).child("game").setValue(game);
+                game = new Game(String.valueOf(JoinScreenActivity.roomCode), playersScore, WaitingRoomActivity.pickedQuestioner.getQuestioneer(), playersState);
+                gamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).child("game").setValue(game);
                 startActivity(new Intent(this, HostGameActivity.class));
             } else {
-                gamesRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
+                gamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         game = snapshot.child("game").getValue(Game.class);
@@ -74,7 +74,7 @@ public class NotesGameControlActivity extends AppCompatActivity {
                             Log.d("DataSnapshotError", "Game is not null.");
                             Log.d("Game", "Game found: " + game.getId());
                             Log.d("Game", "Game questions: " + game.getQuestions().toString());
-                            gamesRef.child(String.valueOf(JoinScreen.roomCode)).removeEventListener(this);
+                            gamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).removeEventListener(this);
                             startGame();
                         }
                     }
@@ -110,7 +110,7 @@ public class NotesGameControlActivity extends AppCompatActivity {
                     ArrayList<Game.PlayerState> playersState = new ArrayList<>();
                     ArrayList<Integer> playersScore = new ArrayList<>();
 
-                    for (int i = 0; i < WaitingRoom.notesGame.getPlayerCount() - 1; i++) {
+                    for (int i = 0; i < WaitingRoomActivity.notesGame.getPlayerCount() - 1; i++) {
                         Game.PlayerState playerState = new Game.PlayerState(0, false, 0);
                         playerState.setAnswerChosen(4);
                         playersState.add(playerState);
@@ -118,8 +118,8 @@ public class NotesGameControlActivity extends AppCompatActivity {
                         playersScore.add(0);
                     }
 
-                    game = new Game(String.valueOf(JoinScreen.roomCode), playersScore, questions, playersState);
-                    gamesRef.child(String.valueOf(JoinScreen.roomCode)).child("game").setValue(game); // Store in Firebase
+                    game = new Game(String.valueOf(JoinScreenActivity.roomCode), playersScore, questions, playersState);
+                    gamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).child("game").setValue(game); // Store in Firebase
                     startGame();
                 } else {
                     Log.e("Question Error", "Failed to generate questions");

@@ -9,15 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.hidon_home.MainActivity;
-import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
-import com.example.hidon_home.hidon.AmericanQuestionActivity;
-import com.example.hidon_home.notes_game.HostPageAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.database.DataSnapshot;
@@ -25,9 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HostGameActivity extends AppCompatActivity {
 
@@ -91,20 +84,20 @@ public class HostGameActivity extends AppCompatActivity {
     }
 
     private void updateQuizInfoUI() {
-        tvQuizTitle.setText(WaitingRoom.pickedQuestioner.getTitle());
+        tvQuizTitle.setText(WaitingRoomActivity.pickedQuestioner.getTitle());
 
-        kahootGameRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
+        kahootGameRef.child(String.valueOf(JoinScreenActivity.roomCode)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (isEnded) {
-                    kahootGameRef.child(String.valueOf(JoinScreen.roomCode)).removeEventListener(this);
+                    kahootGameRef.child(String.valueOf(JoinScreenActivity.roomCode)).removeEventListener(this);
                     endGame();
                     return;
                 }
                 currentQuestion = snapshot.child("currentQuestion").getValue(Integer.class);
 
                 tvQuestionProgress.setText("Question: " + currentQuestion +
-                "/" + WaitingRoom.pickedQuestioner.getQuestioneer().size());
+                "/" + WaitingRoomActivity.pickedQuestioner.getQuestioneer().size());
 
                 startQuizTimer(); // when the question changes, start the timer again
             }
@@ -172,13 +165,13 @@ public class HostGameActivity extends AppCompatActivity {
                 MainActivity.isPlayer1 = false;
                 NotesGameControlActivity.game = null;
                 NotesGameControlActivity.currentQuestion = 0;
-                WaitingRoom.notesGame = null;
-                WaitingRoom.pickedQuestioner = null;
-                WaitingRoom.playerNum = -1;
-                HostQuestionStats.questioneer = null;
+                WaitingRoomActivity.notesGame = null;
+                WaitingRoomActivity.pickedQuestioner = null;
+                WaitingRoomActivity.playerNum = -1;
+                HostQuestionStatsFragment.questioneer = null;
                 HostGameActivity.isEnded = false;
                 HostGameActivity.currentQuestion = 0;
-                kahootGameRef.child(String.valueOf(JoinScreen.roomCode)).removeValue();
+                kahootGameRef.child(String.valueOf(JoinScreenActivity.roomCode)).removeValue();
                 finish();
                 startActivity(new Intent(HostGameActivity.this, MainActivity.class));
             }

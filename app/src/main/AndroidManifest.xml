@@ -18,10 +18,10 @@
             android:name=".notes_game.LeaderboardAdapter"
             android:exported="false" />
         <activity
-            android:name=".notes_game.HostQuestionStats"
+            android:name=".notes_game.HostQuestionStatsFragment"
             android:exported="false" />
         <activity
-            android:name=".notes_game.HostLeaderboard"
+            android:name=".notes_game.HostLeaderboardFragment"
             android:exported="false" />
         <activity
             android:name=".notes_game.HostGameActivity"
@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".notes_game.SelectQuestioneerScreen"
+            android:name=".notes_game.SelectQuestioneerActivity"
             android:exported="false" />
         <activity
             android:name=".notes_game.NotesResultActivity"
@@ -54,10 +54,10 @@
             android:name=".notes_game.GameQuestionsActivity"
             android:exported="false" />
         <activity
-            android:name=".notes_game.JoinScreen"
+            android:name=".notes_game.JoinScreenActivity"
             android:exported="false" />
         <activity
-            android:name=".notes_game.WaitingRoom"
+            android:name=".notes_game.WaitingRoomActivity"
             android:exported="false" />
         <activity
             android:name=".notes_game.NotesGameQuestionsGenActivity"

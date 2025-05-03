@@ -36,8 +36,8 @@ public class QuestionnaireAdapter extends RecyclerView.Adapter<QuestionnaireAdap
         holder.questionnaireTitle.setText(questionnaire.getTitle());
 
         holder.cardView.setOnClickListener(v -> {
-            WaitingRoom.pickedQuestioner = questionnaire;
-            context.startActivity(new Intent(context, WaitingRoom.class));
+            WaitingRoomActivity.pickedQuestioner = questionnaire;
+            context.startActivity(new Intent(context, WaitingRoomActivity.class));
         });
     }
 

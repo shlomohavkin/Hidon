@@ -10,7 +10,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.hidon_home.Question;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class QuestionStatsPagerAdapter extends FragmentStateAdapter {
     private ArrayList<Question> questions;
@@ -39,7 +38,7 @@ public class QuestionStatsPagerAdapter extends FragmentStateAdapter {
         args.putString("Answer3", question.getAnswers().get(2));
         args.putString("Answer4", question.getAnswers().get(3));
         args.putString("CorrectAnswer", String.valueOf(question.getCorrectAnswer()));
-        args.putInt("totalPlayers", WaitingRoom.notesGame.getPlayerCount() - 1);
+        args.putInt("totalPlayers", WaitingRoomActivity.notesGame.getPlayerCount() - 1);
         fragment.setArguments(args);
         return fragment;
     }

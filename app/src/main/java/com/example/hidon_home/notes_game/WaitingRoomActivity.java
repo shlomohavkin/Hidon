@@ -24,10 +24,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-public class WaitingRoom extends AppCompatActivity {
+public class WaitingRoomActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference kahootGamesRef;
     Button startGameButton;
@@ -68,11 +67,11 @@ public class WaitingRoom extends AppCompatActivity {
         if (MainActivity.isMainPlayer) {
             createRoom();
         }
-        roomCodeNumber.setText(String.valueOf(JoinScreen.roomCode));
+        roomCodeNumber.setText(String.valueOf(JoinScreenActivity.roomCode));
 
 
         // listener to check if the game has started by the host or if the player has joined the game
-        kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(listener = new ValueEventListener() {
+        kahootGamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).addValueEventListener(listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) return;
@@ -81,8 +80,8 @@ public class WaitingRoom extends AppCompatActivity {
                 if (notesGame == null) return;
 
                 if (notesGame.getIsStarted()) {
-                    kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).removeEventListener(this);
-                    startActivity(new Intent(WaitingRoom.this, NotesGameControlActivity.class));
+                    kahootGamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).removeEventListener(this);
+                    startActivity(new Intent(WaitingRoomActivity.this, NotesGameControlActivity.class));
                 }
                 notesGame.setPlayerCount(notesGame.getPlayerCount() + 1);
                 if (playerNum == -1) {
@@ -91,7 +90,7 @@ public class WaitingRoom extends AppCompatActivity {
                     if (notesGame.getNames() == null) {
                         notesGame.setNames(new ArrayList<>());
                     }
-                    notesGame.addName(JoinScreen.playerName);
+                    notesGame.addName(JoinScreenActivity.playerName);
                     kahootGamesRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
                 }
 
@@ -107,23 +106,23 @@ public class WaitingRoom extends AppCompatActivity {
 
     private void createRoom() {
         Random rnd = new Random();
-        JoinScreen.roomCode = 1000 + rnd.nextInt(9000);
+        JoinScreenActivity.roomCode = 1000 + rnd.nextInt(9000);
         playerNum = 0;
-        JoinScreen.playerName = "Host";
+        JoinScreenActivity.playerName = "Host";
         ArrayList<String> names = new ArrayList<>();
         if (GameQuestionsActivity.isAutoGenQuestionerChosen) {
             names.add("Host");
-            notesGame = new NotesGame(JoinScreen.roomCode, 1, names, false, 0);
+            notesGame = new NotesGame(JoinScreenActivity.roomCode, 1, names, false, 0);
         } else {
-            notesGame = new NotesGame(JoinScreen.roomCode, 0, names, false, 0);
+            notesGame = new NotesGame(JoinScreenActivity.roomCode, 0, names, false, 0);
         }
 
         kahootGamesRef.child(String.valueOf(notesGame.getRoomNumber())).setValue(notesGame);
 
         startGameButton.setVisibility(Button.VISIBLE);
         startGameButton.setOnClickListener(v -> {
-            kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).child("isStarted").setValue(true);
-            kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).removeEventListener(listener);
+            kahootGamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).child("isStarted").setValue(true);
+            kahootGamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).removeEventListener(listener);
             startActivity(new Intent(this, NotesGameControlActivity.class));
         });
     }

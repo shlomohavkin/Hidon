@@ -43,7 +43,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
 
         // Get leaderboard from database
-        kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).get().addOnCompleteListener(task -> {
+        kahootGamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
                 ArrayList<Integer> scores = new ArrayList<>();
                 for (DataSnapshot snapshot : task.getResult().child("game").child("playersScore").getChildren()) {
@@ -68,7 +68,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                     playerState.setAnswerChosen(4);
                     playerStates.add(playerState);
                 }
-                kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).child("game").child("playersState").setValue(playerStates);
+                kahootGamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).child("game").child("playersState").setValue(playerStates);
 
                 startCountdown();
             } else {
@@ -86,7 +86,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         for (Map.Entry<String, Integer> entry : leaderboard) {
             LinearLayout row = new LinearLayout(this);
-            if (entry.getKey().equals(JoinScreen.playerName))
+            if (entry.getKey().equals(JoinScreenActivity.playerName))
                 row.setBackground(getDrawable(R.drawable.rounded_corners_background_highlighted));
             else
                 row.setBackground(getDrawable(R.drawable.rounded_corners_background_not_highlighted));

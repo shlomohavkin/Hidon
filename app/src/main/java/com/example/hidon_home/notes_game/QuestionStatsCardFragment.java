@@ -106,9 +106,9 @@ public class QuestionStatsCardFragment extends Fragment {
 
         // Notify the parent fragment that this fragment is ready
         Fragment parentFragment = getParentFragment();
-        if (parentFragment instanceof HostQuestionStats) {
+        if (parentFragment instanceof HostQuestionStatsFragment) {
             int position = getArguments().getInt("questionIndex");
-            ((HostQuestionStats) parentFragment).applyPendingUpdates(position);
+            ((HostQuestionStatsFragment) parentFragment).applyPendingUpdates(position);
         }
     }
 
@@ -144,7 +144,7 @@ public class QuestionStatsCardFragment extends Fragment {
 
             tvAverageTime.setText("Average time: " + (sumForAvg / realTimeResponses) + "s");
 
-            if (realTimeResponses == playerCount && HostGameActivity.currentQuestion == WaitingRoom.pickedQuestioner.getQuestioneer().size()) {
+            if (realTimeResponses == playerCount && HostGameActivity.currentQuestion == WaitingRoomActivity.pickedQuestioner.getQuestioneer().size()) {
                 HostGameActivity.isEnded = true;
             }
         }

@@ -5,13 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.hidon_home.Game;
@@ -26,7 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HostQuestionStats extends Fragment {
+public class HostQuestionStatsFragment extends Fragment {
     public static Questioneer questioneer;
     FirebaseDatabase database;
     DatabaseReference kahootGameRef;
@@ -41,9 +38,9 @@ public class HostQuestionStats extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        questioneer = WaitingRoom.pickedQuestioner;
+        questioneer = WaitingRoomActivity.pickedQuestioner;
         database = FirebaseDatabase.getInstance();
-        kahootGameRef = database.getReference("kahoot_games").child(String.valueOf(JoinScreen.roomCode));
+        kahootGameRef = database.getReference("kahoot_games").child(String.valueOf(JoinScreenActivity.roomCode));
 
         // Inflate the fragment's layout
         view = inflater.inflate(R.layout.activity_host_question_stats, container, false);

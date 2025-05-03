@@ -20,11 +20,11 @@ public class GameQuestionsActivity extends AppCompatActivity {
 
     public void onCustomQuestionerClick(View view) {
         isAutoGenQuestionerChosen = false;
-        startActivity(new Intent(this, SelectQuestioneerScreen.class));
+        startActivity(new Intent(this, SelectQuestioneerActivity.class));
     }
 
     public void onAutoGenQuestionerClick(View view) {
         isAutoGenQuestionerChosen = true;
-        startActivity(new Intent(this, WaitingRoom.class));
+        startActivity(new Intent(this, WaitingRoomActivity.class));
     }
 }

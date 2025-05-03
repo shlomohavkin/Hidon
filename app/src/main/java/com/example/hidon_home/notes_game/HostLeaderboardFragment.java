@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class HostLeaderboard extends Fragment {
+public class HostLeaderboardFragment extends Fragment {
 
     private RecyclerView rvLeaderboard;
     private LeaderboardAdapter adapter;
@@ -52,7 +52,7 @@ public class HostLeaderboard extends Fragment {
         rvLeaderboard.setAdapter(adapter);
 
         // Get leaderboard from database
-        kahootGamesRef.child(String.valueOf(JoinScreen.roomCode)).addValueEventListener(new ValueEventListener() {
+        kahootGamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {

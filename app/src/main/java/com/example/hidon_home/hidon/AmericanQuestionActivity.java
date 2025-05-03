@@ -13,7 +13,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,12 +21,10 @@ import com.example.hidon_home.Game;
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
-import com.example.hidon_home.notes_game.JoinScreen;
+import com.example.hidon_home.notes_game.JoinScreenActivity;
 import com.example.hidon_home.notes_game.LeaderboardActivity;
-import com.example.hidon_home.notes_game.NotesGame;
 import com.example.hidon_home.notes_game.NotesGameControlActivity;
-import com.example.hidon_home.notes_game.WaitingRoom;
-import com.google.firebase.Timestamp;
+import com.example.hidon_home.notes_game.WaitingRoomActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -80,7 +77,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         }
         else {
             gamesRef = database.getReference("kahoot_games");
-            numberOfPlayers = WaitingRoom.notesGame.getPlayerCount() - 1;
+            numberOfPlayers = WaitingRoomActivity.notesGame.getPlayerCount() - 1;
             game = NotesGameControlActivity.game;
         }
 
@@ -127,7 +124,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
             gameId = game.getId();
         } else {
-            gameId = String.valueOf(JoinScreen.roomCode);
+            gameId = String.valueOf(JoinScreenActivity.roomCode);
             leftPlayerName.setVisibility(View.GONE);
             rightPlayerName.setVisibility(View.GONE);
             leftPlayerScore.setVisibility(View.GONE);
@@ -135,7 +132,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
             numberOfPlayersText.setText("/" + numberOfPlayers);
             numberAnsweredText.setText("0");
 
-            if (WaitingRoom.playerNum == 0) {
+            if (WaitingRoomActivity.playerNum == 0) {
                 gamesRef.child(gameId).child("currentQuestion").setValue(currentQuestion);
             }
         }
@@ -340,7 +337,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         // Record the player's response in Firebase
         String playerPath = MainActivity.isPlayer1 ? "0" : "1";
         if (MainActivity.isNotesGame) {
-            playerPath = String.valueOf(WaitingRoom.playerNum);
+            playerPath = String.valueOf(WaitingRoomActivity.playerNum);
         }
         long answerTimestamp = System.currentTimeMillis() - questionCreatedTimestamp; // get the time the player answered the question
         Game.PlayerState player = new Game.PlayerState(currentQuestion, isCorrect, answerTimestamp);
