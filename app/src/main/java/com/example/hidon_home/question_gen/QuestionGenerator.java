@@ -1,15 +1,10 @@
 package com.example.hidon_home.question_gen;
 
 import android.util.Log;
-
 import com.example.hidon_home.Question;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Random;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

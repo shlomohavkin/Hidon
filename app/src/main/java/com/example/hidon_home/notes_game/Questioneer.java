@@ -1,9 +1,13 @@
 package com.example.hidon_home.notes_game;
 
 import com.example.hidon_home.Question;
-
 import java.util.ArrayList;
 
+/**
+ * This class represents a questioneer object which contains a list of questions and a title.
+ * It is used to create a custom questioneer for the game, and saved in the firebase database
+ * in the data of the user.
+ */
 public class Questioneer {
     private ArrayList<Question> questioneer = new ArrayList<>();
     private String title;

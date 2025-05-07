@@ -1,9 +1,14 @@
 package com.example.hidon_home;
 
 import com.example.hidon_home.notes_game.Questioneer;
-
 import java.util.ArrayList;
 
+
+/**
+ * This class represents a user object which contains the user's name, email, password,
+ * and a list of questioneers.
+ * It is used to create a user object for the game, and saved in the firebase database.
+ */
 public class User {
     private String name;
     private String email;

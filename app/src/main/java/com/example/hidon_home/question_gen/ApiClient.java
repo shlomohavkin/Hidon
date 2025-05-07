@@ -3,6 +3,10 @@ package com.example.hidon_home.question_gen;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * ApiClient is a singleton class that provides a Retrofit instance for making API calls.
+ * It uses the OpenAI API base URL and GsonConverterFactory for JSON conversion.
+ */
 public class ApiClient {
     private static Retrofit retrofit = null;
 
