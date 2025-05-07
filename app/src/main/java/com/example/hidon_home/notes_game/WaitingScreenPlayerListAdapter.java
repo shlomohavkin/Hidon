@@ -7,14 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-
 import com.example.hidon_home.R;
-
 import java.util.ArrayList;
-import java.util.List;
 
+// This class is used to create a custom adapter for displaying a list of players in the waiting screen.
 public class WaitingScreenPlayerListAdapter extends ArrayAdapter<String> {
     private Context context;
     private ArrayList<String> players;

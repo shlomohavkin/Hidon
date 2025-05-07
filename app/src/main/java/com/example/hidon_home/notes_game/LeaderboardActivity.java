@@ -1,20 +1,16 @@
 package com.example.hidon_home.notes_game;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.example.hidon_home.Game;
 import com.example.hidon_home.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +22,6 @@ public class LeaderboardActivity extends AppCompatActivity {
     DatabaseReference kahootGamesRef;
     private TextView countdownText;
     private static final long START_TIME_IN_MILLIS = 5000; // 5 seconds
-    Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +33,15 @@ public class LeaderboardActivity extends AppCompatActivity {
         leaderboard = new ArrayList<>();
         countdownText = findViewById(R.id.countdownText);
 
-        Intent thisIntent = getIntent(); // get the game object that is sent
-        game = thisIntent.getParcelableExtra("game");
+        getLeaderboardFromFromDB();
+    }
 
-
-        // Get leaderboard from database
+    /**
+     * This function sets up the listener for the leaderboard and fills the leaderboard data source.
+     * It retrieves the scores and names from the database and populates the leaderboard data structure.
+     * It also sets up the countdown timer to start the game after a delay.
+     */
+    private void getLeaderboardFromFromDB() {
         kahootGamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
                 ArrayList<Integer> scores = new ArrayList<>();
@@ -75,10 +74,16 @@ public class LeaderboardActivity extends AppCompatActivity {
                 // Handle error
             }
         });
-
-
     }
 
+
+    /**
+     * This function populates the leaderboard UI with the player names and scores.
+     * It creates a row for each player and adds it to the leaderboard container.
+     * It also highlights the current player's row.
+     *
+     * @param leaderboard The list of players and their scores to be displayed, in a sorted order.
+     */
     private void populateLeaderboard(List<Map.Entry<String, Integer>> leaderboard) {
         LinearLayout leaderboardContainer = findViewById(R.id.leaderboard_container);
 
@@ -125,6 +130,11 @@ public class LeaderboardActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This function starts a countdown timer for 5 seconds.
+     * It updates the countdown text view with the remaining seconds.
+     * When the countdown finishes, it clears the leaderboard and starts the NotesGameControlActivity.
+     */
     private void startCountdown() {
         // Update the TextView with the remaining seconds
         // Set countdown to 0 when finished
@@ -143,7 +153,6 @@ public class LeaderboardActivity extends AppCompatActivity {
                 leaderboard.clear();
 
                 Intent intent = new Intent(LeaderboardActivity.this, NotesGameControlActivity.class);
-                intent.putExtra("game", game); // forward it to the game control activity
                 startActivity(intent);
             }
         }.start();

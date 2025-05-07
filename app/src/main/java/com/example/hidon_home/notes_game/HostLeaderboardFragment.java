@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.hidon_home.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -85,6 +83,10 @@ public class HostLeaderboardFragment extends Fragment {
 
     }
 
+    /**
+     * updates the leaderboard list with the updated list of dictionary.
+     * @param updatedLeaderboard
+     */
     public void updatePlayerList(List<Map.Entry<String, Integer>> updatedLeaderboard) {
         leaderboard.clear();
         leaderboard.addAll(updatedLeaderboard);

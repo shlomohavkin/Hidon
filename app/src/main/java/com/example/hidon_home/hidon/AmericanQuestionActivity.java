@@ -1,6 +1,5 @@
 package com.example.hidon_home.hidon;
 
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
@@ -13,10 +12,8 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.hidon_home.Game;
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.Question;
@@ -30,8 +27,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +65,16 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         currentQuestion = intent.getIntExtra("currentQuestion", 0);
 
+        setUpUI();
+        setUpDatabaseListener();
+        startProgressBarAnimation();
+    }
+
+    /**
+     * Initialize the views in the current screen, depending on the
+     * game, whether its 1vs1 or a notes game.
+     */
+    private void setUpUI() {
         if (!MainActivity.isNotesGame) {
             gamesRef = database.getReference("games");
             numberOfPlayers = 2;
@@ -136,7 +141,14 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                 gamesRef.child(gameId).child("currentQuestion").setValue(currentQuestion);
             }
         }
+    }
 
+    /**
+     * The function sets up a listener in the firebase database, in order to get the
+     * needed information from the changes happening on the other devices,
+     * and act according to it.
+     */
+    private void setUpDatabaseListener() {
         gamesRef.child(gameId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -267,9 +279,13 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                 Log.e("Firebase Error", "Error: " + error.getMessage());
             }
         });
-        startProgressBarAnimation();
     }
 
+
+    /**
+     * The function starts the progress bar in the bottom of the screen
+     * for the current player.
+     */
     private void startProgressBarAnimation() {
         int startProgress = 100; // Fully filled
         int endProgress = 0; // Empty
@@ -296,6 +312,12 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         progressAnimator.start();
     }
 
+    /**
+     * The function handles timeout of the progress bar, which was
+     * initialized in the previous function. If the progress bar times out,
+     * then the user moves to the next activity, according to the current mode
+     * of play.
+     */
     private void handleTimeout() {
         disableAllAnswerButtons();
 
@@ -311,6 +333,14 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         }, 2000);
     }
 
+    /**
+     * This is the main function of the current screen, which has the most logic in it.
+     * The function handles a click on one of the possible answers.
+     * Checks the Firebase whether the other players already answered
+     * and if correctly, and know to distribute the points to the correct people
+     * according to the mode of play, and knows whether to wait, or to move on.
+     * @param view the button which was clicked.
+     */
     public void onAnswerClick(View view) {
 
         // Disable all answer buttons immediately
@@ -448,7 +478,6 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                     }, 2000);
                 } else {
                     // Wait for the other player to answer
-                    //Toast.makeText(AmericanQuestionActivity.this, "Waiting for the other player...", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -459,6 +488,12 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * This function is a helper function to another one that disables the answers button views on the screen,
+     * in a couple of situation: if someone answered or if someone else answered correctly
+     * in the 1vs1 mode.
+     */
     private void disableAllAnswerButtons() {
         answer1.setEnabled(false);
         answer2.setEnabled(false);
@@ -467,7 +502,10 @@ public class AmericanQuestionActivity extends AppCompatActivity {
     }
 
 
-    // Helper method to highlight the correct answer
+    /**
+     * This function is a helper function to another function, that highlights the
+     * correct answer to the green color.
+     */
     private void highlightCorrectAnswer() {
         switch (question.getCorrectAnswer()) {
             case 0:

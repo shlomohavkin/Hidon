@@ -6,14 +6,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import com.example.hidon_home.notes_game.HostGameActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -60,6 +57,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Validates the login credentials entered by the user.
+     * Checks if the username and password fields are not empty,
+     * and verifies the credentials against the Firebase database.
+     */
     private void validateLogin() {
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();

@@ -1,7 +1,6 @@
 package com.example.hidon_home.notes_game;
 
 import androidx.fragment.app.Fragment;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -28,6 +27,6 @@ public class HostPageAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 2; // Number of tabs
+        return 2; // returns the number of tabs
     }
 }

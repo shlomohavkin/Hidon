@@ -1,17 +1,14 @@
 package com.example.hidon_home;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
+/**
+ * This class represents a question in the game.
+ */
 public class Question {
-
     private String questionContent;
     private ArrayList<String> answers = new ArrayList<>();
     private int correctAnswer;
@@ -31,6 +28,13 @@ public class Question {
         this.correctAnswer = other.correctAnswer;
     }
 
+
+    /**
+     * Converts the question object to a JSON object.
+     * This is used when I get an answer from the API
+     * and I need to convert a json object to a question object.
+     * @return A JSON object representing the question.
+     */
     public void fromJson(JSONObject json) throws Exception {
         this.questionContent = json.getString("questionContent");
         this.answers = new ArrayList<>();
@@ -49,7 +53,6 @@ public class Question {
     public int getCorrectAnswer() {
         return this.correctAnswer;
     }
-
 
     public String getQuestionContent() {
         return this.questionContent;

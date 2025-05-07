@@ -2,12 +2,10 @@ package com.example.hidon_home.notes_game;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-
 import com.example.hidon_home.Game;
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.Question;
@@ -20,7 +18,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 
 public class NotesGameControlActivity extends AppCompatActivity {
@@ -43,6 +40,17 @@ public class NotesGameControlActivity extends AppCompatActivity {
         loading_screen_text = findViewById(R.id.loading_message);
         gamesRef = database.getReference("kahoot_games");
 
+        initializeGameObjectAndStartGame();
+    }
+
+    /**
+     * Initializes the question in the quiz. If you are the main player, then it
+     * class the function to generate the question from ChatGPT.
+     * else, it gets the question the main player created from the
+     * Firebase. And if the game already started, then the function starts the game,
+     * which creates the game loop.
+     */
+    private void initializeGameObjectAndStartGame() {
         if (currentQuestion == 0) {
             if (MainActivity.isMainPlayer && GameQuestionsActivity.isAutoGenQuestionerChosen) {
                 questionGenerator = new QuestionGenerator();
@@ -91,6 +99,11 @@ public class NotesGameControlActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * The function that generates the questions for the quiz, initializes
+     * the needed objects, and does a small UI change in the text.
+     */
     private void generateQuestions() {
         // Generate all the questions
         questionGenerator.generateQuestion(new QuestionCallBack() {
@@ -130,6 +143,11 @@ public class NotesGameControlActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * The function checks that the questions are not null,
+     * and goes to the next question, or to the result screen if the game is finished.
+     */
     private void startGame() {
         for (Question q : game.getQuestions()) {
             if (q == null) {
@@ -149,6 +167,10 @@ public class NotesGameControlActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * If the questions aren't properly initialized then
+     * it shows an error and goes back to the main activity.
+     */
     private void showErrorAndReturnToMain() {
         Log.e("GameControl", "Returning to Main Activity due to question generation failure.");
         startActivity(new Intent(NotesGameControlActivity.this, MainActivity.class));

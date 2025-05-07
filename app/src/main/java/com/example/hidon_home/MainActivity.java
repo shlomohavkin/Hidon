@@ -60,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * This method is called when the user clicks the "Start" button for a 1v1 online game.
+     * @param view The view that was clicked.
+     */
     public void onStartClickOnline(View view) {
         if (!isStarted) {
             myRef.setValue("start");
@@ -89,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method is called when the user clicks the "Join" button for a 1v1 online game.
+     * @param view The view that was clicked.
+     */
     public void onJoinCLickOnline(View view) {
         if (!isStarted) {
             if (!isPlayer1) {
@@ -119,6 +127,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method checks if the input string is a valid UUID.
+     * @param input The string to check.
+     * @return true if the string is a valid UUID, false otherwise.
+     */
     public static boolean isValidUUID(String input) {
         if (input == null) {
             return false;
@@ -133,6 +146,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method is called when the user clicks the "Multiplayer Game" button.
+     * It toggles the visibility of the notes game options, and does an animation.
+     * @param view The view that was clicked.
+     */
     public void onMultiplayerGameButtonClick(View view) {
         if (startGameNotes.getVisibility() == View.GONE) {
             joinGameNotes.setVisibility(View.VISIBLE);
@@ -172,16 +190,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is called when the user clicks the "Create Questions" button.
+     * It starts the NotesGameQuestionsGenActivity.
+     * @param view The view that was clicked.
+     */
     public void onNotesCreateClick(View view) {
         startActivity(new Intent(this, NotesGameQuestionsGenActivity.class));
     }
 
+    /**
+     * This method is called when the user clicks the "Start Notes Game" button.
+     * @param view The view that was clicked.
+     */
     public void onNotesGameStart(View view) {
         isMainPlayer = true;
         isNotesGame = true;
         startActivity(new Intent(this, GameQuestionsActivity.class));
     }
 
+    /**
+     * This method is called when the user clicks the "Join Notes Game" button.
+     * @param view The view that was clicked.
+     */
     public void onNotesGameJoin(View view) {
         isMainPlayer = false;
         isNotesGame = true;

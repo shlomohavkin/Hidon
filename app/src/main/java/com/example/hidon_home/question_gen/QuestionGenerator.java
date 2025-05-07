@@ -15,8 +15,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class QuestionGenerator {
-    public QuestionGenerator() {
-    }
+    public QuestionGenerator() {} // empty constructor
+
+    /**
+     * Function that when called, sends a request to the API
+     * of ChatGPT for the questions for the current questionnaire.
+     * @param callback an interface, which has a function onQuestionsGenerated
+     * which receives a questions array when the response of ChatGPT comes through.
+     */
     public void generateQuestion(QuestionCallBack callback) {
         OpenAIApi openAIApi = ApiClient.getClient().create(OpenAIApi.class);
 
@@ -38,8 +44,6 @@ public class QuestionGenerator {
                 new ChatGPTRequest.Message[]{systemMessage, userMessage},
                 1000, 1f, 1f
         );
-
-
 
         Call<ChatGPTResponse> call = openAIApi.generateQuestion(request);
         call.enqueue(new Callback<ChatGPTResponse>() {

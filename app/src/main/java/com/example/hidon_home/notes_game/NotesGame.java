@@ -1,9 +1,14 @@
 package com.example.hidon_home.notes_game;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
+
+/**
+ * This class represents a game object which goes with the regular game object,
+ * but with additional information for the notes game.
+ * It contains information about the room number, player count, names of players,
+ * whether the game has started, and the current question number.
+ */
 public class NotesGame {
     private int roomNumber;
     private int playerCount;
@@ -69,7 +74,4 @@ public class NotesGame {
     public void setCurrentQuestion(int currentQuestion) {
         this.currentQuestion = currentQuestion;
     }
-
-
-
 }

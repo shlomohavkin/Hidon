@@ -1,16 +1,14 @@
 package com.example.hidon_home.notes_game;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-
 import com.example.hidon_home.Question;
-
 import java.util.ArrayList;
 
+// This class is used to create a pager adapter for the question stats screen.
 public class QuestionStatsPagerAdapter extends FragmentStateAdapter {
     private ArrayList<Question> questions;
 
@@ -24,6 +22,14 @@ public class QuestionStatsPagerAdapter extends FragmentStateAdapter {
         return questions.size();
     }
 
+
+    /**
+     * This method is used to create a new fragment for each question in the list.
+     * It passes the question data to the fragment using the arguments.
+     *
+     * @param position The position of the question in the list.
+     * @return A new instance of QuestionStatsCardFragment with the question data.
+     */
     @NonNull
     @Override
     public Fragment createFragment(int position) {

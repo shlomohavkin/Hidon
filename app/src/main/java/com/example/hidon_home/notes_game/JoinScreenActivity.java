@@ -1,12 +1,10 @@
 package com.example.hidon_home.notes_game;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-
 import com.example.hidon_home.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,6 +30,10 @@ public class JoinScreenActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This function is called when the user clicks the join a room button.
+     * @param view The view that was clicked.
+     */
     public void onJoinClick(View view) {
         if (!playerNameText.getText().toString().trim().isEmpty() && !roomCodeText.getText().toString().trim().isEmpty()) {
             kahootGamesRef.child(roomCodeText.getText().toString()).get().addOnCompleteListener(task -> {

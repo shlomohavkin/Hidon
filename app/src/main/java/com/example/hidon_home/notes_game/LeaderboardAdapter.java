@@ -1,19 +1,13 @@
 package com.example.hidon_home.notes_game;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.animation.ValueAnimator;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.example.hidon_home.R;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,14 +48,14 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     /**
      * Initialize the dataset of the Adapter
      *
-     * @param dataSet String[] containing the data to populate views to be used
-     * by RecyclerView
+     * @param dataSet containing the data to populate views to be used
+     * by RecyclerView, with the players names, and their scores
      */
     public LeaderboardAdapter(List<Map.Entry<String, Integer>> dataSet) {
         this.localDataSet = dataSet;
     }
 
-    // Create new views (invoked by the layout manager)
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -72,12 +66,19 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         return new ViewHolder(view);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    /**
+     * Replace the contents of a view
+     *
+     * @param viewHolder The ViewHolder which should be updated to
+     * display the contents of the item at the given position
+     * in the data set
+     * @param position The position of the item within the adapter's
+     * data set
+     */
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         String rank = String.valueOf(position + 1);
         String username = localDataSet.get(position).getKey();
-        String points = String.valueOf(localDataSet.get(position).getValue());
         int newScore = localDataSet.get(position).getValue();
 
         viewHolder.getRankTextView().setText(rank);
@@ -91,7 +92,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         currentScore = newScore;
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    // Return the size of your dataset
     @Override
     public int getItemCount() {
         return localDataSet.size();

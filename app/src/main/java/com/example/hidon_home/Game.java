@@ -1,15 +1,16 @@
 package com.example.hidon_home;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.util.ArrayList;
 
+/**
+ * This class represents a game in the application.
+ * It contains information about the game ID, players' scores, questions, and players' states.
+ */
 public class Game {
     private String id;
     private ArrayList<Integer> playersScore = new ArrayList<>();
     private ArrayList<Question> questions = new ArrayList<>();
-    private ArrayList<PlayerState> playersState = new ArrayList<>(); // Players states in the game
+    private ArrayList<PlayerState> playersState = new ArrayList<>(); // Players' states in the game
 
 
     public Game(String id, ArrayList<Integer> playersScore1, ArrayList<Question> questions, ArrayList<PlayerState> playersState) {
@@ -80,7 +81,7 @@ public class Game {
 
 
 
-    // Nested class for Player State
+    // Nested class for Player State, which represents the state of a player in the game
     public static class PlayerState {
         private int lastQuestionAnswered;
         private boolean isCorrectAnswerChosen;

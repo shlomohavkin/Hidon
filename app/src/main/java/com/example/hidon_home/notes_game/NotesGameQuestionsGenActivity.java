@@ -10,24 +10,19 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import com.example.hidon_home.LoginActivity;
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.Question;
 import com.example.hidon_home.R;
-import com.example.hidon_home.notes_game.Questioneer;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -91,7 +86,7 @@ public class NotesGameQuestionsGenActivity extends AppCompatActivity {
 
 
 
-        // Add a new question
+        // listener for the add question button
         btnAddQuestion.setOnClickListener(v -> {
             addNewQuestion();
         });
@@ -154,7 +149,7 @@ public class NotesGameQuestionsGenActivity extends AppCompatActivity {
     }
 
     /**
-     * Save the current question to the list.
+     * Save the current question to the list of questions.
      */
     private void saveCurrentQuestion() {
         if (currentQuestionIndex == -1) return;
@@ -186,6 +181,11 @@ public class NotesGameQuestionsGenActivity extends AppCompatActivity {
         // Update button color
         updateNavigationButtonColor(currentQuestionIndex);
     }
+
+    /**
+     * The function checks if all fields are filled.
+     * @return 1 if all fields are filled, 0 if all fields are empty, -1 if some fields are empty.
+     */
     private int areAllFieldsFilled() {
         boolean isOneChecked = checkBoxAnswer1.isChecked() || checkBoxAnswer2.isChecked() || checkBoxAnswer3.isChecked() || checkBoxAnswer4.isChecked();
 
@@ -208,12 +208,10 @@ public class NotesGameQuestionsGenActivity extends AppCompatActivity {
         }
     }
 
-    // TextWatcher for EditText fields
+    // TextWatcher class to listen to changes in the EditText fields
     private class FieldTextWatcher implements TextWatcher {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            // No action needed
-        }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -221,23 +219,23 @@ public class NotesGameQuestionsGenActivity extends AppCompatActivity {
             // Check if all fields are filled
             if (areAllFieldsFilled() == 1) {
                 // Change navigation button to green if all fields filled
-                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#339900"))); // change to green
+                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#339900")));
                 saveCurrentQuestion();
             } else if (areAllFieldsFilled() == 0) {
                 // If all fields are empty, change navigation button to red
-                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#E74C3C"))); // all fields arent filled - red
+                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#E74C3C")));
             } else {
                 // If not all filled, change navigation button to yellow
-                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#ffcc00"))); // some fields are empty - yellow
+                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#ffcc00")));
             }
         }
 
         @Override
-        public void afterTextChanged(Editable s) {
-            // No action needed
-        }
+        public void afterTextChanged(Editable s) {}
     }
 
+
+    // CheckBoxChangedListener class to listen to changes in the CheckBox fields
     private class CheckBoxChangedListener implements CompoundButton.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -277,7 +275,6 @@ public class NotesGameQuestionsGenActivity extends AppCompatActivity {
 
     /**
      * Update the color of the navigation button based on the question's completion status.
-     *
      * @param index The index of the question to evaluate.
      */
     private void updateNavigationButtonColor(int index) {
@@ -310,7 +307,6 @@ public class NotesGameQuestionsGenActivity extends AppCompatActivity {
 
     /**
      * Load a question into the fields for editing.
-     *
      * @param index The index of the question to load.
      */
     private void loadQuestion(int index) {
@@ -346,6 +342,12 @@ public class NotesGameQuestionsGenActivity extends AppCompatActivity {
         etAnswer4.addTextChangedListener(textWatcher);
     }
 
+    /**
+     * This function is called when the user clicks the "Save Questions" button.
+     * It checks if all questions are valid and then prompts the user to enter a name for the questionnaire.
+     * If valid, it saves the questionnaire and navigates back to the main activity.
+     * @param view The view that was clicked.
+     */
     public void onSaveQuestionsClick(View view) {
         if (!isValidQuestioneer()) {
             Toast.makeText(this, "Please fill all the questions.", Toast.LENGTH_SHORT).show();
@@ -387,6 +389,12 @@ public class NotesGameQuestionsGenActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This function checks if all questions are valid.
+     * A question is valid if it has a non-empty question content, four non-empty answers,
+     * and a valid correct answer index.
+     * @return true if all questions are valid, false otherwise.
+     */
     public boolean isValidQuestioneer() {
         Question question;
         for (int i = 0; i < questions.size(); i++) {

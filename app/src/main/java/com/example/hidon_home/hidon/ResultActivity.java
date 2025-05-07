@@ -1,16 +1,12 @@
 package com.example.hidon_home.hidon;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.R;
-import com.example.hidon_home.hidon.GameControlActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -39,7 +35,7 @@ public class ResultActivity extends AppCompatActivity {
         if (!isDraw && ((MainActivity.isPlayer1 && isPlayer1Won) || (!MainActivity.isPlayer1 && !isPlayer1Won))) {
             result.setText("You won! Congratulations!");
         } else if (isDraw) {
-            result.setText("It's a draw! Try again?");
+            result.setText("It's a draw! Rematch?");
         }else {
             result.setText("You lost! Better luck next time!");
         }

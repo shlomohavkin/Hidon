@@ -3,13 +3,11 @@ package com.example.hidon_home.notes_game;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.R;
-
 import java.util.List;
 
 public class SelectQuestioneerActivity extends AppCompatActivity {

@@ -5,12 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.example.hidon_home.Game;
 import com.example.hidon_home.R;
 import com.google.firebase.database.ChildEventListener;
@@ -18,7 +16,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,11 +42,22 @@ public class HostQuestionStatsFragment extends Fragment {
         // Inflate the fragment's layout
         view = inflater.inflate(R.layout.activity_host_question_stats, container, false);
 
+        setUpViewpager();
+
+        return view;
+    }
+
+    /**
+     * This method sets up the ViewPager2 with a custom adapter and initializes the dot indicators.
+     * It also sets up a custom page transformer for a fade effect during page transitions.
+     */
+    private void setUpViewpager() {
         viewPager = view.findViewById(R.id.viewPager);
         viewPager.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
 
         dotIndicatorContainer = view.findViewById(R.id.dotIndicatorContainer);
 
+        // Set up the ViewPager with a custom adapter
         QuestionStatsPagerAdapter adapter = new QuestionStatsPagerAdapter(getActivity(), questioneer.getQuestioneer()) {
             @NonNull
             @Override
@@ -87,11 +95,13 @@ public class HostQuestionStatsFragment extends Fragment {
                 updateDotIndicators(position);
             }
         });
-
-
-        return view;
     }
 
+    /**
+     * This class implements a custom page transformer for the ViewPager2.
+     * It creates a fade and scale effect for the pages as they are swiped to create
+     * a more dynamic and visually appealing transition.
+     */
     private class FadePageTransformer implements ViewPager2.PageTransformer {
         private static final float MIN_SCALE = 0.80f;
         private static final float MIN_ALPHA = 0.4f;
@@ -125,6 +135,11 @@ public class HostQuestionStatsFragment extends Fragment {
         }
     }
 
+    /**
+     * This method sets up the dot indicators based on the number of pages.
+     * It creates a dot for each page and adds them to the dot indicator container.
+     * @param count The number of pages in the ViewPager.
+     */
     private void setupDotIndicators(int count) {
         dots = new View[count];
         int dotSize = dpToPx(13); // Size of each dot in pixels (adjustable)
@@ -142,6 +157,11 @@ public class HostQuestionStatsFragment extends Fragment {
         }
     }
 
+    /**
+     * This method updates the dot indicators based on the selected position.
+     * It sets the selected dot to be seen and others to be semi-transparent.
+     * @param selectedPosition The position of the currently selected dot.
+     */
     private void updateDotIndicators(int selectedPosition) {
         for (int i = 0; i < dots.length; i++) {
             if (i == selectedPosition) {
@@ -152,6 +172,11 @@ public class HostQuestionStatsFragment extends Fragment {
         }
     }
 
+    /**
+     * This method converts dp to pixels based on the device's screen density.
+     * @param dp The value in dp to be converted to pixels.
+     * @return The equivalent value in pixels.
+     */
     private int dpToPx(float dp) {
         float density = getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
@@ -164,6 +189,11 @@ public class HostQuestionStatsFragment extends Fragment {
         updateStats();
     }
 
+
+    /**
+     * This method sets up a listener to update the stats in real-time.
+     * It listens for changes in the players' states and updates the relevant fragments.
+     */
     public void updateStats() {
         kahootGameRef.child("game").child("playersState").addChildEventListener(new ChildEventListener() {
             @Override
@@ -184,10 +214,6 @@ public class HostQuestionStatsFragment extends Fragment {
 
                     // Update the fragment if it's been created
                     if (fragment != null && fragment.isAdded()) {
-//                        if (prevChangeIndex != questionIndex) {
-//                            fragment.resetStats();
-//                        }
-//                        prevChangeIndex = questionIndex;
                         fragment.updateStats(playerState);
                     } else {
                         // Store the update for when the fragment becomes available
@@ -205,7 +231,12 @@ public class HostQuestionStatsFragment extends Fragment {
         });
     }
 
-    // Helper method to store updates for fragments not yet available
+    /**
+     * This method stores updates for a specific question index in a map.
+     * It allows for later retrieval and application of these updates when the corresponding fragment is available.
+     * @param questionIndex The index of the question for which the update is stored.
+     * @param playerState The player state to be stored.
+     */
     private Map<Integer, ArrayList<Game.PlayerState>> pendingUpdates = new HashMap<>();
 
     private void storeUpdateForLater(int questionIndex, Game.PlayerState playerState) {
@@ -215,7 +246,11 @@ public class HostQuestionStatsFragment extends Fragment {
         pendingUpdates.get(questionIndex).add(playerState);
     }
 
-    // Apply pending updates when a fragment becomes available
+    /**
+     * This method applies any pending updates to the fragment at the given position.
+     * It checks if there are any updates stored for that position and applies them if available.
+     * @param position The position of the fragment to apply updates to.
+     */
     public void applyPendingUpdates(int position) {
         if (pendingUpdates.containsKey(position)) {
             QuestionStatsCardFragment fragment = fragmentReferences.get(position);

@@ -7,11 +7,9 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.R;
 import com.google.android.material.tabs.TabLayout;
@@ -42,10 +40,13 @@ public class HostGameActivity extends AppCompatActivity {
 
         initViews();
         setupViewPager();
-        loadQuizData();
+        updateQuizInfoUI();
         startQuizTimer();
     }
 
+    /**
+     * Sets up the views on the screen.
+     */
     private void initViews() {
         database = FirebaseDatabase.getInstance();
         kahootGameRef = database.getReference("kahoot_games");
@@ -61,6 +62,10 @@ public class HostGameActivity extends AppCompatActivity {
         goBackButton.setVisibility(View.GONE);
     }
 
+    /**
+     * sets up the viewpager in the screen with a custom
+     * adapter and the tab layout.
+     */
     private void setupViewPager() {
         pagerAdapter = new HostPageAdapter(this);
         viewPager.setAdapter(pagerAdapter);
@@ -78,11 +83,9 @@ public class HostGameActivity extends AppCompatActivity {
         }).attach();
     }
 
-    private void loadQuizData() {
-        //Update UI with quiz data
-        updateQuizInfoUI();
-    }
-
+    /**
+     * Sets the views on the screen
+     */
     private void updateQuizInfoUI() {
         tvQuizTitle.setText(WaitingRoomActivity.pickedQuestioner.getTitle());
 
@@ -108,6 +111,10 @@ public class HostGameActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * starts the quiz timer in the current screen, when the
+     * question changes for the players.
+     */
     private void startQuizTimer() {
         if (questionTimer != null) {
             questionTimer.cancel();
@@ -125,27 +132,14 @@ public class HostGameActivity extends AppCompatActivity {
             public void onFinish() {
                 tvTimer.setText("Time: 00:00");
                 // Auto-move to next question or handle time expiration
-                handleTimeExpired();
             }
         }.start();
     }
 
-    private void handleTimeExpired() {
-//        startActivity(new Intent(this, MainActivity.class));
-    }
-
-
-    private void notifyPlayersOfPauseState(boolean isPaused) {
-        // In a real app, this would send a message to your backend/server
-        // which would then notify all connected players
-        System.out.println("Notifying players: Quiz is " + (isPaused ? "paused" : "resumed"));
-    }
-
-//    private void notifyPlayersOfQuestionChange() {
-//        // In a real app, this would notify all players that we've moved to a new question
-//        System.out.println("Notifying players: Moving to question " + currentQuiz.getCurrentQuestionNumber());
-//    }
-
+    /**
+     * Ends the game, if all the question are finished. The game is finished by showing
+     * a button to fo back to the main screen, and resetting the data used.
+     */
     private void endGame() {
         goBackButton.setVisibility(View.VISIBLE);
         goBackButton.setTranslationY(goBackButton.getHeight()); // Move it out of view

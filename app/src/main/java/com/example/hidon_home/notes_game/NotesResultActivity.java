@@ -1,25 +1,21 @@
 package com.example.hidon_home.notes_game;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 
 public class NotesResultActivity extends AppCompatActivity {
     List<Map.Entry<String, Integer>> leaderboard;
@@ -41,7 +37,14 @@ public class NotesResultActivity extends AppCompatActivity {
         backMenuButton = findViewById(R.id.back_to_menu_button);
         playerPlace = findViewById(R.id.player_place);
         playerScore = findViewById(R.id.player_score);
+    }
 
+    /**
+     * This function sets up the listener for the leaderboard and fills the leaderboard data source.
+     * It retrieves the scores and names from the database and populates the leaderboard.
+     * It also sets up the back button to return to the main menu.
+     */
+    private void setUpListenerAndFillLeaderboardDS() {
         // Get leaderboard from database
         kahootGamesRef.child(String.valueOf(JoinScreenActivity.roomCode)).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
@@ -86,6 +89,13 @@ public class NotesResultActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This function populates the leaderboard with the scores and names of the players.
+     * It creates a row for each player and sets their score and name.
+     * It also highlights the player's row if they are in the leaderboard.
+     *
+     * @param leaderboard The list of players and their scores to populate the leaderboard with.
+     */
     private void populateLeaderboard(List<Map.Entry<String, Integer>> leaderboard) {
         LinearLayout leaderboardContainer = findViewById(R.id.leaderboard_container);
 

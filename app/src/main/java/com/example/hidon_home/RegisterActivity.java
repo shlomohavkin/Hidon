@@ -6,14 +6,11 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
@@ -65,6 +62,10 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Validates the input fields and checks if the user already exists in the database.
+     * If validation is successful, it creates a new user and navigates to the main activity.
+     */
     private void validateFields() {
         name = nameEditText.getText().toString().trim();
         email = emailEditText.getText().toString().trim();

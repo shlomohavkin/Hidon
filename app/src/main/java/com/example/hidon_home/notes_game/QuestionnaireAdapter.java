@@ -6,14 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.hidon_home.R;
-
 import java.util.List;
 
+
+// This class is used to create a RecyclerView adapter for displaying a list of questionnaires.
 public class QuestionnaireAdapter extends RecyclerView.Adapter<QuestionnaireAdapter.ViewHolder> {
     private List<Questioneer> questionnaireList;
     private Context context;
@@ -46,6 +46,7 @@ public class QuestionnaireAdapter extends RecyclerView.Adapter<QuestionnaireAdap
         return questionnaireList.size();
     }
 
+    // ViewHolder class to hold the views for each item in the RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView questionnaireTitle;
         CardView cardView;
