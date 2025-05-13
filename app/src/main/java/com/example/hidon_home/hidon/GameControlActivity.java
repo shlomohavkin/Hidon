@@ -90,15 +90,15 @@ public class GameControlActivity extends AppCompatActivity {
         // Generate all the questions
         questionGenerator.generateQuestion(new QuestionCallBack() {
             @Override
-            public void onQuestionGenerated(ArrayList<Question> Gen_questions) {
-                if (Gen_questions != null) {
-                    for (int i = 0; i < Gen_questions.size(); i++) {
+            public void onQuestionGenerated(ArrayList<Question> gen_questions) {
+                if (gen_questions != null) {
+                    for (int i = 0; i < gen_questions.size(); i++) {
                         ArrayList<String> genAnswers = new ArrayList<>();
-                        genAnswers.addAll(Gen_questions.get(i).getAnswers());
-                        questions.add(new Question(Gen_questions.get(i).getQuestionContent(),
-                                                    genAnswers, Gen_questions.get(i).getCorrectAnswer()));
+                        genAnswers.addAll(gen_questions.get(i).getAnswers());
+                        questions.add(new Question(gen_questions.get(i).getQuestionContent(),
+                                                    genAnswers, gen_questions.get(i).getCorrectAnswer()));
                         Log.d("GameControl", "Question " + (i + 1) + " generated.");
-                        loading_screen_text.setText("Generated " + (i + 1) + " questions of 7...");
+                        loading_screen_text.setText("Generated " + (i + 1) + " questions of " + gen_questions.size() + "...");
                     }
                     Log.d("GameControl", "All questions generated. Starting game...");
 

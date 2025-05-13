@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hidon_home.hidon.GameControlActivity;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public static User user;
     Button notesGameButton, joinGameNotes, createQuestionsNotes, startGameNotes;
     LinearLayout waitingPopup;
+    AlertDialog.Builder builder;
 
 
     @Override
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         createQuestionsNotes = findViewById(R.id.create_questions_button);
 
         waitingPopup = findViewById(R.id.waiting_popup);
+
+        builder = new AlertDialog.Builder(this);
     }
 
 
@@ -113,7 +117,11 @@ public class MainActivity extends AppCompatActivity {
                             isNotesGame = false;
                             startActivity(new Intent(MainActivity.this, GameControlActivity.class));
                         } else if (valueFB == null || !isValidUUID(valueFB)) {
-                            Toast.makeText(MainActivity.this, "Can't join Game - No one started one", Toast.LENGTH_SHORT).show();
+                            builder.setTitle("Can't Join Game - Game not started yet");
+                            builder.setMessage("Wait for something to start a game or start a game yourself");
+                            builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
                         }
                     }
 
@@ -122,7 +130,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                Toast.makeText(MainActivity.this, "Can't join Game - you were starting the game", Toast.LENGTH_SHORT).show();
+                builder.setTitle("Can't Join Game - You were starting the game");
+                builder.setMessage("You can't join a game that you started");
+                builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.hidon_home.notes_game;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -11,9 +12,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -350,42 +349,81 @@ public class NotesGameQuestionsGenActivity extends AppCompatActivity {
      */
     public void onSaveQuestionsClick(View view) {
         if (!isValidQuestioneer()) {
-            Toast.makeText(this, "Please fill all the questions.", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Invalid Questionnaire");
+            builder.setMessage("Please fill all fields in the questionnaire.");
+            builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+            AlertDialog dialog = builder.create();
+            dialog.show();
             return;
         }
-        // Create an EditText for user input
-        EditText input = new EditText(this);
+
+        /* Create edittext for user input, I used the google one because there is
+           an option for setting error messages */
+        com.google.android.material.textfield.TextInputLayout inputLayout = new com.google.android.material.textfield.TextInputLayout(this);
+        com.google.android.material.textfield.TextInputEditText input = new com.google.android.material.textfield.TextInputEditText(this);
+
+
         input.setHint("Enter questionnaire name");
+        input.setSingleLine(true);
+
+        // set up the layout params for the edittext
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        // Add the EditText to the TextInputLayout
+        inputLayout.addView(input, layoutParams);
+        inputLayout.setLayoutParams(layoutParams);
+
+        // Add padding to the TextInputLayout
+        int padding = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                20,
+                getResources().getDisplayMetrics()
+        );
+        inputLayout.setPadding(padding, padding, padding, 0);
+
+        // Configure error appearance
+        inputLayout.setErrorEnabled(true);
 
         // Create a dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Save Questionnaire");
         builder.setMessage("Enter the name for your questionnaire:");
-        builder.setView(input);
+        builder.setView(inputLayout);
+        AlertDialog dialog = builder.create();
 
-        // Add "Save" button to dialog
-        builder.setPositiveButton("Save", (dialog, which) -> {
+        /* Set the positive button to save the questionnaire and the negative button to cancel
+           The positive button is set to null because we will override it later
+           to perform the check before saving the questionnaire */
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Save", (DialogInterface.OnClickListener) null);
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", (DialogInterface.OnClickListener) null);
+        dialog.show();
+
+        // Override the listener for the positive button
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             String questionnaireName = input.getText().toString().trim();
 
             if (questionnaireName.isEmpty()) {
-                Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
+                // Show error in the layout of the edittext
+                inputLayout.setError("Please enter a name for your questionnaire");
             } else {
-                // Handle saving the questionnaire name
+                // clear the previous error message
+                inputLayout.setError(null);
+
                 MainActivity.user.addQuestioneer(new Questioneer(questions, questionnaireName));
                 LoginActivity.user.addQuestioneer(new Questioneer(questions, questionnaireName));
                 usersRef.child(MainActivity.user.getName()).setValue(MainActivity.user);
-                Toast.makeText(this, "Saved as: " + questionnaireName, Toast.LENGTH_SHORT).show();
                 Log.d("Questioneer Saved", MainActivity.user.getQuestioners().get(0).toString());
                 dialog.dismiss();
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(NotesGameQuestionsGenActivity.this, MainActivity.class));
             }
         });
 
-        // Add "Cancel" button to dialog
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-
-        // Show the dialog
-        builder.create().show();
+        // Override the listener for the negative button
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> dialog.dismiss());
 
     }
 

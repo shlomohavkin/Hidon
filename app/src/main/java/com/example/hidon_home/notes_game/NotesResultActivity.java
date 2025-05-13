@@ -37,6 +37,8 @@ public class NotesResultActivity extends AppCompatActivity {
         backMenuButton = findViewById(R.id.back_to_menu_button);
         playerPlace = findViewById(R.id.player_place);
         playerScore = findViewById(R.id.player_score);
+
+        setUpListenerAndFillLeaderboardDS();
     }
 
     /**

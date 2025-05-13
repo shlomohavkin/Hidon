@@ -12,7 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ResultActivity extends AppCompatActivity {
     TextView score, result;
-    final int MAX_SCORE = 140;
+    final int MAX_SCORE = 60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

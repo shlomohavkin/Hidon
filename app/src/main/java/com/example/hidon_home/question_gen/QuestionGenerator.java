@@ -10,6 +10,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class QuestionGenerator {
+    private final int MAX_RETRIES = 3; // Maximum number of retry attempts
+
     public QuestionGenerator() {} // empty constructor
 
     /**
@@ -19,6 +21,22 @@ public class QuestionGenerator {
      * which receives a questions array when the response of ChatGPT comes through.
      */
     public void generateQuestion(QuestionCallBack callback) {
+        // Call the helper method with initial retry count of 0
+        generateQuestionWithRetry(callback, 0);
+    }
+
+    /**
+     * Helper method that handles the retry logic
+     * @param callback the question callback interface
+     * @param retryCount current retry count
+     */
+    private void generateQuestionWithRetry(QuestionCallBack callback, int retryCount) {
+        if (retryCount >= MAX_RETRIES) {
+            Log.e("QuestionGenerator", "Maximum retry attempts reached. Giving up.");
+            callback.onQuestionGenerated(null);
+            return;
+        }
+
         OpenAIApi openAIApi = ApiClient.getClient().create(OpenAIApi.class);
 
         // Create Message objects
@@ -29,7 +47,7 @@ public class QuestionGenerator {
 
         ChatGPTRequest.Message userMessage = new ChatGPTRequest.Message(
                 "user",
-                "Generate 22 hard trivia questions, choose random 7 from those and generate a JSON string containing those trivia questions in this format: " +
+                "Generate 22 hard trivia questions, choose random 3 from those and generate a JSON string containing those trivia questions in this format: " +
                         "{ \"questions\": [ { \"questionContent\": \"\", \"answers\": [\"\", \"\", \"\", \"\"], \"correctAnswer\": 0 } ] } " +
                         "Ensure all questions and answers are valid and accurate. Very Important: Don't!! add any text or symbols other than the format above.");
 
@@ -47,7 +65,7 @@ public class QuestionGenerator {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
                         String jsonString = response.body().choices[0].message.content.trim();
-                        Log.d("ChatGPT response", jsonString);
+                        Log.d("QuestionGenerator", jsonString);
                         JSONObject jsonObject = new JSONObject(jsonString);
                         JSONArray questionsArray = jsonObject.getJSONArray("questions");
 
@@ -63,23 +81,29 @@ public class QuestionGenerator {
                         callback.onQuestionGenerated(questions);
 
                     } catch (Exception e) {
-                        Log.e("JSON Error", "Failed to parse JSON or create Question object: " + e.getMessage());
-                        callback.onQuestionGenerated(null); // Pass null in case of error
+                        Log.e("QuestionGenerator", "Failed to parse JSON or create Question object: " + e.getMessage(), e);
+                        // Retry with incremented retry count
+                        int newRetryCount = retryCount + 1;
+                        Log.d("QuestionGenerator", "Retrying... Attempt " + newRetryCount + " of " + MAX_RETRIES);
+                        generateQuestionWithRetry(callback, newRetryCount);
                     }
                 } else {
-                    Log.e("API Error", "Code: " + response.code() + ", Message: " + response.message());
-                    callback.onQuestionGenerated(null); // Pass null in case of error
+                    Log.e("QuestionGenerator", "API Error - Code: " + response.code() + ", Message: " + response.message());
+                    // Retry with incremented retry count
+                    int newRetryCount = retryCount + 1;
+                    Log.d("QuestionGenerator", "Retrying... Attempt " + newRetryCount + " of " + MAX_RETRIES);
+                    generateQuestionWithRetry(callback, newRetryCount);
                 }
-                }
+            }
 
-                @Override
-                public void onFailure(Call<ChatGPTResponse> call, Throwable t) {
-                    Log.e("API Error", t.getMessage());
-                    callback.onQuestionGenerated(null); // Pass null in case of failure
-                }
-            });
-        }
-
+            @Override
+            public void onFailure(Call<ChatGPTResponse> call, Throwable t) {
+                Log.e("QuestionGenerator", "API Call Failure: " + t.getMessage(), t);
+                // Retry with incremented retry count
+                int newRetryCount = retryCount + 1;
+                Log.d("QuestionGenerator", "Retrying... Attempt " + newRetryCount + " of " + MAX_RETRIES);
+                generateQuestionWithRetry(callback, newRetryCount);
+            }
+        });
     }
-
-
+}

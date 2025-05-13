@@ -42,8 +42,10 @@ public class User {
         this.email = other.email;
         this.password = other.password;
         this.questioners = new ArrayList<>();
-        for (Questioneer questioner : other.questioners) {
-            this.questioners.add(new Questioneer(questioner));
+        if (other.questioners != null) {
+            for (Questioneer questioner : other.questioners) {
+                this.questioners.add(new Questioneer(questioner));
+            }
         }
     }
 
