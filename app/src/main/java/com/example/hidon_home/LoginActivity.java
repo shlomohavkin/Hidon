@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                         return;
                     }
                 } else {
-                    usernameEditText.setError("Name already exists");
+                    usernameEditText.setError("Username does not exist");
                     return;
                 }
             }

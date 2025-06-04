@@ -1,4 +1,4 @@
-package com.example.hidon_home.notes_game;
+package com.example.hidon_home.notes_game.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

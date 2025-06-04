@@ -1,4 +1,4 @@
-package com.example.hidon_home.notes_game;
+package com.example.hidon_home.notes_game.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.hidon_home.R;
+import com.example.hidon_home.notes_game.Questioneer;
+import com.example.hidon_home.notes_game.WaitingRoomActivity;
+
 import java.util.List;
 
 

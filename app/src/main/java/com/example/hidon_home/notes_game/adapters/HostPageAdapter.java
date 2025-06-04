@@ -1,9 +1,12 @@
-package com.example.hidon_home.notes_game;
+package com.example.hidon_home.notes_game.adapters;
 
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.hidon_home.notes_game.HostLeaderboardFragment;
+import com.example.hidon_home.notes_game.HostQuestionStatsFragment;
 
 public class HostPageAdapter extends FragmentStateAdapter {
 

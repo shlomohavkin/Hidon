@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.R;
+import com.example.hidon_home.notes_game.adapters.WaitingScreenPlayerListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +36,7 @@ public class WaitingRoomActivity extends AppCompatActivity {
     LinearLayout waitingLayout;
     ArrayList<String> playerNames;
     ValueEventListener listener;
-    static Questioneer pickedQuestioner;
+    public static Questioneer pickedQuestioner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

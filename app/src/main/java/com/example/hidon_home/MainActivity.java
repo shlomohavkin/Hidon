@@ -8,12 +8,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.hidon_home.hidon.GameControlActivity;
 import com.example.hidon_home.notes_game.GameQuestionsActivity;
 import com.example.hidon_home.notes_game.JoinScreenActivity;

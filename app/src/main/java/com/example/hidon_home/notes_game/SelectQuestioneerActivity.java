@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.hidon_home.MainActivity;
 import com.example.hidon_home.R;
+import com.example.hidon_home.notes_game.adapters.QuestionnaireAdapter;
+
 import java.util.List;
 
 public class SelectQuestioneerActivity extends AppCompatActivity {

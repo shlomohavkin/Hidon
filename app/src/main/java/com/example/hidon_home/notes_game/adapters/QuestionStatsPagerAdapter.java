@@ -1,4 +1,4 @@
-package com.example.hidon_home.notes_game;
+package com.example.hidon_home.notes_game.adapters;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -6,6 +6,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.hidon_home.Question;
+import com.example.hidon_home.notes_game.HostGameActivity;
+import com.example.hidon_home.notes_game.QuestionStatsCardFragment;
+import com.example.hidon_home.notes_game.WaitingRoomActivity;
+
 import java.util.ArrayList;
 
 // This class is used to create a pager adapter for the question stats screen.

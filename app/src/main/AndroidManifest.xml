@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Hidon_home"
         tools:targetApi="31">
         <activity
-            android:name=".notes_game.LeaderboardAdapter"
+            android:name=".notes_game.adapters.LeaderboardAdapter"
             android:exported="false" />
         <activity
             android:name=".notes_game.HostQuestionStatsFragment"

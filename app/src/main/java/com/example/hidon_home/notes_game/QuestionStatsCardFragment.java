@@ -152,7 +152,7 @@ public class QuestionStatsCardFragment extends Fragment {
             progressBarC.setProgress(percentC);
             progressBarD.setProgress(percentD);
 
-            tvAverageTime.setText("Average time: " + (sumForAvg / realTimeResponses) + "s");
+            tvAverageTime.setText("Average time: " + (String.format("%.2f", sumForAvg / realTimeResponses)) + "s");
 
             if (realTimeResponses == playerCount && HostGameActivity.currentQuestion == WaitingRoomActivity.pickedQuestioner.getQuestioneer().size()) {
                 HostGameActivity.isEnded = true;

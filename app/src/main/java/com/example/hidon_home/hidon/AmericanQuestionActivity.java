@@ -33,20 +33,20 @@ import java.util.List;
 import java.util.Map;
 
 public class AmericanQuestionActivity extends AppCompatActivity {
-    private static final int CORRECT_ANSWER_POINTS = 20;
-    private static final int KAHOOT_MAX_POINTS = 100;
-    public static final long TIMEOUT_MILLIS = 15000; // 15 seconds
+    private final int CORRECT_ANSWER_POINTS = 20;
+    private final int KAHOOT_MAX_POINTS = 100;
+    private final long TIMEOUT_MILLIS = 15000; // 15 seconds
     Question question;
     TextView questionContent, leftPlayerScore, rightPlayerScore, leftPlayerName, rightPlayerName, numberOfPlayersText, numberAnsweredText, answeredTextView;
     Button answer1, answer2, answer3, answer4;
     FirebaseDatabase database;
     DatabaseReference  gamesRef;
-    private boolean isScreenFinished, isUpdatedScore = false;
+    boolean isScreenFinished, isUpdatedScore = false;
     ProgressBar timeProgressBar;
-    private ValueAnimator progressAnimator;
+    ValueAnimator progressAnimator;
     String gameId;
     public static int numberOfPlayers;
-    int currentQuestion; // because when we start the activity we increment it by 1
+    int currentQuestion;
     Game game;
     long questionCreatedTimestamp;
 
@@ -59,9 +59,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
         isUpdatedScore = false;
 
         questionCreatedTimestamp = System.currentTimeMillis(); // get the time the question was created
-
         database = FirebaseDatabase.getInstance();
-
         Intent intent = getIntent();
         currentQuestion = intent.getIntExtra("currentQuestion", 0);
 
@@ -72,7 +70,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
 
     /**
      * Initialize the views in the current screen, depending on the
-     * game, whether its 1vs1 or a notes game.
+     * game, whether its 1vs1 or a kahoot game.
      */
     private void setUpUI() {
         if (!MainActivity.isNotesGame) {
@@ -208,7 +206,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                 }
 
                 if (isEveryoneAnswered && MainActivity.isNotesGame) {
-                    // All players have answered; determine the winner
+                    // All players have answered, determine the winner
                     long[] correctPlayeriTimestamp = new long[numberOfPlayers];
                     int numberOfCorrectAnswers = 0;
                     for (int i = 0; i < numberOfPlayers; i++) {
@@ -378,7 +376,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
             gamesRef.child(gameId).child("playersState").child(playerPath).setValue(player);
         }
 
-        // Check the status of both players
+        // Check the status of both players, and decide what to do
         gamesRef.child(gameId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -405,7 +403,7 @@ public class AmericanQuestionActivity extends AppCompatActivity {
                 }
 
                 if (isEveryoneAnswered) {
-                    // All players have answered; determine the winner
+                    // All players have answered. determine the winner
                     long[] correctPlayeriTimestamp = new long[numberOfPlayers];
                     boolean[] playeriCorrect = new boolean[numberOfPlayers];
                     int numberOfCorrectAnswers = 0;
